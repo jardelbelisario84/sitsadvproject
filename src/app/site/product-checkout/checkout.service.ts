@@ -23,7 +23,10 @@ export class CheckoutService {
         //     .map(res => res.json());
 
         return this.http.get('http://localhost:8000/session.php', { headers })
-            .map(res => res.json());
+        .pipe(
+            map(res => res)
+        ); 
+            
     }
 
     public store(dados: Dados) {

@@ -5,7 +5,7 @@ import { PaymentHttp } from './payment-http';
 import scriptjs from 'scriptjs/src/script'
 
 
-declare let PagSeguroDirectPayment;
+declare var PagSeguroDirectPayment:any;
 
 @Component({
   selector: 'app-product-checkout',
@@ -43,12 +43,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     scriptjs('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
       this.paymentHttp.getSession()
         .subscribe(data => {
-          this.initSession(data);
-
-          console.log(data);
-          console.log( this.initSession(data));
-
-
+          console.log(data['sessionId']);
+          console.log( PagSeguroDirectPayment.setSessionId(data['sessionId']));
           this.getPaymentMethods();
         })
     })

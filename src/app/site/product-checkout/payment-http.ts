@@ -23,7 +23,7 @@ export class PaymentHttp {
     // )
     // .subscribe(res => console.log(res));
 
-    getSession() {
+    getSession(): Observable<Object> {
         return this.http.get('http://localhost:8000/session.php')
         .pipe(
             map( res => res) 
