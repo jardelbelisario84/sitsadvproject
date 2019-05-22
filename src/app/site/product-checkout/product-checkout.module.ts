@@ -11,7 +11,8 @@ import { ProductCheckoutComponent } from './product-checkout.component';
   ],
   imports: [
     CommonModule,
-    ProductCheckoutRoutingModule
+    ProductCheckoutRoutingModule,
+    
   ]
 })
 export class ProductCheckoutModule { }

@@ -6,6 +6,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductCheckoutComponent } from './product-checkout/product-checkout.component';
 import { SiteMenuComponent } from '../layout/site-menu/site-menu.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -19,7 +20,9 @@ import { SiteMenuComponent } from '../layout/site-menu/site-menu.component';
   ],
   imports: [
     CommonModule,
-    SiteRoutingModule
+    SiteRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SiteModule { }

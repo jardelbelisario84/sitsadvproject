@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -23,16 +23,75 @@ export class PaymentHttp {
     // )
     // .subscribe(res => console.log(res));
 
+    // getSession(): Observable<Object> {
+    //     return this.http.get('http://localhost:8000/session.php')
+    //     .pipe(
+    //         map( res => res) 
+    //     ); 
+    // }
+
+
     getSession(): Observable<Object> {
-        return this.http.get('http://localhost:8000/session.php')
+        return this.http.get('http://localhost:8000/api/pagseguro-session')
         .pipe(
             map( res => res) 
         ); 
     }
 
-    doPayment(data): Observable<Object> {
-        return this.http.post('http://localhost:8000/payment.php', data)
-            .map(response => response.json());
+    // doPayment(data): Observable<Object> {
+    //     return this.http.post('http://localhost:8000/payment.php', data)
+    //         .map(response => response.json());
+    // }
+
+    geraBoleto(data): Observable<any> {
+        return this.http.post('http://localhost:8000/api/pagseguro-transaction-boleto', data)
+        .pipe(
+            map( res => res) 
+        ); 
     }
+
+    transationCredCard(data): Observable<any> {
+        return this.http.post('http://localhost:8000/api/pagseguro-transaction-boleto', data)
+        .pipe(
+            map( res => res) 
+        ); 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // geraBoleto(data): Observable<any> {
+    //     let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=ISO-8859-1' });
+
+    //     return this.http.post('http://localhost:8000/api/pagseguro-boleto', data,  { headers })
+    //     // return this.http.post('http://localhost:8000/api/pagseguro-boleto', data)
+    //     .pipe(
+    //         map(response => response)
+    //     );
+    // }
 
 }
