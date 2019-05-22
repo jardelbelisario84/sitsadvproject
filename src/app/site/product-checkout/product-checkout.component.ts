@@ -32,14 +32,18 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
   dadosCredicard = {
-    nome: '',
-    numCard: '',
-    mesValidadeCard: '',
-    codSegCard: '',
-    anoValidadeCard: '',
-    cpf: '',
+    nome: 'Jardel Henrique',
+    cpf: '66523165019',
     nascimento: '',
-    telefone: '',
+    telefone: '99999999999',
+    numCard: '4111111111111111',              // ex: '4111111111111111'
+    mesValidadeCard: '12',                   // ex: '12',
+    anoValidadeCard: '2030',                 // ex: '2030',
+    codSegCard: '123',                      // ex: '123',
+    bandCard: '',                           // preenchido dinamicamente
+    hashCard: '',                           // preenchido dinamicamente
+    sendHash: '',                           // preenchido dinamicamente
+    parcelas: []                            // preenchido dinamicamente
   }
 
   public dados = new Dados();
@@ -84,22 +88,22 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
   gerarBoleto() {
-    let data = {
-      sendHash: PagSeguroDirectPayment.getSenderHash(),
-
-    };
-
+    
+      this.dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash(),
+  
+      console.log(this.dadosCredicard.sendHash);
 
     // PagSeguroDirectPayment.onSenderHashReady((response) => {
     //   data['sendHash'] = response.senderHash; //Hash estará disponível nesta variável.
     // });
 
-    this.paymentHttp.geraBoleto(data)
+    this.paymentHttp.geraBoleto(this.dadosCredicard)
       .subscribe(
         (response) => {
-          console.log('deu certo')
-          console.log(response);
-          // window.open(response, '_blank');
+          console.log('Resposta do boleto: ',response);
+          window.open(response, '_blank');
+        }, error => {
+          console.log(error);
         });
 
 
@@ -192,12 +196,13 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   buscaBandeira() {
 
     PagSeguroDirectPayment.getBrand({
-      cardBin: this.dados.numCard,
+      cardBin: this.dadosCredicard.numCard,
       success: response => {
 
-        this.dados.bandCard = response.brand.name;
+
+        this.dadosCredicard.bandCard = response.brand.name;
+        console.log('Bandeira do cartão: ' + this.dadosCredicard.bandCard);
         this.buscaParcelas();
-        console.log('Bandeira do cartão: ' + this.dados.bandCard);
 
       },
       error: response => { console.log(response); }
@@ -209,15 +214,19 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   //BUSCA AS PARCELAS NA API DO PAGSEGURO PARA O CLIENTE ESCOLHER
   buscaParcelas() {
 
+    // console.log(this.dadosCredicard.bandCard);
+
     PagSeguroDirectPayment.getInstallments({
 
-      amount: '100',              //valor total da compra (deve ser informado)
-      brand: this.dados.bandCard, //bandeira do cartão (capturado na função buscaBandeira)
+      amount: '497',              //valor total da compra (deve ser informado)
+      brand: this.dadosCredicard.bandCard, //bandeira do cartão (capturado na função buscaBandeira)
       maxInstallmentNoInterest: 3,
       success: response => {
+        console.log('parcelas: ', response );
 
-        this.dados.parcelas = response.installments[this.dados.bandCard];
-        console.log('parcelas: ' + response);
+        this.dadosCredicard.parcelas = response.installments[this.dadosCredicard.bandCard];
+        console.log('parcelas result: ', this.dadosCredicard.parcelas );
+
 
       },
       error: response => { console.log(response) }
@@ -229,7 +238,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   onSubmit(dadosCredicard) {
 
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
-    dadosCredicard.hashComprador = PagSeguroDirectPayment.getSenderHash();
+    dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
 
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
     PagSeguroDirectPayment.createCardToken({
@@ -238,18 +247,24 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       cvv: dadosCredicard.codSegCard,
       expirationMonth: dadosCredicard.mesValidadeCard,
       expirationYear: dadosCredicard.anoValidadeCard,
-      brand: dadosCredicard.bandCard,
 
       success: response => {
+
         dadosCredicard.hashCard = response.card.token;
-        console.log(dadosCredicard);
+        
+        this.buscaBandeira();
+
+        console.log('Dados retornados: ',  dadosCredicard);
+        // console.log("Passou cartão");
 
         //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
         //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
         this.enviaDadosParaServidor(dadosCredicard);
 
       },
-      error: response => { console.log(response) }
+      error: response => { 
+        console.log(response) 
+      }
 
     });
 

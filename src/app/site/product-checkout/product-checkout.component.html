@@ -193,7 +193,7 @@
 
 
 
-            <form>
+            <form (ngSubmit)="onSubmit(dadosCredicard)">
               <div class="row">
                 <div class="col-md-6">
 
@@ -208,7 +208,7 @@
                   <div class="form-group">
                     <label for="inputCreditNum">Número do cartão</label>
                     <input type="text" class="form-control" placeholder="TrocarPlaceholder"
-                      [(ngModel)]="dadosCredicard.numCard" name="numCard">
+                      [(ngModel)]="dadosCredicard.numCard" name="numCard" (focusout)="buscaBandeira()">
                   </div>
                 </div>
               </div>
@@ -251,8 +251,16 @@
 
                   <div class="form-group">
                     <label for="">Parcelas (o valor mínimo da parcela é R$ 5,00) *</label>
-                    <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                      placeholder="TrocarPlaceholder">
+                    <select class="form-control">
+                      <option *ngFor='let parcela of dadosCredicard.parcelas' [value]="parcela.ID">
+                        <div *ngIf=" parcela.interestFree == true">
+                          {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros
+                        </div>
+                        <div *ngIf=" parcela.interestFree == false">
+                          {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros
+                        </div>
+                      </option>
+                    </select>
                   </div>
 
                 </div>

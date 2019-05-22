@@ -51,7 +51,7 @@ export class PaymentHttp {
     }
 
     transationCredCard(data): Observable<any> {
-        return this.http.post('http://localhost:8000/api/pagseguro-transaction-boleto', data)
+        return this.http.post('http://localhost:8000/api/pagseguro-transaction-card', data)
         .pipe(
             map( res => res) 
         ); 
