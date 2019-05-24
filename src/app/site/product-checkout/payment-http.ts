@@ -30,28 +30,29 @@ export class PaymentHttp {
     //     ); 
     // }
 
+    //return this.http.get('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-session')
 
     getSession(): Observable<Object> {
-        return this.http.get('http://localhost:8000/api/pagseguro-session')
+        return this.http.get('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-session')
         .pipe(
             map( res => res) 
         ); 
     }
 
     // doPayment(data): Observable<Object> {
-    //     return this.http.post('http://localhost:8000/payment.php', data)
+    //     return this.http.post('https://apisitesadv.desksistemas.com.br/public/payment.php', data)
     //         .map(response => response.json());
     // }
 
     geraBoleto(data): Observable<any> {
-        return this.http.post('http://localhost:8000/api/pagseguro-transaction-boleto', data)
-        .pipe(
-            map( res => res) 
-        ); 
+
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-boleto', data,{ headers});
     }
 
     transationCredCard(data): Observable<any> {
-        return this.http.post('http://localhost:8000/api/pagseguro-transaction-card', data)
+        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-card', data)
         .pipe(
             map( res => res) 
         ); 

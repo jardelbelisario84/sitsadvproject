@@ -2,8 +2,10 @@ import { Component, OnInit, NgZone, AfterContentInit } from '@angular/core';
 
 import { CheckoutService } from './checkout.service';
 import { PaymentHttp } from './payment-http';
-// import scriptjs from 'scriptjs/src/script'
-import { Dados } from './dados.class';
+import scriptjs from 'scriptjs/src/script'
+import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 
 declare var PagSeguroDirectPayment: any;
@@ -17,19 +19,14 @@ declare var $window: any;
 export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
+  loadingPage = false;
+  linkBoleto = '';
+  hideBlock = false;
+  hideBlockBoleto = false;
+  hideBlockCreditCard = false;
+
   paymentMethod = 'BOLETO';
   paymentMethods: Array<any> = [];
-
-
-  // creditCard = {
-  //   num: '',
-  //   cvv: '',
-  //   monthExp: '',
-  //   yearExp: '',
-  //   brand: '',
-  //   token: ''
-  // };
-
 
   dadosCredicard = {
     nome: 'Jardel Henrique',
@@ -46,8 +43,6 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     parcelas: []                            // preenchido dinamicamente
   }
 
-  public dados = new Dados();
-
 
   constructor(
     public checkoutService: CheckoutService,
@@ -57,11 +52,26 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
   ngOnInit() {
-    this.checkoutService.startSession()
-      .subscribe(data => {
-        console.log(data);
-        console.log(this.initSession(data));
+
+    // this.checkoutService.startSession()
+    if (!environment.production) {
+      scriptjs('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
+        this.paymentHttp.getSession()
+          .subscribe(data => {
+            console.log(data);
+            console.log(this.initSession(data));
+          })
       })
+    } else {
+      scriptjs('https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
+        this.paymentHttp.getSession()
+          .subscribe(data => {
+            console.log(data);
+            console.log(this.initSession(data));
+          })
+      })
+    }
+
   }
 
   ngAfterContentInit() {
@@ -71,7 +81,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
   initSession(data) {
-    PagSeguroDirectPayment.setSessionId(data.id);
+    PagSeguroDirectPayment.setSessionId(data['id']);
   }
 
   getPaymentMethods() {
@@ -88,102 +98,33 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
   gerarBoleto() {
-    
-      this.dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash(),
-  
-      console.log(this.dadosCredicard.sendHash);
 
-    // PagSeguroDirectPayment.onSenderHashReady((response) => {
-    //   data['sendHash'] = response.senderHash; //Hash estará disponível nesta variável.
-    // });
-
+    this.loadingPage = true;
+    this.dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
     this.paymentHttp.geraBoleto(this.dadosCredicard)
       .subscribe(
-        (response) => {
-          console.log('Resposta do boleto: ',response);
-          window.open(response, '_blank');
-        }, error => {
-          console.log(error);
+        response => {
+          this.loadingPage = false;
+          this.hideBlock = true;
+
+          this.hideBlockBoleto = true;
+          this.hideBlockCreditCard = false;
+
+          console.log('Resposta do boleto: ', response);
+          this.linkBoleto = response[0];
+          window.scrollTo(0, 0);
+          // window.open(response[0], '_blank');
+        }, (error: HttpErrorResponse) => {
+          this.loadingPage = false;
+          console.log(error); // body
+          // console.log(error.error.text); // body
         });
-
-
-
   }
 
 
-  // makePayment() {
-  //   let data = {
-  //     items: [],
-  //     hash: PagSeguroDirectPayment.getSenderHash(),
-  //     method: this.paymentMethod,
-  //     total: 457
-  //   };
-
-  //   let doPayment = () => {
-  //     this.paymentHttp.doPayment(data).subscribe(() => {
-  //       console.log('deu certo')
-  //     });
-  //   };
-  //   if (this.paymentMethod == 'CREDIT_CARD') {
-  //     this.prepareCreditCard().then(() => {
-  //       (<any>data).token = this.creditCard.token;
-  //       doPayment();
-  //     }, (error) => console.log(error));
-  //     return;
-  //   }
-
-  //   doPayment();
-  // }
-
-  // prepareCreditCard(): Promise<any> {
-  //   return this.getCreditCardBrand().then(() => {
-  //     return this.getCreditCardToken();
-  //   });
-  // }
-
-  // getCreditCardBrand(): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     PagSeguroDirectPayment.getBrand({
-  //       cardBin: this.creditCard.num.substring(0, 6),
-  //       success: (response) => {
-  //         this.zone.run(() => {
-  //           this.creditCard.brand = response.brand.name;
-  //           console.log(response);
-  //           resolve({ brand: response.brand.name });
-  //         });
-  //       },
-  //       error(error) {
-  //         reject(error)
-  //       }
-  //     });
-  //   });
-  // }
-
-  // getCreditCardToken(): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     PagSeguroDirectPayment.createCardToken({
-  //       cardNumber: this.creditCard.num,
-  //       brand: this.creditCard.brand,
-  //       cvv: this.creditCard.cvv,
-  //       expirationMonth: this.creditCard.monthExp,
-  //       expirationYear: this.creditCard.yearExp,
-  //       success: (response) => {
-  //         this.zone.run(() => {
-  //           this.creditCard.token = response.card.token;
-  //           resolve({ token: response.card.token });
-  //           console.log(response);
-  //         });
-  //       },
-  //       error(error) {
-  //         reject(error)
-  //       }
-  //     })
-  //   });
-  // }
-
-
-
-
+  openLinkBoleto() {
+    window.open(this.linkBoleto, '_blank');
+  }
 
   /** 
    *  BIBLIOTECA ANGULAR PAGSEGURO
@@ -198,12 +139,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     PagSeguroDirectPayment.getBrand({
       cardBin: this.dadosCredicard.numCard,
       success: response => {
-
-
         this.dadosCredicard.bandCard = response.brand.name;
         console.log('Bandeira do cartão: ' + this.dadosCredicard.bandCard);
         this.buscaParcelas();
-
       },
       error: response => { console.log(response); }
     });
@@ -222,11 +160,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       brand: this.dadosCredicard.bandCard, //bandeira do cartão (capturado na função buscaBandeira)
       maxInstallmentNoInterest: 3,
       success: response => {
-        console.log('parcelas: ', response );
 
         this.dadosCredicard.parcelas = response.installments[this.dadosCredicard.bandCard];
-        console.log('parcelas result: ', this.dadosCredicard.parcelas );
-
+        console.log('parcelas result: ', this.dadosCredicard.parcelas);
 
       },
       error: response => { console.log(response) }
@@ -237,6 +173,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   //AO CLICAR NO BOTÃO PAGAR
   onSubmit(dadosCredicard) {
 
+
+    this.loadingPage = true;
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
     dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
 
@@ -249,30 +187,49 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       expirationYear: dadosCredicard.anoValidadeCard,
 
       success: response => {
+        this.zone.run(() => {
+          dadosCredicard.hashCard = response.card.token;
+          console.log(response);
 
-        dadosCredicard.hashCard = response.card.token;
-        
-        this.buscaBandeira();
+          this.buscaBandeira();
 
-        console.log('Dados retornados: ',  dadosCredicard);
-        // console.log("Passou cartão");
+          console.log('Dados retornados: ', dadosCredicard);
+          // console.log("Passou cartão");
 
-        //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
-        //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
-        this.enviaDadosParaServidor(dadosCredicard);
+          //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
+          //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
+          this.enviaDadosParaServidor(dadosCredicard);
+
+
+
+        });
+
+
+
 
       },
-      error: response => { 
-        console.log(response) 
+      error(res) {
+        console.log(res)
       }
 
     });
+  }
+
+
+  onSubmitCardCredit() {
 
   }
 
+
   enviaDadosParaServidor(dados) {
     //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
-    this.paymentHttp.transationCredCard(dados).subscribe(result => console.log(result));
+    this.paymentHttp.transationCredCard(dados).subscribe(result => {
+      this.loadingPage = false;
+      this.hideBlock = true;
+      this.hideBlockBoleto = false;
+      this.hideBlockCreditCard = true;
+      console.log(result)
+    });
   }
 
 

@@ -9,6 +9,12 @@ import { SiteMenuComponent } from '../layout/site-menu/site-menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {SidebarModule} from 'primeng/sidebar';
+
+
+import {ToastModule} from 'primeng/toast';
+import { RodapeComponent } from './rodape/rodape.component';
 
 
 @NgModule({
@@ -16,13 +22,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomePageComponent,
     ProductListComponent,
     ProductCheckoutComponent,
-    SiteMenuComponent
+    SiteMenuComponent,
+    RodapeComponent
+    
   ],
   imports: [
     CommonModule,
     SiteRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProgressSpinnerModule,
+    SidebarModule,
+    ToastModule
   ]
 })
 export class SiteModule { }

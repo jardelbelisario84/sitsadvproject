@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewChecked, AfterContentInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ProdutosService } from '../service-local/produtos.service';
 
 
 @Component({
@@ -7,17 +8,34 @@ import { Router } from '@angular/router';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit, AfterViewChecked {
+export class ProductListComponent implements OnInit, AfterViewChecked, AfterContentInit {
+  produto;
+  loadingPage = false;
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private route: ActivatedRoute, private product: ProdutosService) { }
 
   ngOnInit() {
+
+
+    this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
+    console.log('Produto list', this.produto);
   }
 
   ngAfterViewChecked() {
-    window.scrollTo(0, 0);
-    }
 
+  }
+
+
+  ngAfterContentInit() {
+    window.scrollTo(0, 0);
+    this.loadingPage = true;
+
+    setTimeout(() => {
+      this.loadingPage = false;
+    }, 1000);
+
+  }
   productCheckout() {
     this.router.navigate(['/produtos/plano-basic/checkout']);
   }
