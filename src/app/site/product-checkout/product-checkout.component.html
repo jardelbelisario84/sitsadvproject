@@ -161,30 +161,239 @@
       </div>
 
 
+      <div class="row" *ngIf="!hideBlock">
+        <div class="col-md-12">
+          <div class="card mt-3">
+            <div class="card-header">
+              <h4>DADOS PAGAMENTO</h4>
+            </div>
+            <div class="card-body">
+
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                    aria-controls="home" aria-selected="true">Cartão de Crédito</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Boleto Bancário</a>
+                </li>
+              </ul>
+
+              <div class="tab-content  mt-4" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+
+                  <div class="row">
+                    <div class="col-md-12">
+
+                      <form (ngSubmit)="onSubmit(dadosCredicard)">
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <div class="form-group">
+                              <label for="nome">Nome do portador (como gravado no cartão) </label>
+                              <input type="text" [(ngModel)]="dadosCredicard.nome" name="nome" class="form-control"
+                                placeholder="TrocarPlaceholder">
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="inputCreditNum">Número do cartão</label>
+                              <input type="text" class="form-control" placeholder="TrocarPlaceholder"
+                                [(ngModel)]="dadosCredicard.numCard" name="numCard" (focusout)="buscaBandeira()">
+                            </div>
+                          </div>
+
+                          <div class="col-md-2">
+
+                            <div class="form-group">
+                              <label for="inputCreditMonth">Mês*</label>
+                              <input type="text" class="form-control" id="inputCreditMonth" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.mesValidadeCard"
+                                name="mesValidadeCard">
+                            </div>
+
+                          </div>
+
+                          <div class="col-md-2">
+
+                            <div class="form-group">
+                              <label for="inputCreditYear">Ano *</label>
+                              <input type="text" class="form-control" id="inputCreditYear" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.anoValidadeCard"
+                                name="anoValidadeCard">
+                            </div>
+
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="inputCreditCvv">Cód. de segurança (CVV) *</label>
+                              <input type="text" class="form-control" id="inputCreditCvv" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.codSegCard"
+                                name="codSegCard">
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-md-8">
+
+                            <div class="form-group">
+                              <label for="">Parcelas (Valor mínimo R$ 5,00) *</label>
+                              <select class="form-control">
+                                <option value="">Escolha as parcelas após preencher nº Cartão</option>
+                                <option *ngFor='let parcela of dadosCredicard.parcelas' [value]="parcela.ID">
+                                  <div *ngIf=" parcela.interestFree == true">
+                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a pagar:
+                                    {{ parcela.totalAmount}}
+                                  </div>
+                                  <div *ngIf=" parcela.interestFree == false">
+                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a pagar:
+                                    {{ parcela.totalAmount}}
+                                  </div>
+                                </option>
+                              </select>
+                            </div>
+
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">CPF do portador *</label>
+                              <input type="text" class="form-control" id="" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.cpf" name="cpf">
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-md-8">
+
+                            <div class="form-group">
+                              <label for="">Data de nascimento do portador *</label>
+                              <input type="date" class="form-control" id="" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.nascimento"
+                                name="nascimento">
+                            </div>
+
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Telefone do portador *</label>
+                              <input type="text" class="form-control" id="" aria-describedby="emailHelp"
+                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.telefone" name="telefone">
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
+                            <img
+                              src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
+                              width="200" alt="">
+                          </div>
+                          <div class="col-md-6 float-right">
+                            <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
+                              apoiar a sua experiência
+                              em todo este site e para outros fins descritos na nossa <a href="javascript::void()">
+                                política de privacidade.</a></p>
+                            <button type="submit" class="btn btn-success btn-block btn-lg">Realizar Pagamento</button>
+                          </div>
+                        </div>
+
+                      </form>
+
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3>BOLETO BANCÁRIO</h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p>
+                        <img src="https://stc.pagseguro.uol.com.br/pagseguro/i/checkout-presentation/ico_boleto.png"
+                          alt="">O pedido será confirmado apenas após a confirmação do pagamento. </p>
+                      <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).</p>
+
+                      <p>* Após clicar em "Realizar pagamento" você receberá o seu boleto bancário, é possível
+                        imprimi-lo e
+                        pagar pelo site do seu banco ou por uma casa lotérica.</p>
+
+                      <p>Esta compra está sendo feita no Brasil <img
+                          src="https://escoladeadvogados.com/sitesparaadvogados/wp-content/plugins/woocommerce-pagseguro/assets/images/brazilian-flag.png"
+                          alt=""></p>
+
+
+                      <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra, apoiar
+                        a sua experiência
+                        em todo este site e para outros fins descritos na nossa <a href="javascript::void()">
+                          política de privacidade.</a></p>
+
+                      <button class="btn btn-lg btn-success float-right" (click)="gerarBoleto()">GERAR BOLETO</button>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- fecha card body -->
+          </div>
+          <!-- fecha card mt-3 -->
+        </div>
+        <!-- fecha col-md-12 -->
+      </div>
+      <!-- fecha row -->
+
+
     </div>
     <!-- fecha col-md-7 -->
 
 
     <div class="col-md-4">
 
-      <div class="card bg-blue-grey mb-3 text-white">
+      <div class="card mb-3">
+
         <div class="card-header text-center">
-          <b> PLANO BASIC </b></div>
+          <b>
+            <h2>{{produto.title}}</h2>
+            <a routerLink="/">Escolher outro plano</a>
+          </b>
+        </div>
+
+        <img class="card-img-top" [src]="produto.image" alt="Card image cap">
+
         <div class="card-body">
-          <ul class="list-unstyled">
-            <li><i class="pi pi-check"></i> Modelos multiplataforma</li>
-            <li><i class="pi pi-check"></i> Domínio (meusite.com.br)</li>
-            <li><i class="pi pi-check"></i> 1 Conta de E-mail 1GB</li>
-            <li><i class="pi pi-check"></i> Integração com Redes Sociais</li>
-            <li><i class="pi pi-check"></i> Certificado SSL incluso (HTTPS)</li>
-            <li><i class="pi pi-check"></i> 1 Ano de hospedagem</li>
-            <li><i class="pi pi-check"></i> 1 Ano de suporte</li>
-            <li><i class="pi pi-check"></i> Blog</li>
-            <li><i class="pi pi-times"></i> Pacote de artes para redes sociais*</li>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let item of produto.items">
+              <i [ngClass]="['pi ',  item.check]"></i> {{ item.title_item}}
+            </li>
           </ul>
-          <h5 class="card-title text-success text-center mt-4">
-            R$ 497,00/Ano
-          </h5>
+          <h3 class="card-title text-success text-center mt-4">
+            R$ {{produto.price}}/Ano
+          </h3>
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
         </div>
@@ -197,182 +406,7 @@
   </div>
   <!-- fecha row -->
 
-  <div class="row" *ngIf="!hideBlock">
-    <div class="col-md-12">
-      <div class="card mt-3">
-        <div class="card-header">
-          <h4>DADOS PAGAMENTO</h4>
-        </div>
-        <div class="card-body">
 
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                aria-selected="true">Cartão de Crédito</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                aria-selected="false">Boleto Bancário</a>
-            </li>
-          </ul>
-
-          <div class="tab-content  mt-4" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-
-              <div class="row">
-                <div class="col-md-12">
-
-                  <form (ngSubmit)="onSubmit(dadosCredicard)">
-                    <div class="row">
-                      <div class="col-md-6">
-
-                        <div class="form-group">
-                          <label for="nome">Nome do portador (como gravado no cartão) </label>
-                          <input type="text" [(ngModel)]="dadosCredicard.nome" name="nome" class="form-control"
-                            placeholder="TrocarPlaceholder">
-                        </div>
-
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputCreditNum">Número do cartão</label>
-                          <input type="text" class="form-control" placeholder="TrocarPlaceholder"
-                            [(ngModel)]="dadosCredicard.numCard" name="numCard" (focusout)="buscaBandeira()">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-md-3">
-
-                        <div class="form-group">
-                          <label for="inputCreditMonth">Mês*</label>
-                          <input type="text" class="form-control" id="inputCreditMonth" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.mesValidadeCard"
-                            name="mesValidadeCard">
-                        </div>
-
-                      </div>
-
-                      <div class="col-md-3">
-
-                        <div class="form-group">
-                          <label for="inputCreditYear">Ano *</label>
-                          <input type="text" class="form-control" id="inputCreditYear" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.anoValidadeCard"
-                            name="anoValidadeCard">
-                        </div>
-
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputCreditCvv">Código de segurança *</label>
-                          <input type="text" class="form-control" id="inputCreditCvv" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.codSegCard" name="codSegCard">
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div class="row">
-                      <div class="col-md-6">
-
-                        <div class="form-group">
-                          <label for="">Parcelas (o valor mínimo da parcela é R$ 5,00) *</label>
-                          <select class="form-control">
-                            <option value="">Escolha as parcelas</option>
-                            <option *ngFor='let parcela of dadosCredicard.parcelas' [value]="parcela.ID">
-                              <div *ngIf=" parcela.interestFree == true">
-                                {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a pagar:
-                                {{ parcela.totalAmount}}
-                              </div>
-                              <div *ngIf=" parcela.interestFree == false">
-                                {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a pagar:
-                                {{ parcela.totalAmount}}
-                              </div>
-                            </option>
-                          </select>
-                        </div>
-
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="">CPF do portador *</label>
-                          <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.cpf" name="cpf">
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div class="row">
-                      <div class="col-md-6">
-
-                        <div class="form-group">
-                          <label for="">Data de nascimento do portador *</label>
-                          <input type="date" class="form-control" id="" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.nascimento" name="nascimento">
-                        </div>
-
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="">Telefone do portador *</label>
-                          <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                            placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.telefone" name="telefone">
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
-                        <img
-                          src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
-                          width="200" alt="">
-                      </div>
-                      <div class="col-md-6 float-right">
-                        <button type="submit" class="btn btn-success btn-block btn-lg">Realizar Pagamento</button>
-                      </div>
-                    </div>
-
-                  </form>
-
-                </div>
-              </div>
-
-
-            </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-              <h3>BOLETO BANCÁRIO</h3>
-
-
-              <button class="btn btn-lg btn-success" (click)="gerarBoleto()">GERAR BOLETO</button>
-
-
-            </div>
-
-          </div>
-
-
-
-
-
-
-        </div>
-        <!-- fecha card body -->
-      </div>
-      <!-- fecha card mt-3 -->
-    </div>
-    <!-- fecha col-md-12 -->
-  </div>
-  <!-- fecha row -->
 
 
 </div>
@@ -384,7 +418,7 @@
     <div class="col-md-12">
       <div class="alert alert-success text-center" role="alert">
         <h1>Parabéns!</h1>
-        <p>Sua solicitção foi realizada com sucesso!</p> 
+        <p>Sua solicitção foi realizada com sucesso!</p>
       </div>
     </div>
     <div class="col-md-3">
@@ -399,8 +433,9 @@
     <div class="col-md-12">
       <div class="alert alert-success text-center" role="alert">
         <h1>Parabéns!</h1>
-        <p>Compra realizada com sucesso!</p> 
-        <p>Acesse o painel administrativo com seu e-mail e senha cadastrados anteriormente e dê prosseguimento a construção do seu site.</p> 
+        <p>Compra realizada com sucesso!</p>
+        <p>Acesse o painel administrativo com seu e-mail e senha cadastrados anteriormente e dê prosseguimento a
+          construção do seu site.</p>
       </div>
     </div>
     <div class="col-md-3">

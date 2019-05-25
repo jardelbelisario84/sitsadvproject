@@ -6,6 +6,8 @@ import scriptjs from 'scriptjs/src/script'
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ProdutosService } from '../service-local/produtos.service';
 
 
 declare var PagSeguroDirectPayment: any;
@@ -40,18 +42,37 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     bandCard: '',                           // preenchido dinamicamente
     hashCard: '',                           // preenchido dinamicamente
     sendHash: '',                           // preenchido dinamicamente
-    parcelas: []                            // preenchido dinamicamente
+    parcelas: [],                            // preenchido dinamicamente
+    amount: '',
+    email:'',
+
+    estado: '',
+    cidade: '',
+    bairro: '',
+    cep: '',
+    rua: '',
+    numero: '',
+    titleProduct: '',
+    idProduct: '',
   }
 
+
+  produto;
 
   constructor(
     public checkoutService: CheckoutService,
     public paymentHttp: PaymentHttp,
-    public zone: NgZone) { }
+    public zone: NgZone,
+    private route: ActivatedRoute,
+    private product: ProdutosService) { }
 
 
 
   ngOnInit() {
+
+
+    this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
+    console.log('Produto list', this.produto);
 
     // this.checkoutService.startSession()
     if (!environment.production) {
@@ -101,6 +122,17 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
     this.loadingPage = true;
     this.dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
+    this.dadosCredicard.amount = this.produto.price;
+    this.dadosCredicard.nome = 'João da Silva de Sousa'
+    this.dadosCredicard.estado = 'MA';
+    this.dadosCredicard.cidade = 'Imperatriz';
+    this.dadosCredicard.bairro = 'Vila Lobão';
+    this.dadosCredicard.cep = '65910-180';
+    this.dadosCredicard.rua = 'Assembleia';
+    this.dadosCredicard.numero = '001';
+    this.dadosCredicard.titleProduct = this.produto.title;
+    this.dadosCredicard.idProduct = this.produto.slug + '-' + Date.now();
+
     this.paymentHttp.geraBoleto(this.dadosCredicard)
       .subscribe(
         response => {
@@ -126,6 +158,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     window.open(this.linkBoleto, '_blank');
   }
 
+
+
   /** 
    *  BIBLIOTECA ANGULAR PAGSEGURO
    * 
@@ -140,6 +174,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       cardBin: this.dadosCredicard.numCard,
       success: response => {
         this.dadosCredicard.bandCard = response.brand.name;
+        // console.log('Bandeira do cartao objeto', response )
         console.log('Bandeira do cartão: ' + this.dadosCredicard.bandCard);
         this.buscaParcelas();
       },
@@ -156,9 +191,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
     PagSeguroDirectPayment.getInstallments({
 
-      amount: '497',              //valor total da compra (deve ser informado)
+      amount: this.produto.price,              //valor total da compra (deve ser informado)
       brand: this.dadosCredicard.bandCard, //bandeira do cartão (capturado na função buscaBandeira)
-      maxInstallmentNoInterest: 3,
+      maxInstallmentNoInterest: 1,
       success: response => {
 
         this.dadosCredicard.parcelas = response.installments[this.dadosCredicard.bandCard];

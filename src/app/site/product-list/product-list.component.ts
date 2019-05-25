@@ -16,8 +16,6 @@ export class ProductListComponent implements OnInit, AfterViewChecked, AfterCont
   constructor(private router: Router, private route: ActivatedRoute, private product: ProdutosService) { }
 
   ngOnInit() {
-
-
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     console.log('Produto list', this.produto);
   }
@@ -29,15 +27,15 @@ export class ProductListComponent implements OnInit, AfterViewChecked, AfterCont
 
   ngAfterContentInit() {
     window.scrollTo(0, 0);
-    this.loadingPage = true;
+    // this.loadingPage = true;
 
-    setTimeout(() => {
-      this.loadingPage = false;
-    }, 1000);
+    // setTimeout(() => {
+    //   this.loadingPage = false;
+    // }, 1000);
 
   }
-  productCheckout() {
-    this.router.navigate(['/produtos/plano-basic/checkout']);
+  productCheckout(produto) {
+    this.router.navigate(['/produtos/'+produto.slug+'/checkout']);
   }
 
 

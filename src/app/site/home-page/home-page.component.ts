@@ -24,11 +24,11 @@ export class HomePageComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit(){
-    this.loadingPage = true;
+    // this.loadingPage = true;
 
-    setTimeout(() =>{ 
-      this.loadingPage = false;
-    }, 500);
+    // setTimeout(() =>{ 
+    //   this.loadingPage = false;
+    // }, 500);
 
   }
 
