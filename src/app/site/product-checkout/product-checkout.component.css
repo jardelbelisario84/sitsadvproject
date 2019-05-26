@@ -22,3 +22,15 @@
 .info-dados{
     font-size: 0.8em;
 }
+
+.ul-list-staly-none{
+    list-style: nome !important;
+}
+
+.ul-list-staly-none li {
+    margin-top: 5px !important;
+}
+
+.politica{
+    line-height: 1.5 !important
+}

@@ -50,7 +50,7 @@
               <div class="form-group">
                 <label for="">CPF: </label>
                 <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                  placeholder="EX: 000.000.000-00">
+                  placeholder="EX: 12345678901">
               </div>
 
             </div>
@@ -206,7 +206,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="inputCreditNum">Número do cartão</label>
-                              <input type="text" class="form-control" placeholder="TrocarPlaceholder"
+                              <input type="number" class="form-control" placeholder="Insira o número do cartão"
                                 [(ngModel)]="dadosCredicard.numCard" name="numCard" (focusout)="buscaBandeira()">
                             </div>
                           </div>
@@ -215,9 +215,9 @@
 
                             <div class="form-group">
                               <label for="inputCreditMonth">Mês*</label>
-                              <input type="text" class="form-control" id="inputCreditMonth" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.mesValidadeCard"
-                                name="mesValidadeCard">
+                              <input type="number" class="form-control" id="inputCreditMonth"
+                                aria-describedby="emailHelp" placeholder="Mês de vencimento"
+                                [(ngModel)]="dadosCredicard.mesValidadeCard" name="mesValidadeCard">
                             </div>
 
                           </div>
@@ -226,9 +226,9 @@
 
                             <div class="form-group">
                               <label for="inputCreditYear">Ano *</label>
-                              <input type="text" class="form-control" id="inputCreditYear" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.anoValidadeCard"
-                                name="anoValidadeCard">
+                              <input type="number" class="form-control" id="inputCreditYear"
+                                aria-describedby="emailHelp" placeholder="Ano de vencimento"
+                                [(ngModel)]="dadosCredicard.anoValidadeCard" name="anoValidadeCard">
                             </div>
 
                           </div>
@@ -236,9 +236,8 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="inputCreditCvv">Cód. de segurança (CVV) *</label>
-                              <input type="text" class="form-control" id="inputCreditCvv" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.codSegCard"
-                                name="codSegCard">
+                              <input type="number" class="form-control" id="inputCreditCvv" aria-describedby="emailHelp"
+                                placeholder="CVV" [(ngModel)]="dadosCredicard.codSegCard" name="codSegCard">
                             </div>
                           </div>
 
@@ -251,7 +250,7 @@
                             <div class="form-group">
                               <label for="">Parcelas (Valor mínimo R$ 5,00) *</label>
                               <select class="form-control">
-                                <option value="">Escolha as parcelas após preencher nº Cartão</option>
+                                <option value="">Escolha após preencher dados do Cartão</option>
                                 <option *ngFor='let parcela of dadosCredicard.parcelas' [value]="parcela.ID">
                                   <div *ngIf=" parcela.interestFree == true">
                                     {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a pagar:
@@ -271,7 +270,7 @@
                             <div class="form-group">
                               <label for="">CPF do portador *</label>
                               <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.cpf" name="cpf">
+                                placeholder="EX: 12345678901" [(ngModel)]="dadosCredicard.cpf" name="cpf">
                             </div>
                           </div>
                         </div>
@@ -283,8 +282,7 @@
                             <div class="form-group">
                               <label for="">Data de nascimento do portador *</label>
                               <input type="date" class="form-control" id="" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.nascimento"
-                                name="nascimento">
+                                placeholder="Data Nacimento" [(ngModel)]="dadosCredicard.nascimento" name="nascimento">
                             </div>
 
                           </div>
@@ -292,8 +290,8 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="">Telefone do portador *</label>
-                              <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                                placeholder="TrocarPlaceholder" [(ngModel)]="dadosCredicard.telefone" name="telefone">
+                              <input type="number" class="form-control" id="" aria-describedby="emailHelp"
+                                placeholder="EX:99123451234" [(ngModel)]="dadosCredicard.telefone" name="telefone">
                             </div>
                           </div>
                         </div>
@@ -308,9 +306,11 @@
                           </div>
                           <div class="col-md-6 float-right">
                             <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
-                              apoiar a sua experiência
-                              em todo este site e para outros fins descritos na nossa <a href="javascript::void()">
-                                política de privacidade.</a></p>
+                              apoiar a sua experiência em todo este site e para outros fins descritos na nossa
+                              <a href="javascript::void()" (click)="display = true">
+                                Política de Privacidade.
+                              </a>
+                            </p>
                             <button type="submit" class="btn btn-success btn-block btn-lg">Realizar Pagamento</button>
                           </div>
                         </div>
@@ -335,20 +335,21 @@
                         <img src="https://stc.pagseguro.uol.com.br/pagseguro/i/checkout-presentation/ico_boleto.png"
                           alt="">O pedido será confirmado apenas após a confirmação do pagamento. </p>
                       <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).</p>
-
-                      <p>* Após clicar em "Realizar pagamento" você receberá o seu boleto bancário, é possível
-                        imprimi-lo e
-                        pagar pelo site do seu banco ou por uma casa lotérica.</p>
+                      <p>* Após clicar em "Gerar Boleto" você verá um botão com o link para o seu boleto bancário, é
+                        possível
+                        visualizá=lo, imprimi-lo e pagar pelo site do seu banco ou por uma casa lotérica.</p>
 
                       <p>Esta compra está sendo feita no Brasil <img
                           src="https://escoladeadvogados.com/sitesparaadvogados/wp-content/plugins/woocommerce-pagseguro/assets/images/brazilian-flag.png"
                           alt=""></p>
 
 
-                      <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra, apoiar
-                        a sua experiência
-                        em todo este site e para outros fins descritos na nossa <a href="javascript::void()">
-                          política de privacidade.</a></p>
+                      <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
+                        apoiar a sua experiência em todo este site e para outros fins descritos na nossa
+                        <a href="javascript::void()" (click)="display = true">
+                          Política de Privacidade.
+                        </a>
+                      </p>
 
                       <button class="btn btn-lg btn-success float-right" (click)="gerarBoleto()">GERAR BOLETO</button>
                     </div>
@@ -368,6 +369,276 @@
       <!-- fecha row -->
 
 
+      <p-dialog header="POLÍTICA DE PRIVACIDADE" [(visible)]="display" [style]="{width: '90%'}">
+        <div class="container politica">
+
+
+          <!--           
+            <h4 class="card-title">
+            
+              </h4>
+    
+              <h5 class="card-title">
+                1. Cadastro em nosso site:
+              </h5>
+    
+              <ul class="ul-list-staly-none">
+    
+                <li>
+                  1.1. O cadastro em nosso site  é feita no momento da compra o plano, o que gera um ônus ou cobrança aos
+                  visitantes e clientes dos Sites Para Advogados.
+                </li>
+    
+              </ul> -->
+
+
+          <p>
+            Nós, da Escola de Advogados, estamos comprometidos em resguardar sua privacidade.
+            O intuito deste documento é esclarecer quais informações são coletadas dos usuários de
+            nossos sites https://escoladeadvogados.com, http://advexponencial.com.br – e respectivos serviços
+            – (“Você”) e de que forma esses dados são manipulados e utilizados.
+          </p>
+
+          <p>
+            Para oferecer nossos serviços, a Escola de Advogados, por meio de seu site e dos dispositivos
+            sincronizados com este, coleta diversos dados e informações, visando, sobretudo, proporcionar
+            uma experiência cada melhor para você. A Escola reconhece que a sua privacidade é muito importante
+            portanto tomamos todas as medidas possíveis para protegê-la. Nesse sentido, a presente Política
+            de Privacidade (“Política”) visa lhe informar como as suas informações e dados serão coletados,
+            usados, compartilhados e armazenados por meio dos nossos sites e respectivos serviços.
+          </p>
+
+          <p>
+            Este documento é parte integrante do nosso Termo de Uso, que contém uma visão geral da nossa
+            plataforma.
+          </p>
+
+          <p>
+            Este documento foi redigido de forma simples e acessível, justamente para que você possa ler e
+            entender a forma como utilizamos os seus dados para lhe oferecer uma experiência segura e
+            confortável no uso dos serviços que oferecemos a você.
+          </p>
+
+          <p>
+            A aceitação da nossa Política será feita quando você se cadastrar em nossa plataforma para o
+            usufruir dos nossos serviços, mesmo que de forma gratuita. Isso indicará que você está ciente
+            e em total acordo com a forma como utilizaremos as suas informações e seus dados.
+          </p>
+
+          <p>
+            Caso não concorde com esta Política, por favor, não continue o seu procedimento de registro e não
+            use os nossos serviços. Todavia, por favor, nos informe a sua discordância para que possamos
+            melhorá-los.
+          </p>
+
+          <h5 class="card-title mt-2">
+            A presente Política está dividida da seguinte forma para facilitar a sua compreensão:
+          </h5>
+
+          <ol>
+            <li>Sobre a coleta de dados</li>
+            <li>Sobre o uso de seus dados pessoais</li>
+            <li>Sobre o acesso aos seus dados pessoais</li>
+            <li>Sobre o compartilhamento de dados</li>
+            <li>Sobre o uso de informações fornecidas a nossos clientes</li>
+            <li>Sobre o cancelamento da assinatura e alteração/exclusão de informações pessoais</li>
+            <li>Mudanças na Política de Privacidade</li>
+            <li>Lei Aplicável</li>
+          </ol>
+
+          Qualquer dúvida em relação à nossa política de privacidade pode ser esclarecida entrando em contato conosco.
+
+          Envie um e-mail para contato@escoladeadvogados.com.
+
+          Estamos localizados na Rua Gonçalves Dias, nº 47, Centro, CEP: 65900-560, Imperatriz/MA.
+
+          1. Sobre a coleta de dados
+          Informações fornecidas por você – Coletamos informações de identificação pessoal – como nome, telefone,
+          e-mail, empresa em que trabalha e cargo – via preenchimento dos formulários para download de nossos conteúdos
+          gratuitos. Eventualmente, a solicitação de algumas informações pode ser feita por meio de contato direto da
+          Escola de Advogados com os usuários via e-mail ou telefone.
+
+          Informações de navegação no site – Quando você visita nosso site, é inserido um ‘cookie’ no seu navegador por
+          meio do software Google Analytics, para identificar quantas vezes você retorna ao nosso endereço. São
+          coletadas informações como endereço IP, localização geográfica, fonte de referência, tipo de navegador,
+          duração da visita e páginas visitadas.
+
+          Histórico de contato – Aqui na Escola de Advogados armazenamos informações a respeito de todos os contatos já
+          realizados com nossos usuários, como conteúdos baixados a partir de nossas páginas e interações via e-mail.
+
+          Dados gerados na utilização de nossos serviços – Se você se utilizar de algum de nossos serviços, coletaremos
+          ainda outras informações suas e das pessoas que visitarem os sites que você cadastrar em nossas plataformas.
+          Nesse caso, coletaremos dados de contato como seu nome, e-mail e telefone, dados locacionais como país, cidade
+          e estado de onde o acesso está ocorrendo, dados de perfil profissional, incluindo cargo, nome e segmento da
+          empresa onde você trabalha, número de funcionários dessa empresa, formação acadêmica e anos de experiência,
+          suas preferências e informações sobre seu browser.
+
+          Dados do Facebook – Ao utilizar sua conta no Facebook para se integrar aos nossos serviços, poderemos coletar
+          todos os dados que forem disponibilizados pelo Facebook ao nosso sistema, como informações sobre seus
+          anúncios, quantos clicks eles receberam, informações sobre os visitantes aos seus websites que estejam
+          disponíveis nessa plataforma, entre outras.
+
+          2. Sobre o uso de seus dados pessoais
+          Todos os dados que coletamos são utilizados para a prestação de nossos serviços, e não custa lembrar, prezamos
+          muito a sua privacidade. Por isso, todos os dados e informações sobre você são tratadas como confidenciais, e
+          somente as usaremos para os fins aqui descritos e autorizados por você, principalmente para que você possa
+          utilizar nossos serviços de forma plena, visando sempre melhorar a sua experiência como usuário. Desta forma,
+          poderemos personalizar o serviço para este adequar cada vez mais aos seus gostos e interesses. Ademais, seus
+          dados também podem ser utilizados para criarmos novos serviços, produtos e funcionalidades.
+
+          Para prestar nossos serviços, cruzaremos os dados que coletarmos com outros que tivermos sobre o mesmo titular
+          em nossas bases de dados, inclusive os dados dos visitantes dos sites que você cadastrar em nossas
+          plataformas. Em especial, utilizaremos os dados para monitorar as ações dos visitantes às páginas que você
+          cadastrar, para criar perfis dessa pessoas com base nos dados de seu comportamento e verificar quais são seus
+          interesses, para classificar e qualificar essas pessoas de acordo com esse perfil, e para criar listas
+          dinâmicas dessas pessoas para execução de ações de marketing direcionadas, que são realizadas automaticamente
+          de acordo com a classificação dos visitantes do seu site.
+
+          Eventualmente, poderemos utilizar dados para finalidades não previstas nesta política de privacidade, mas
+          estas estarão dentro das suas legítimas expectativas. O eventual uso dos seus dados para finalidades que não
+          cumpram com essa prerrogativa serão será feito mediante sua autorização prévia.
+
+          Além do acima, utilizaremos seus dados para as seguintes finalidades:
+
+          • Seu e-mail é utilizado para a operação de envio do material ou informação por você requisitada no
+          preenchimento do formulário. Também pode ser usado para envio de Newsletters, sempre relacionadas ao tema
+          Advocacia. O e-mail será utilizado ainda para comunicar o lançamento de novos materiais gratuitos ou de novos
+          produtos da Escola de Advogados e parceiros. No entanto, o usuário pode cancelar a assinatura a qualquer
+          momento.
+
+          • Os dados de download poderão ser divulgados como pesquisas e estatísticas, não sendo reveladas abertamente
+          nenhuma informação pessoal, a menos que autorizada explicitamente.
+
+          • Funcionários da Escola de Advogados poderão eventualmente entrar em contato via e-mail ou telefone para
+          fazer pesquisas ou apresentar produtos e serviços.
+
+          • Enviar a você mensagens a respeito de suporte ou serviço, como alertas, notificações e atualizações;
+
+          • Nos comunicar com você sobre produtos, serviços, promoções, notícias, atualizações, eventos e outros
+          assuntos que você possa ter interesse;
+
+          • Realizar publicidade direcionada conforme seus gostos, interesses e outras informações coletadas;
+
+          • Personalizar o serviço para este adequar cada vez mais aos seus gostos e interesses;
+
+          • Para qualquer fim que você autorizar no momento da coleta de dados;
+
+          • Cumprir obrigações legais.
+
+          A Escola de Advogados se reserva no direito de monitorar toda a plataforma, principalmente para assegurar que
+          as regras descritas em nosso Termo de Uso estão sendo observadas, ou ainda se não há violação ou abuso das
+          leis aplicáveis. Portanto, a Escola de Advogados se reserva no direito de excluir determinado usuário,
+          independente do tipo que for, caso a presente Política não seja respeitada.
+
+          3. Sobre o acesso aos seus dados pessoais
+          Poderão ver suas informações pessoais apenas funcionários da Escola de Advogados, e dentre estes, somente as
+          pessoas com as devidas autorizações. Eventualmente, caso a inserção de suas informações se dê em ações criadas
+          em parcerias, os parceiros explicitamente identificados também terão acesso à informação. Nenhum dado pessoal
+          poderá ser divulgado publicamente.
+          Todos os seus dados são confidenciais e qualquer usos destes estará de acordo com a presente Política. A
+          Escola de Advogados empreenderá todos os esforços razoáveis de mercado para garantir a segurança dos nossos
+          sistemas e dos seus dados. Nossos servidores estão localizados em diferentes locais do mundo para garantir sua
+          estabilidade e segurança, e somente podem ser acessados por meio de canais de comunicação previamente
+          autorizados.
+          Todas as suas informações serão, sempre que possível, criptografadas, caso não inviabilizem o seu uso pela
+          Escola de Advogados. A qualquer momento você poderá requisitar cópia dos seus dados armazenados em nossos
+          sistemas. Manteremos os dados e informações somente até quando estas forem necessárias ou relevantes para as
+          finalidades descritas nesta Política, ou em caso de períodos pré-determinados por lei, ou até quando estas
+          forem necessárias para a manutenção de interesses legítimos da Escola de Advogados.
+          A Escola de Advogados considera a sua privacidade algo extremamente importante e fará tudo que estiver a seu
+          alcance para protegê-la. Todavia, não temos como garantir complemente que todos os dados e informações sobre
+          você em nossa plataforma estarão livres de acessos não autorizados, principalmente caso haja compartilhamento
+          indevido das credenciais necessárias para acessar a nossa plataforma. Portanto, você é o único responsável por
+          manter sua senha de acesso em local seguro e é vedado o compartilhamento desta com terceiros. Você se
+          compromete a notificar a Escola de Advogados imediatamente, por meio seguro, a respeito de qualquer uso não
+          autorizado de sua conta, bem como o acesso não autorizado por terceiros a esta.
+
+          4. Sobre o compartilhamento de dados
+          Ao clicar nos botões de compartilhamento de conteúdo nas redes sociais disponíveis em nossas páginas, o
+          usuário estará publicando o conteúdo por meio de seu perfil na rede selecionada. Escola de Advogados não tem
+          acesso ao login e senha dos usuários nessas redes, nem publicará conteúdo em nome do usuário sem que ele
+          realize esta ação.
+
+          Por ser uma plataforma online, a Escola de Advogados poderá operar em conjunto de outras empresas numa ampla
+          gama de atividades, incluindo para fornecer as funcionalidades de localização, anunciantes, patrocinadores e
+          parceiros comerciais, online e offline, além de ferramentas de divulgação e análises de desempenho. Desta
+          forma, nos reservamos no direito de compartilhar suas informações, incluindo dados de localização, cadastro e
+          de interesses, com nossos parceiros, anunciantes e provedores de serviços, sempre que for possível, de forma
+          anônima, visando preservar a sua privacidade. Por meio deste documento, você autoriza expressamente tais
+          compartilhamentos.
+
+          A Escola de Advogados permite que outras empresas e redes de anúncio anunciem em nossa plataforma por meio de
+          diferentes tecnologias. Portanto, você poderá eventualmente receber diretamente anúncios, conteúdo e links
+          exibidos de forma personalizada, de acordo com seus interesses e comportamentos em nossa plataforma ou em
+          outros serviços com os quais você interaja. Para tanto, dados podem ser compartilhados entre a Escola de
+          Advogados e essas outras empresas, principalmente identificadores únicos, endereços IP, cookies e scripts
+          java, que podem ser utilizados para medir a eficiência da publicidade online. Por meio deste documento, você
+          autoriza expressamente tais compartilhamentos.
+
+          Todavia, a Escola de Advogados não se responsabiliza pelos atos, anúncios e conteúdo gerados por nossos
+          parceiros comerciais e redes de anúncio, e esta Política não se aplica a eles, uma vez que a Escola de
+          Advogados não as controla.
+
+          Todas os dados, informações e conteúdos sobre você podem ser considerados ativos no caso de negociações em que
+          a Escola de Advogados fizer parte. Portanto, nos reservamos no direito de incluir seus dados dentre os ativos
+          da empresa caso esta venha a ser vendida, adquirida ou fundida com outra. Por meio desta Política você
+          concorda e está ciente desta possibilidade.
+
+          A Escola de Advogados se reserva no direito de fornecer seus dados e informações sobre você, incluindo
+          interações suas, caso seja requisitado judicialmente para tanto, ato necessário para que a empresa esteja em
+          conformidade com as leis nacionais, ou caso você autorize expressamente.
+
+          5. Sobre o uso de informações fornecidas a nossos clientes
+          A Escola de Advogados disponibiliza a seus clientes, por meio ferramentas que envolvem o gerenciamento de
+          informações pessoais de usuários com quem seus clientes mantêm relacionamento.
+
+          No entanto, a Escola de Advogados não controla as informações solicitadas utilizando seu sistema. Esses dados
+          pertencem aos clientes, que os utilizam, divulgam e protegem de acordo com suas políticas de privacidade. São
+          eles também os responsáveis por coletar, gerenciar e processar as informações confidenciais. Para informar-se
+          melhor em relação à sua responsabilidade pelos dados que coletar, recomendamos a leitura do contrato de
+          prestação de serviços que fechamos com você para o uso de nossos sistemas.
+
+          6. Sobre o cancelamento da assinatura e alteração/exclusão de informações pessoais
+          Você pode optar por não receber mais qualquer tipo de e-mail da Escola de Advogados.
+
+          Em todos os e-mails que enviamos há sempre um link para cancelar a assinatura disponível nas últimas linhas.
+          Ao clicar nesse link você será automaticamente descadastrado da lista.
+
+          É importante mencionar que ao preencher qualquer formulário novamente ficará caracterizada a reinserção do seu
+          e-mail à lista. Portanto, a requisição de cancelamento deve ser feita novamente caso seja de seu interesse.
+
+          Todos os dados coletados serão excluídos de nossos servidores quando você assim requisitar ou quando estes não
+          forem mais necessários ou relevantes para lhe oferecermos os nossos serviços, salvo se houver qualquer outra
+          razão para a sua manutenção, como eventual obrigação legal de retenção de dados ou necessidade de preservação
+          destes para resguardo de direitos da Escola de Advogados. Para alterar suas informações pessoais ou excluí-las
+          do nosso banco de dados, basta enviar um e-mail para contato@escoladeadvogados.com.
+
+          7. Mudanças na Política de Privacidade
+          Essa Política de Privacidade pode passar por atualizações. Desta forma, recomendamos visitar periodicamente
+          esta página para que você tenha conhecimento sobre as modificações. Caso sejam feitas alterações relevantes
+          que ensejem novas autorizações suas, publicaremos uma nova política de privacidade.
+
+          Antes de usar informações para outros fins que não os definidos nesta Política de Privacidade, solicitaremos
+          sua autorização.
+
+          8. Lei Aplicável
+          Este documento é regido e deve ser interpretado de acordo com as leis da República Federativa do Brasil. Fica
+          eleito o Foro da Comarca de Imperatriz, Maranhão, como o competente para dirimir quaisquer questões porventura
+          oriundas do presente documento, com expressa renúncia a qualquer outro, por mais privilegiado que seja.
+
+
+        </div>
+
+        <p-footer>
+          <button type="button" icon="pi pi-close" (click)="display=false" label="No" class="btn btn-primary">
+            Fechar
+          </button>
+        </p-footer>
+
+      </p-dialog>
+
+
+
     </div>
     <!-- fecha col-md-7 -->
 
@@ -379,8 +650,8 @@
         <div class="card-header text-center">
           <b>
             <h2>{{produto.title}}</h2>
-            <a routerLink="/">Escolher outro plano</a>
           </b>
+          <a routerLink="/">Escolher outro plano</a>
         </div>
 
         <img class="card-img-top" [src]="produto.image" alt="Card image cap">
@@ -448,6 +719,19 @@
 <div class="container" *ngIf="!loadingPage">
   <app-rodape></app-rodape>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- 
 <div class="container" *ngIf="linkBoleto">

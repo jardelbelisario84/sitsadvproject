@@ -6,7 +6,7 @@ import scriptjs from 'scriptjs/src/script'
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProdutosService } from '../service-local/produtos.service';
 
 
@@ -35,16 +35,16 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     cpf: '66523165019',
     nascimento: '',
     telefone: '99999999999',
-    numCard: '4111111111111111',              // ex: '4111111111111111'
-    mesValidadeCard: '12',                   // ex: '12',
-    anoValidadeCard: '2030',                 // ex: '2030',
-    codSegCard: '123',                      // ex: '123',
+    numCard: '',                            // ex: '4111111111111111'
+    mesValidadeCard: '',                  // ex: '12',
+    anoValidadeCard: '',                // ex: '2030',
+    codSegCard: '',                      // ex: '123',
     bandCard: '',                           // preenchido dinamicamente
     hashCard: '',                           // preenchido dinamicamente
     sendHash: '',                           // preenchido dinamicamente
     parcelas: [],                            // preenchido dinamicamente
     amount: '',
-    email:'',
+    email: '',
 
     estado: '',
     cidade: '',
@@ -64,7 +64,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     public paymentHttp: PaymentHttp,
     public zone: NgZone,
     private route: ActivatedRoute,
-    private product: ProdutosService) { }
+    private product: ProdutosService,
+    private router: Router) { }
 
 
 
@@ -156,6 +157,10 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   openLinkBoleto() {
     window.open(this.linkBoleto, '_blank');
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 2000);
+
   }
 
 
@@ -234,8 +239,6 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
           //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
           this.enviaDadosParaServidor(dadosCredicard);
-
-
 
         });
 

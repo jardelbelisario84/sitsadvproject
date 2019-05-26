@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {SidebarModule} from 'primeng/sidebar';
+import {DialogModule} from 'primeng/dialog';
+
 
 
 import {ToastModule} from 'primeng/toast';
@@ -33,6 +35,7 @@ import { RodapeComponent } from './rodape/rodape.component';
     ReactiveFormsModule,
     ProgressSpinnerModule,
     SidebarModule,
+    DialogModule,
     ToastModule
   ]
 })

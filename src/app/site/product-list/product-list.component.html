@@ -26,14 +26,16 @@
     <div class="col-md-4">
       <div class="card text-center bg-light mb-3">
         <div class="card-header">
-          <b> {{ produto.title }} </b></div>
+          <h2> <b> {{ produto.title }} </b> </h2>
+          <a routerLink="/">Escolher outro plano</a>
+        </div>
         <div class="card-body">
           <h5 class="card-title text-success">
             R$ {{ produto.price }} /Ano
           </h5>
 
           <button (click)="productCheckout(produto)" type="button"
-            class="btn btn-warning btn-lg btn-block mt-3 mb-3 text-white">Comprar</button>
+            class="btn btn-success btn-lg btn-block mt-3 mb-3 text-white">Comprar</button>
 
           <div class="border-top">
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
@@ -42,6 +44,12 @@
         </div>
       </div>
     </div>
+
+
+
+
+
+
 
     <div class="row mt-4">
       <h5>Nossos Modelos</h5>
