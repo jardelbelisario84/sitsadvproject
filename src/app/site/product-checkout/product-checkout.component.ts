@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProdutosService } from '../service-local/produtos.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 declare var PagSeguroDirectPayment: any;
@@ -57,6 +58,22 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
 
+  // clientForm2 = this.fb.group({
+  //   firstName: [' ', [Validators.required, Validators.minLength(5)]],
+  //   lastName: ['', [Validators.required]],
+  //   birth: [new Date(), [Validators.required]],
+  //   age: [0, [Validators.required, Validators.max(150), Validators.min(0)]],
+  //   email: ['', [Validators.required, Validators.email]],
+  //   street: ['', [Validators.required]],
+  //   city: ['', [Validators.required]],
+  //   state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+  //   phone1: ['', [Validators.required]],
+  //   phone2: ['', [Validators.required]],
+  // });
+
+
+
+
   produto;
 
   constructor(
@@ -65,7 +82,49 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     public zone: NgZone,
     private route: ActivatedRoute,
     private product: ProdutosService,
-    private router: Router) { }
+    private router: Router,
+    private fb: FormBuilder) { }
+
+
+
+  clientForm = this.fb.group({
+
+    firstName: ['', [Validators.required, Validators.minLength(3)]],
+    lastName: ['', [Validators.required, Validators.minLength(3)]],
+    cpf: ['', [Validators.required]],                                //'66523165019',
+    // nascimento: ['', [Validators.required]],
+    telefone: ['', [Validators.required]],
+
+
+
+    dadosEndereco: this.fb.group({
+      cep: [''],
+      estado: [''],
+      cidade: [''],
+      bairro: [''],
+    }),
+
+
+    numCard: '',                            // ex: '4111111111111111'
+    mesValidadeCard: '',                  // ex: '12',
+    anoValidadeCard: '',                // ex: '2030',
+    codSegCard: '',                      // ex: '123',
+    bandCard: '',                           // preenchido dinamicamente
+    hashCard: '',                           // preenchido dinamicamente
+    sendHash: '',                           // preenchido dinamicamente
+    parcelas: [],                            // preenchido dinamicamente
+    amount: '',
+    email: '',
+
+    estado: '',
+    cidade: '',
+    bairro: '',
+    cep: '',
+    rua: '',
+    numero: '',
+    titleProduct: '',
+    idProduct: '',
+  });
 
 
 
