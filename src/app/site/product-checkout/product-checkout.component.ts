@@ -5,10 +5,11 @@ import { PaymentHttp } from './payment-http';
 import scriptjs from 'scriptjs/src/script'
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProdutosService } from '../service-local/produtos.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { GenericValidator } from 'src/app/shared/validacoes/generic-validator';
+
 
 
 declare var PagSeguroDirectPayment: any;
@@ -33,50 +34,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   escolherQntParcelas: any;
 
-  // dadosCredicard = {
-  //   nome: 'Jardel Henrique',
-  //   cpf: '66523165019',
-  //   nascimento: '',
-  //   telefone: '99999999999',
-  //   numCard: '',                            // ex: '4111111111111111'
-  //   mesValidadeCard: '',                  // ex: '12',
-  //   anoValidadeCard: '',                // ex: '2030',
-  //   codSegCard: '',                      // ex: '123',
-  //   bandCard: '',                           // preenchido dinamicamente
-  //   hashCard: '',                           // preenchido dinamicamente
-  //   sendHash: '',                           // preenchido dinamicamente
-  //   parcelas: [],                            // preenchido dinamicamente
-  //   amount: '',
-  //   email: '',
-
-  //   estado: '',
-  //   cidade: '',
-  //   bairro: '',
-  //   cep: '',
-  //   rua: '',
-  //   numero: '',
-  //   titleProduct: '',
-  //   idProduct: '',
-  // }
-
-
-  // clientForm2 = this.fb.group({
-  //   firstName: [' ', [Validators.required, Validators.minLength(5)]],
-  //   lastName: ['', [Validators.required]],
-  //   birth: [new Date(), [Validators.required]],
-  //   age: [0, [Validators.required, Validators.max(150), Validators.min(0)]],
-  //   email: ['', [Validators.required, Validators.email]],
-  //   street: ['', [Validators.required]],
-  //   city: ['', [Validators.required]],
-  //   state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-  //   phone1: ['', [Validators.required]],
-  //   phone2: ['', [Validators.required]],
-  // });
-
-
-
-
-  produto;
+  produto: any;
+  escolheSelect: boolean = false;
 
   constructor(
     public checkoutService: CheckoutService,
@@ -91,53 +50,77 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   clientForm = this.fb.group({
 
-    firstName: ['', [Validators.required, Validators.minLength(3)]],
-    lastName: ['', [Validators.required, Validators.minLength(3)]],
-    cpf: ['', [Validators.required]],                                //'66523165019',
-    telefone: ['', [Validators.required]],
-    
+    firstName: ['Jardel', [Validators.required, Validators.minLength(3)]],
+    lastName: ['Henrique', [Validators.required, Validators.minLength(3)]],
+    cpf: ['66523165019', [
+      Validators.required,
+      GenericValidator.isValidCpf(),
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(11),
+      Validators.maxLength(11)]],                                //'66523165019',
+    telefone: ['999999999', [
+      Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(11),
+      Validators.maxLength(11)]],
 
-    cep: ['', [Validators.required]],
-    estado: ['', [Validators.required]],
-    cidade: ['', [Validators.required]],
-    bairro: ['', [Validators.required]],
-    rua: ['', [Validators.required]],
-    numero: ['', [Validators.required]],
-    complemento: ['', [Validators.required]],
+    // DADOS DE ENDEREÇO
+    cep: ['659000000', [Validators.required]],
+    estado: ['MA', [Validators.required]],
+    cidade: ['Imperatriz', [Validators.required]],
+    bairro: ['Vila Lobão', [Validators.required]],
+    rua: ['Assembleia', [Validators.required]],
+    numero: ['001', [Validators.required]],
+    complemento: ['002', [Validators.required]],
 
-    
-    emailAccess: ['', [Validators.required]],
-    password: ['', [Validators.required]],
-    
+    //DADOS DE ACESSO
+    emailAccess: ['cpmput.jardel2@gmail.com', [Validators.required]],
+    password: ['123456', [Validators.required]],
 
-    nomePortadorCard: ['', [Validators.required]],
-    numCard:  ['', [Validators.required]],                           // ex: '4111111111111111'
-    mesValidadeCard:  ['', [Validators.required]],                 // ex: '12',
-    anoValidadeCard:  ['', [Validators.required]],               // ex: '2030',
-    codSegCard:  ['', [Validators.required]],                     // ex: '123',
-    bandCard:  ['', [Validators.required]],                          // preenchido dinamicamente
-    hashCard:  ['', [Validators.required]],                          // preenchido dinamicamente
-    sendHash:  ['', [Validators.required]],                          // preenchido dinamicamente
-    parcelas: [[], [Validators.required]],                             // preenchido dinamicamente
-    // parcelasCard:  ['', [Validators.required]],                             // preenchido dinamicamente
-    amount: ['', [Validators.required]],  
-    email: ['', [Validators.required]],  
-    
+
+    //DADOS REFERENTE AO CARTÃO DE CRÉDITO
+    nomePortadorCard: ['Jardel Henrique', [Validators.required]],
+    numCard: ['', [
+      Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(16),
+      Validators.maxLength(16)]],                           // ex: '4111111111111111'
+    mesValidadeCard: ['', [Validators.required]],                   // ex: '12',
+    anoValidadeCard: ['', [Validators.required]],                   // ex: '2030',
+    codSegCard: ['', [Validators.required]],                        // ex: '123',
+    bandCard: [''],                                                 // preenchido dinamicamente
+    hashCard: [''],                                                 // preenchido dinamicamente
+    sendHash: [''],                                                 // preenchido dinamicamente
+    parcelas: [[''], [Validators.required]],                        // preenchido dinamicamente   
+    cpfCard: ['12345678901', [
+      Validators.required,
+      GenericValidator.isValidCpf(),
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(11),
+      Validators.maxLength(11)]],
+    telefoneCard: ['88888888888', [
+      Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(11),
+      Validators.maxLength(11)]],                  // preenchido dinamicamente
+    amount: [''],
+
     nascimento: ['', [Validators.required]],
-    estadoCard: ['', [Validators.required]],  
-    cidadeCard: ['', [Validators.required]],  
-    bairroCard: ['', [Validators.required]],  
-    cepCard: ['', [Validators.required]],  
-    ruaCard: ['', [Validators.required]],  
-    numeroCard: ['', [Validators.required]],  
-    titleProduct: ['', [Validators.required]],  
-    idProduct: ['', [Validators.required]],  
-    
+    estadoCard: [''],
+    cidadeCard: [''],
+    bairroCard: [''],
+    cepCard: [''],
+    ruaCard: [''],
+    numeroCard: [''],
+    titleProduct: [''],
+    idProduct: [''],
+
+
   });
 
 
   dataCredicard = this.fb.group({
-    
+
   })
 
 
@@ -267,10 +250,18 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     PagSeguroDirectPayment.getInstallments({
       amount: this.produto.price,              //valor total da compra (deve ser informado)
       brand: this.clientForm.value.bandCard,   //bandeira do cartão (capturado na função buscaBandeira)
-      
+
       maxInstallmentNoInterest: 1,
       success: response => {
         this.escolherQntParcelas = response.installments[this.clientForm.value.bandCard];
+
+        if (this.escolherQntParcelas.length > 0) {
+          this.escolheSelect = true
+        } else {
+          this.escolheSelect = false
+        }
+
+        console.log('Parcelas Result length: ', this.escolherQntParcelas.length);
         console.log('Parcelas Result: ', this.escolherQntParcelas);
       },
       error: response => { console.log(response) }
@@ -278,33 +269,34 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
   //AO CLICAR NO BOTÃO PAGAR
-  onSubmit(dadosCredicard) {
+  onSubmit() {
+
     this.loadingPage = true;
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
-    dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
+    this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
 
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
-    // PagSeguroDirectPayment.createCardToken({
-    //   cardNumber: dadosCredicard.numCard,
-    //   cvv: dadosCredicard.codSegCard,
-    //   expirationMonth: dadosCredicard.mesValidadeCard,
-    //   expirationYear: dadosCredicard.anoValidadeCard,
-    //   success: response => {
-    //     this.zone.run(() => {
-    //       dadosCredicard.hashCard = response.card.token;
-    //       console.log(response);
-    //       this.buscaBandeira();
-    //       console.log('Dados retornados: ', dadosCredicard);
-    //       // console.log("Passou cartão");
-    //       //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
-    //       //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
-    //       this.enviaDadosParaServidor(dadosCredicard);
-    //     });
-    //   },
-    //   error(res) {
-    //     console.log(res)
-    //   }
-    // });
+    PagSeguroDirectPayment.createCardToken({
+      cardNumber: this.clientForm.value.numCard,
+      cvv: this.clientForm.value.codSegCard,
+      expirationMonth: this.clientForm.value.mesValidadeCard,
+      expirationYear: this.clientForm.value.anoValidadeCard,
+      success: response => {
+        this.zone.run(() => {
+          this.clientForm.value.hashCard = response.card.token;
+          console.log(response);
+          this.buscaBandeira();
+          console.log('Dados retornados: ', this.clientForm.value);
+          // console.log("Passou cartão");
+          //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
+          //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
+          this.enviaDadosParaServidor(this.clientForm.value);
+        });
+      },
+      error(res) {
+        console.log(res)
+      }
+    });
 
 
     console.log(this.clientForm.value);
@@ -344,3 +336,49 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   FOI CARREGADO OU NÃO. UMA VEZ CARREGADO, O JS NÃO SERÁ CARREGADO NOVAMENTE.
 */
 
+
+    // parcelas: [[{value:'', disabled: true }], [Validators.required]],     // preenchido dinamicamente
+    // parcelasCard:  ['', [Validators.required]],      
+
+
+
+
+  // dadosCredicard = {
+  //   nome: 'Jardel Henrique',
+  //   cpf: '66523165019',
+  //   nascimento: '',
+  //   telefone: '99999999999',
+  //   numCard: '',                            // ex: '4111111111111111'
+  //   mesValidadeCard: '',                  // ex: '12',
+  //   anoValidadeCard: '',                // ex: '2030',
+  //   codSegCard: '',                      // ex: '123',
+  //   bandCard: '',                           // preenchido dinamicamente
+  //   hashCard: '',                           // preenchido dinamicamente
+  //   sendHash: '',                           // preenchido dinamicamente
+  //   parcelas: [],                            // preenchido dinamicamente
+  //   amount: '',
+  //   email: '',
+
+  //   estado: '',
+  //   cidade: '',
+  //   bairro: '',
+  //   cep: '',
+  //   rua: '',
+  //   numero: '',
+  //   titleProduct: '',
+  //   idProduct: '',
+  // }
+
+
+  // clientForm2 = this.fb.group({
+  //   firstName: [' ', [Validators.required, Validators.minLength(5)]],
+  //   lastName: ['', [Validators.required]],
+  //   birth: [new Date(), [Validators.required]],
+  //   age: [0, [Validators.required, Validators.max(150), Validators.min(0)]],
+  //   email: ['', [Validators.required, Validators.email]],
+  //   street: ['', [Validators.required]],
+  //   city: ['', [Validators.required]],
+  //   state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+  //   phone1: ['', [Validators.required]],
+  //   phone2: ['', [Validators.required]],
+  // });

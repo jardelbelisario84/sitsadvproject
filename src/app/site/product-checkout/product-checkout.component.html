@@ -20,6 +20,7 @@
 
     <div class="col-md-8">
 
+      <h5 class="msg-erro text-danger">Atenção: Campos com asterísco (*) são obrigatórios.</h5>
       <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
 
         <div class="card mt-3">
@@ -31,7 +32,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Nome: </label>
+                  <label for="">Nome: <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" placeholder="Digite seu nome" formControlName="firstName">
 
                   <div class="text-danger msg-erro"
@@ -48,7 +49,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Sobrenome: </label>
+                  <label for="">Sobrenome: <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" formControlName="lastName" placeholder="Digite seu Sobrenome">
                   <div
                     *ngIf="clientForm.controls.lastName.hasError('required') && clientForm.controls['lastName'].touched"
@@ -69,24 +70,57 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                  <label for="">CPF: </label>
+                  <label for="">CPF: <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" formControlName="cpf" placeholder="EX: 12345678901">
                   <div *ngIf="clientForm.controls.cpf.hasError('required') && clientForm.controls['cpf'].touched"
                     class="text-danger msg-erro">
                     O CPF é um campo obrigatório
+                  </div>
+                  <div *ngIf="clientForm.controls.cpf.hasError('pattern')" class="text-danger msg-erro">
+                    O CPF só pode conter números
+                  </div>
+                  <div class="text-danger msg-erro" *ngIf="clientForm.controls.cpf.hasError('cpfNotValid')">
+                    O CPF não é válido.
+                  </div>
+                  <div *ngIf="clientForm.controls.cpf.hasError('minlength')" class="text-danger msg-erro">
+                    O CPF deve conter {{clientForm.controls.cpf.errors.minlength.requiredLength}}
+                    caracteres. Você digitou: {{ clientForm.controls.cpf.errors.minlength.actualLength}}
+                    caracteres.
+                  </div>
+
+                  <div *ngIf="clientForm.controls.cpf.hasError('maxlength')" class="text-danger msg-erro">
+                    O CPF deve conter {{clientForm.controls.cpf.errors.maxlength.requiredLength}}
+                    caracteres. Você digitou: {{ clientForm.controls.cpf.errors.maxlength.actualLength}}
+                    caracteres.
                   </div>
                 </div>
 
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Telefone</label>
+                  <label for="">Telefone: <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" formControlName="telefone"
                     placeholder="Insira seu número para contato">
                   <div
                     *ngIf="clientForm.controls.telefone.hasError('required') && clientForm.controls['telefone'].touched"
                     class="text-danger msg-erro">
                     O telefone é um campo obrigatório
+                  </div>
+                  <div *ngIf="clientForm.controls.telefone.hasError('pattern')" class="text-danger msg-erro">
+                    O Telefone só pode conter números
+                  </div>
+                  <div *ngIf="clientForm.controls.telefone.hasError('minlength')" class="text-danger msg-erro">
+                    O Telefone deve conter {{clientForm.controls.telefone.errors.minlength.requiredLength}}
+                    digitos. Você digitou:
+                    {{ clientForm.controls.telefone.errors.minlength.actualLength}}
+                    digitos.
+                  </div>
+
+                  <div *ngIf="clientForm.controls.telefone.hasError('maxlength')" class="text-danger msg-erro">
+                    O Telefone deve conter {{clientForm.controls.telefone.errors.maxlength.requiredLength}}
+                    digitos. Você digitou:
+                    {{ clientForm.controls.telefone.errors.maxlength.actualLength}}
+                    digitos.
                   </div>
                 </div>
               </div>
@@ -105,7 +139,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="">CEP: </label>
+                  <label for="">CEP: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="cep" class="form-control" placeholder="EX: 00000-000">
                   <div class="text-danger msg-erro"
                     *ngIf="clientForm.controls['cep'].errors?.required && clientForm.controls['cep'].touched">
@@ -115,7 +149,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="">Estado: </label>
+                  <label for="">Estado: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="estado" class="form-control" placeholder="Sigla de seu Estado">
                   <div *ngIf="clientForm.controls.estado.hasError('required') && clientForm.controls['estado'].touched"
                     class="text-danger msg-erro">
@@ -125,7 +159,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Cidade: </label>
+                  <label for="">Cidade: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="cidade" class="form-control" placeholder="Nome de sua cidade">
                   <div *ngIf="clientForm.controls.cidade.hasError('required') && clientForm.controls['cidade'].touched"
                     class="text-danger msg-erro">
@@ -140,7 +174,7 @@
               <div class="col-md-6">
 
                 <div class="form-group">
-                  <label for="">Bairro: </label>
+                  <label for="">Bairro: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="bairro" class="form-control" placeholder="Digite seu bairro">
                   <div *ngIf="clientForm.controls.bairro.hasError('required') && clientForm.controls['bairro'].touched"
                     class="text-danger msg-erro">
@@ -151,7 +185,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Rua</label>
+                  <label for="">Rua: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="rua" class="form-control" placeholder="Digite sua rua">
                   <div *ngIf="clientForm.controls.rua.hasError('required') && clientForm.controls['rua'].touched"
                     class="text-danger msg-erro">
@@ -165,7 +199,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Número: </label>
+                  <label for="">Número: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="numero" class="form-control"
                     placeholder="Insira o número de sua residencia">
                   <div *ngIf="clientForm.controls.numero.hasError('required') && clientForm.controls['numero'].touched"
@@ -179,11 +213,11 @@
                   <label for="">Complemento</label>
                   <input type="text" formControlName="complemento" class="form-control"
                     placeholder="Caso queira, insira um complemento de endereço">
-                  <div
+                  <!-- <div
                     *ngIf="clientForm.controls.complemento.hasError('required') && clientForm.controls['complemento'].touched"
                     class="text-danger msg-erro">
                     O Complemento é obrigatório
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -197,11 +231,12 @@
             <h4>DADOS DE ACESSO</h4>
           </div>
           <div class="card-body">
+
             <div class="row">
               <div class="col-md-6">
 
                 <div class="form-group">
-                  <label for="">E-mail</label>
+                  <label for="">E-mail: <span class="text-danger">*</span></label>
                   <input type="text" formControlName="emailAccess" class="form-control"
                     placeholder="Digite seu email para acesso ao sistema">
                   <div
@@ -214,7 +249,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="">Senha</label>
+                  <label for="">Senha: <span class="text-danger">*</span></label>
                   <input type="password" formControlName="password" class="form-control" placeholder="Digite uma senha">
                   <div
                     *ngIf="clientForm.controls.password.hasError('required') && clientForm.controls['password'].touched"
@@ -226,6 +261,7 @@
             </div>
             <!-- fecha row -->
           </div>
+
         </div>
 
         <div class="row" *ngIf="!hideBlock">
@@ -257,7 +293,8 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
-                              <label for="nome">Nome do portador (como gravado no cartão) </label>
+                              <label for="nome">Nome do portador (como gravado no cartão): <span
+                                  class="text-danger">*</span></label>
                               <input type="text" formControlName="nomePortadorCard" name="nome" class="form-control"
                                 placeholder="Nome do portador do cartão">
                               <div
@@ -272,7 +309,7 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label for="inputCreditNum">Número do cartão</label>
+                              <label for="inputCreditNum">Número do cartão: <span class="text-danger">*</span></label>
                               <input type="number" class="form-control" placeholder="Insira o número do cartão"
                                 formControlName="numCard" name="numCard" (focusout)="buscaBandeira()">
                               <div
@@ -280,14 +317,32 @@
                                 class="text-danger msg-erro">
                                 O Número do cartão é obrigatório
                               </div>
+                              <div *ngIf="clientForm.controls.numCard.hasError('pattern')" class="text-danger msg-erro">
+                                O Número do cartão só pode conter números
+                              </div>
+                              <div *ngIf="clientForm.controls.numCard.hasError('minlength')"
+                                class="text-danger msg-erro">
+                                O Número do cartão deve conter
+                                {{clientForm.controls.numCard.errors.minlength.requiredLength}}
+                                dígitos. Você digitou: {{ clientForm.controls.numCard.errors.minlength.actualLength}}
+                                dígitos.
+                              </div>
+
+                              <div *ngIf="clientForm.controls.numCard.hasError('maxlength')"
+                                class="text-danger msg-erro">
+                                O Número do cartão deve conter
+                                {{clientForm.controls.numCard.errors.maxlength.requiredLength}}
+                                dígitos. Você digitou: {{ clientForm.controls.numCard.errors.maxlength.actualLength}}
+                                dígitos.
+                              </div>
                             </div>
                           </div>
 
                           <div class="col-md-2">
                             <div class="form-group">
-                              <label for="inputCreditMonth">Mês*</label>
+                              <label for="inputCreditMonth">Mês: <span class="text-danger">*</span></label>
                               <input type="number" class="form-control" placeholder="Mês de vencimento"
-                                formControlName="mesValidadeCard" name="mesValidadeCard">
+                                formControlName="mesValidadeCard" name="mesValidadeCard" (focusout)="buscaBandeira()">
                               <div
                                 *ngIf="clientForm.controls.mesValidadeCard.hasError('required') && clientForm.controls['mesValidadeCard'].touched"
                                 class="text-danger msg-erro">
@@ -298,9 +353,9 @@
 
                           <div class="col-md-2">
                             <div class="form-group">
-                              <label for="inputCreditYear">Ano *</label>
+                              <label for="inputCreditYear">Ano: <span class="text-danger">*</span></label>
                               <input type="number" class="form-control" placeholder="Ano de vencimento"
-                                formControlName="anoValidadeCard" name="anoValidadeCard">
+                                formControlName="anoValidadeCard" name="anoValidadeCard" (focusout)="buscaBandeira()">
                               <div
                                 *ngIf="clientForm.controls.anoValidadeCard.hasError('required') && clientForm.controls['anoValidadeCard'].touched"
                                 class="text-danger msg-erro">
@@ -311,9 +366,10 @@
 
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label for="inputCreditCvv">Cód. de segurança (CVV) *</label>
+                              <label for="inputCreditCvv">Cód. de segurança (CVV): <span
+                                  class="text-danger">*</span></label>
                               <input type="number" formControlName="codSegCard" class="form-control" placeholder="CVV"
-                                name="codSegCard">
+                                name="codSegCard" (focusout)="buscaBandeira()">
                               <div
                                 *ngIf="clientForm.controls.codSegCard.hasError('required') && clientForm.controls['codSegCard'].touched"
                                 class="text-danger msg-erro">
@@ -327,43 +383,78 @@
                         <div class="row">
                           <div class="col-md-8">
                             <div class="form-group">
-                              <label for="">Parcelas (Valor mínimo R$ 5,00) *</label>
-                              <select formControlName="parcelas" class="form-control">
+                              <label for="">Parcelas (Valor mínimo R$ 5,00): <span class="text-danger">*</span></label>
 
-                                <!-- <option>Escolha após preencher dados do Cartão.</option> -->
+                              <div *ngIf="!escolheSelect; else selectOptions">
+                                <select disabled="disabled" class="form-control">
+                                  <option>Escolha após preencher dados do Cartão.</option>
+                                </select>
+                              </div>
 
-                                <option *ngFor='let parcela of escolherQntParcelas' [value]="parcela.ID">
+                              <ng-template #selectOptions>
+                                <select formControlName="parcelas" class="form-control">
 
-                                  <div *ngIf="parcela.interestFree == true">
-                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
-                                    pagar:
-                                    {{ parcela.totalAmount}}
-                                  </div>
-                                  <div *ngIf=" parcela.interestFree == false">
-                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
-                                    pagar:
-                                    {{ parcela.totalAmount}}
-                                  </div>
-                                </option>
-                              </select>
-                              <div
-                                *ngIf="escolherQntParcela != null"
-                                class="text-success msg-erro">
+                                  <option>Parcelamento habilidato para escolha</option>
+
+                                  <option *ngFor='let parcela of escolherQntParcelas' [value]="parcela.ID">
+
+                                    <div *ngIf="parcela.interestFree == true">
+                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
+                                      pagar:
+                                      {{ parcela.totalAmount}}
+                                    </div>
+                                    <div *ngIf=" parcela.interestFree == false">
+                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
+                                      pagar:
+                                      {{ parcela.totalAmount}}
+                                    </div>
+
+                                  </option>
+                                </select>
+                              </ng-template>
+
+
+                              <div *ngIf="escolheSelect" class="text-success msg-erro">
                                 Parcelamento habilidato para escolha
                               </div>
                               <div
                                 *ngIf="clientForm.controls.parcelas.hasError('required') && clientForm.controls['parcelas'].touched"
                                 class="text-danger msg-erro">
-                                O Código de segurança do cartão é obrigatório
+                                Selecione uma das opções acima.
                               </div>
                             </div>
                           </div>
 
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label for="">CPF do portador *</label>
+                              <label for="">CPF do portador: <span class="text-danger">*</span></label>
                               <input type="text" class="form-control" placeholder="EX: 12345678901"
-                                formControlName="cpf" name="cpf">
+                                formControlName="cpfCard" name="cpfCard">
+                              <div
+                                *ngIf="clientForm.controls.cpfCard.hasError('required') && clientForm.controls['cpfCard'].touched"
+                                class="text-danger msg-erro">
+                                O CPF é um campo obrigatório
+                              </div>
+                              <div *ngIf="clientForm.controls.cpfCard.hasError('pattern')" class="text-danger msg-erro">
+                                O CPF só pode conter números
+                              </div>
+                              <div class="text-danger msg-erro"
+                                *ngIf="clientForm.controls.cpfCard.hasError('cpfNotValid')">
+                                O CPF não é válido.
+                              </div>
+                              <div *ngIf="clientForm.controls.cpfCard.hasError('minlength')"
+                                class="text-danger msg-erro">
+                                O CPF deve conter {{clientForm.controls.cpfCard.errors.minlength.requiredLength}}
+                                caracteres. Você digitou: {{ clientForm.controls.cpfCard.errors.minlength.actualLength}}
+                                caracteres.
+                              </div>
+
+                              <div *ngIf="clientForm.controls.cpfCard.hasError('maxlength')"
+                                class="text-danger msg-erro">
+                                O CPF deve conter {{clientForm.controls.cpfCard.errors.maxlength.requiredLength}}
+                                caracteres. Você digitou: {{ clientForm.controls.cpfCard.errors.maxlength.actualLength}}
+                                caracteres.
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -371,17 +462,48 @@
                         <div class="row">
                           <div class="col-md-8">
                             <div class="form-group">
-                              <label for="">Data de nascimento do portador *</label>
+                              <label for="">Data de nascimento do portador: <span class="text-danger">*</span></label>
                               <input type="date" class="form-control" placeholder="Data Nacimento"
                                 formControlName="nascimento" name="nascimento">
+                              <div
+                                *ngIf="clientForm.controls.nascimento.hasError('required') && clientForm.controls['nascimento'].touched"
+                                class="text-danger msg-erro">
+                                Data de nascimento é obrigatória
+                              </div>
                             </div>
                           </div>
 
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label for="">Telefone do portador *</label>
-                              <input type="number" class="form-control" placeholder="EX:99123451234"
-                                formControlName="telefone" name="telefone">
+                              <label for="">Telefone do portador: <span class="text-danger">*</span></label>
+                              <input type="text-success" class="form-control" placeholder="EX:99123451234"
+                                formControlName="telefoneCard" name="telefoneCard">
+                              <div
+                                *ngIf="clientForm.controls.telefoneCard.hasError('required') && clientForm.controls['telefoneCard'].touched"
+                                class="text-danger msg-erro">
+                                O Telefone é obrigatório
+                              </div>
+                              <div *ngIf="clientForm.controls.telefoneCard.hasError('pattern')"
+                                class="text-danger msg-erro">
+                                O Telefone só pode conter números
+                              </div>
+                              <div *ngIf="clientForm.controls.telefoneCard.hasError('minlength')"
+                                class="text-danger msg-erro">
+                                O Telefone deve conter
+                                {{clientForm.controls.telefoneCard.errors.minlength.requiredLength}}
+                                digitos. Você digitou:
+                                {{ clientForm.controls.telefoneCard.errors.minlength.actualLength}}
+                                digitos.
+                              </div>
+
+                              <div *ngIf="clientForm.controls.telefoneCard.hasError('maxlength')"
+                                class="text-danger msg-erro">
+                                O Telefone deve conter
+                                {{clientForm.controls.telefoneCard.errors.maxlength.requiredLength}}
+                                digitos. Você digitou:
+                                {{ clientForm.controls.telefoneCard.errors.maxlength.actualLength}}
+                                digitos.
+                              </div>
                             </div>
                           </div>
                         </div>
