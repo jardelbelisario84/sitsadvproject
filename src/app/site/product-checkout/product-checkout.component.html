@@ -8,6 +8,7 @@
 
 
 <div class="container mt-4 mb-5" *ngIf="!loadingPage">
+
   <div class="row mt-2 mb-2">
     <div class="col-md">
       <!-- <a routerLink="/produtos/plano-basic" class="btn btn-light float-right"> Voltar</a> -->
@@ -15,12 +16,9 @@
   </div>
   <!-- fecha row mt-2 mb-2 -->
 
-
   <div class="row" *ngIf="!hideBlock">
 
-
     <div class="col-md-8">
-
 
       <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
 
@@ -97,8 +95,6 @@
 
           </div>
         </div>
-
-        <br>
 
         <div class="card mt-3">
           <div class="card-header">
@@ -196,7 +192,6 @@
           </div>
         </div>
 
-
         <div class="card mt-3">
           <div class="card-header">
             <h4>DADOS DE ACESSO</h4>
@@ -233,13 +228,13 @@
           </div>
         </div>
 
-
         <div class="row" *ngIf="!hideBlock">
           <div class="col-md-12">
             <div class="card mt-3">
               <div class="card-header">
                 <h4>DADOS PAGAMENTO</h4>
               </div>
+
               <div class="card-body">
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -256,152 +251,170 @@
                 <div class="tab-content  mt-4" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-
                     <div class="row">
                       <div class="col-md-12">
 
-                        <form (ngSubmit)="onSubmit(dadosCredicard)">
-                          <div class="row">
-                            <div class="col-md-12">
-
-                              <div class="form-group">
-                                <label for="nome">Nome do portador (como gravado no cartão) </label>
-                                <input type="text" [(ngModel)]="dadosCredicard.nome" name="nome" class="form-control"
-                                  placeholder="TrocarPlaceholder">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label for="nome">Nome do portador (como gravado no cartão) </label>
+                              <input type="text" formControlName="nomePortadorCard" name="nome" class="form-control"
+                                placeholder="Nome do portador do cartão">
+                              <div
+                                *ngIf="clientForm.controls.nomePortadorCard.hasError('required') && clientForm.controls['nomePortadorCard'].touched"
+                                class="text-danger msg-erro">
+                                O Nome do portador do cartão é obrigatório
                               </div>
-
                             </div>
-
                           </div>
+                        </div>
 
-                          <div class="row">
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <label for="inputCreditNum">Número do cartão</label>
-                                <input type="number" class="form-control" placeholder="Insira o número do cartão"
-                                  [(ngModel)]="dadosCredicard.numCard" name="numCard" (focusout)="buscaBandeira()">
-                              </div>
-                            </div>
-
-                            <div class="col-md-2">
-
-                              <div class="form-group">
-                                <label for="inputCreditMonth">Mês*</label>
-                                <input type="number" class="form-control" id="inputCreditMonth"
-                                  aria-describedby="emailHelp" placeholder="Mês de vencimento"
-                                  [(ngModel)]="dadosCredicard.mesValidadeCard" name="mesValidadeCard">
-                              </div>
-
-                            </div>
-
-                            <div class="col-md-2">
-
-                              <div class="form-group">
-                                <label for="inputCreditYear">Ano *</label>
-                                <input type="number" class="form-control" id="inputCreditYear"
-                                  aria-describedby="emailHelp" placeholder="Ano de vencimento"
-                                  [(ngModel)]="dadosCredicard.anoValidadeCard" name="anoValidadeCard">
-                              </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <label for="inputCreditCvv">Cód. de segurança (CVV) *</label>
-                                <input type="number" class="form-control" id="inputCreditCvv"
-                                  aria-describedby="emailHelp" placeholder="CVV" [(ngModel)]="dadosCredicard.codSegCard"
-                                  name="codSegCard">
-                              </div>
-                            </div>
-
-                          </div>
-
-
-                          <div class="row">
-                            <div class="col-md-8">
-
-                              <div class="form-group">
-                                <label for="">Parcelas (Valor mínimo R$ 5,00) *</label>
-                                <select class="form-control">
-                                  <option value="">Escolha após preencher dados do Cartão</option>
-                                  <option *ngFor='let parcela of dadosCredicard.parcelas' [value]="parcela.ID">
-                                    <div *ngIf=" parcela.interestFree == true">
-                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
-                                      pagar:
-                                      {{ parcela.totalAmount}}
-                                    </div>
-                                    <div *ngIf=" parcela.interestFree == false">
-                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
-                                      pagar:
-                                      {{ parcela.totalAmount}}
-                                    </div>
-                                  </option>
-                                </select>
-                              </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <label for="">CPF do portador *</label>
-                                <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                                  placeholder="EX: 12345678901" [(ngModel)]="dadosCredicard.cpf" name="cpf">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="inputCreditNum">Número do cartão</label>
+                              <input type="number" class="form-control" placeholder="Insira o número do cartão"
+                                formControlName="numCard" name="numCard" (focusout)="buscaBandeira()">
+                              <div
+                                *ngIf="clientForm.controls.numCard.hasError('required') && clientForm.controls['numCard'].touched"
+                                class="text-danger msg-erro">
+                                O Número do cartão é obrigatório
                               </div>
                             </div>
                           </div>
 
-
-                          <div class="row">
-                            <div class="col-md-8">
-
-                              <div class="form-group">
-                                <label for="">Data de nascimento do portador *</label>
-                                <input type="date" class="form-control" id="" aria-describedby="emailHelp"
-                                  placeholder="Data Nacimento" [(ngModel)]="dadosCredicard.nascimento"
-                                  name="nascimento">
-                              </div>
-
-                            </div>
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <label for="">Telefone do portador *</label>
-                                <input type="number" class="form-control" id="" aria-describedby="emailHelp"
-                                  placeholder="EX:99123451234" [(ngModel)]="dadosCredicard.telefone" name="telefone">
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label for="inputCreditMonth">Mês*</label>
+                              <input type="number" class="form-control" placeholder="Mês de vencimento"
+                                formControlName="mesValidadeCard" name="mesValidadeCard">
+                              <div
+                                *ngIf="clientForm.controls.mesValidadeCard.hasError('required') && clientForm.controls['mesValidadeCard'].touched"
+                                class="text-danger msg-erro">
+                                O Mês de vencimento do cartão é obrigatório
                               </div>
                             </div>
                           </div>
 
-
-                          <div class="row">
-                            <div class="col-md-6">
-                              <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
-                              <img
-                                src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
-                                width="200" alt="">
-                            </div>
-                            <div class="col-md-6 float-right">
-                              <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
-                                apoiar a sua experiência em todo este site e para outros fins descritos na nossa
-                                <a href="javascript::void()" (click)="display = true">
-                                  Política de Privacidade.
-                                </a>
-                              </p>
-                              <button type="submit" class="btn btn-success btn-block btn-lg"
-                                [disabled]="!clientForm.valid">
-                                Realizar Pagamento
-                              </button>
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label for="inputCreditYear">Ano *</label>
+                              <input type="number" class="form-control" placeholder="Ano de vencimento"
+                                formControlName="anoValidadeCard" name="anoValidadeCard">
+                              <div
+                                *ngIf="clientForm.controls.anoValidadeCard.hasError('required') && clientForm.controls['anoValidadeCard'].touched"
+                                class="text-danger msg-erro">
+                                O Ano de vencimento do cartão é obrigatório
+                              </div>
                             </div>
                           </div>
 
-                        </form>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="inputCreditCvv">Cód. de segurança (CVV) *</label>
+                              <input type="number" formControlName="codSegCard" class="form-control" placeholder="CVV"
+                                name="codSegCard">
+                              <div
+                                *ngIf="clientForm.controls.codSegCard.hasError('required') && clientForm.controls['codSegCard'].touched"
+                                class="text-danger msg-erro">
+                                O Código de segurança do cartão é obrigatório
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="form-group">
+                              <label for="">Parcelas (Valor mínimo R$ 5,00) *</label>
+                              <select formControlName="parcelas" class="form-control">
+
+                                <!-- <option>Escolha após preencher dados do Cartão.</option> -->
+
+                                <option *ngFor='let parcela of escolherQntParcelas' [value]="parcela.ID">
+
+                                  <div *ngIf="parcela.interestFree == true">
+                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
+                                    pagar:
+                                    {{ parcela.totalAmount}}
+                                  </div>
+                                  <div *ngIf=" parcela.interestFree == false">
+                                    {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
+                                    pagar:
+                                    {{ parcela.totalAmount}}
+                                  </div>
+                                </option>
+                              </select>
+                              <div
+                                *ngIf="escolherQntParcela != null"
+                                class="text-success msg-erro">
+                                Parcelamento habilidato para escolha
+                              </div>
+                              <div
+                                *ngIf="clientForm.controls.parcelas.hasError('required') && clientForm.controls['parcelas'].touched"
+                                class="text-danger msg-erro">
+                                O Código de segurança do cartão é obrigatório
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">CPF do portador *</label>
+                              <input type="text" class="form-control" placeholder="EX: 12345678901"
+                                formControlName="cpf" name="cpf">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="form-group">
+                              <label for="">Data de nascimento do portador *</label>
+                              <input type="date" class="form-control" placeholder="Data Nacimento"
+                                formControlName="nascimento" name="nascimento">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Telefone do portador *</label>
+                              <input type="number" class="form-control" placeholder="EX:99123451234"
+                                formControlName="telefone" name="telefone">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
+                            <img
+                              src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
+                              width="200" alt="">
+                          </div>
+                          <div class="col-md-6 float-right">
+                            <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
+                              apoiar a sua experiência em todo este site e para outros fins descritos na nossa
+                              <a href="javascript::void()" (click)="display = true">
+                                Política de Privacidade.
+                              </a>
+                            </p>
+                            <button type="submit" class="btn btn-success btn-block btn-lg"
+                              [disabled]="!clientForm.valid">
+                              Realizar Pagamento
+                            </button>
+                            <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
+                              ativado para finalizar seu pedido.</p>
+                          </div>
+                        </div>
 
                       </div>
                     </div>
 
-
                   </div>
+
+
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
                     <div class="row">
@@ -413,7 +426,9 @@
                       <div class="col-md-12">
                         <p>
                           <img src="https://stc.pagseguro.uol.com.br/pagseguro/i/checkout-presentation/ico_boleto.png"
-                            alt="">O pedido será confirmado apenas após a confirmação do pagamento. </p>
+                            alt="">O
+                          pedido
+                          será confirmado apenas após a confirmação do pagamento. </p>
                         <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).</p>
                         <p>* Após clicar em "Gerar Boleto" você verá um botão com o link para o seu boleto bancário, é
                           possível
@@ -423,7 +438,6 @@
                             src="https://escoladeadvogados.com/sitesparaadvogados/wp-content/plugins/woocommerce-pagseguro/assets/images/brazilian-flag.png"
                             alt=""></p>
 
-
                         <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
                           apoiar a sua experiência em todo este site e para outros fins descritos na nossa
                           <a href="javascript::void()" (click)="display = true">
@@ -431,44 +445,39 @@
                           </a>
                         </p>
 
-                        <button class="btn btn-lg btn-success float-right" (click)="gerarBoleto()">GERAR BOLETO</button>
                       </div>
+
+                      <div class="col-md-5 ml-auto">
+                        <button class="btn btn-lg btn-success btn-block " (click)="gerarBoleto()"
+                          [disabled]="!clientForm.valid">GERAR BOLETO</button>
+                        <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
+                          ativado para finalizar seu pedido.</p>
+                      </div>
+
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-              <!-- fecha card body -->
             </div>
-            <!-- fecha card mt-3 -->
           </div>
-          <!-- fecha col-md-12 -->
         </div>
-        <!-- fecha row -->
-
-
-
 
 
       </form>
+      <!-- fecha [formGroup]="clientForm" (ngSubmit)="onSubmit()" -->
+
     </div>
-    <!-- fecha col-md-7 -->
+    <!-- fecha class="col-md-8" -->
 
     <div class="col-md-4">
-
       <div class="card mb-3">
-
         <div class="card-header text-center">
           <b>
             <h2>{{produto.title}}</h2>
           </b>
           <a routerLink="/">Escolher outro plano</a>
         </div>
-
         <img class="card-img-top" [src]="produto.image" alt="Card image cap">
-
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let item of produto.items">
@@ -483,19 +492,14 @@
         </div>
       </div>
       <!-- fecha card bg-blue-grey -->
-
     </div>
-    <!-- fecha col-md-5 -->
+    <!-- fecha col-md-4 -->
 
   </div>
   <!-- fecha row -->
 
-
-
-
 </div>
-<!-- fecha container -->
-
+<!-- fecha container  -->
 
 <div class="container" *ngIf="hideBlockBoleto">
   <div class="row d-flex justify-content-center align-content-center">
@@ -510,7 +514,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="container" *ngIf="hideBlockCreditCard">
   <div class="row d-flex justify-content-center align-content-center">
@@ -528,13 +531,9 @@
   </div>
 </div>
 
-
 <div class="container" *ngIf="!loadingPage">
   <app-rodape></app-rodape>
 </div>
-
-
-
 
 <p-dialog header="POLÍTICA DE PRIVACIDADE" [(visible)]="display" [style]="{width: '90%'}">
   <div class="container politica">
@@ -803,19 +802,3 @@
   </p-footer>
 
 </p-dialog>
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<div class="container" *ngIf="linkBoleto">
-  <div class="d-flex justify-content-center d-flex align-items-center">
-      <button class="btn btn-lg btn-info" (click)="openLinkBoleto()" >ABRIR BOLETO</button>
-  </div>
-</div> -->

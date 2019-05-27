@@ -31,31 +31,33 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   paymentMethod = 'BOLETO';
   paymentMethods: Array<any> = [];
 
-  dadosCredicard = {
-    nome: 'Jardel Henrique',
-    cpf: '66523165019',
-    nascimento: '',
-    telefone: '99999999999',
-    numCard: '',                            // ex: '4111111111111111'
-    mesValidadeCard: '',                  // ex: '12',
-    anoValidadeCard: '',                // ex: '2030',
-    codSegCard: '',                      // ex: '123',
-    bandCard: '',                           // preenchido dinamicamente
-    hashCard: '',                           // preenchido dinamicamente
-    sendHash: '',                           // preenchido dinamicamente
-    parcelas: [],                            // preenchido dinamicamente
-    amount: '',
-    email: '',
+  escolherQntParcelas: any;
 
-    estado: '',
-    cidade: '',
-    bairro: '',
-    cep: '',
-    rua: '',
-    numero: '',
-    titleProduct: '',
-    idProduct: '',
-  }
+  // dadosCredicard = {
+  //   nome: 'Jardel Henrique',
+  //   cpf: '66523165019',
+  //   nascimento: '',
+  //   telefone: '99999999999',
+  //   numCard: '',                            // ex: '4111111111111111'
+  //   mesValidadeCard: '',                  // ex: '12',
+  //   anoValidadeCard: '',                // ex: '2030',
+  //   codSegCard: '',                      // ex: '123',
+  //   bandCard: '',                           // preenchido dinamicamente
+  //   hashCard: '',                           // preenchido dinamicamente
+  //   sendHash: '',                           // preenchido dinamicamente
+  //   parcelas: [],                            // preenchido dinamicamente
+  //   amount: '',
+  //   email: '',
+
+  //   estado: '',
+  //   cidade: '',
+  //   bairro: '',
+  //   cep: '',
+  //   rua: '',
+  //   numero: '',
+  //   titleProduct: '',
+  //   idProduct: '',
+  // }
 
 
   // clientForm2 = this.fb.group({
@@ -92,9 +94,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     firstName: ['', [Validators.required, Validators.minLength(3)]],
     lastName: ['', [Validators.required, Validators.minLength(3)]],
     cpf: ['', [Validators.required]],                                //'66523165019',
-    // nascimento: ['', [Validators.required]],
     telefone: ['', [Validators.required]],
-
+    
 
     cep: ['', [Validators.required]],
     estado: ['', [Validators.required]],
@@ -104,32 +105,40 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     numero: ['', [Validators.required]],
     complemento: ['', [Validators.required]],
 
-
+    
     emailAccess: ['', [Validators.required]],
     password: ['', [Validators.required]],
+    
 
-
-    numCard: '',                            // ex: '4111111111111111'
-    mesValidadeCard: '',                  // ex: '12',
-    anoValidadeCard: '',                // ex: '2030',
-    codSegCard: '',                      // ex: '123',
-    bandCard: '',                           // preenchido dinamicamente
-    hashCard: '',                           // preenchido dinamicamente
-    sendHash: '',                           // preenchido dinamicamente
-    parcelas: [],                            // preenchido dinamicamente
-    amount: '',
-    email: '',
-
-    estadoCard: '',
-    cidadeCard: '',
-    bairroCard: '',
-    cepCard: '',
-    ruaCard: '',
-    numeroCard: '',
-    titleProduct: '',
-    idProduct: '',
+    nomePortadorCard: ['', [Validators.required]],
+    numCard:  ['', [Validators.required]],                           // ex: '4111111111111111'
+    mesValidadeCard:  ['', [Validators.required]],                 // ex: '12',
+    anoValidadeCard:  ['', [Validators.required]],               // ex: '2030',
+    codSegCard:  ['', [Validators.required]],                     // ex: '123',
+    bandCard:  ['', [Validators.required]],                          // preenchido dinamicamente
+    hashCard:  ['', [Validators.required]],                          // preenchido dinamicamente
+    sendHash:  ['', [Validators.required]],                          // preenchido dinamicamente
+    parcelas: [[], [Validators.required]],                             // preenchido dinamicamente
+    // parcelasCard:  ['', [Validators.required]],                             // preenchido dinamicamente
+    amount: ['', [Validators.required]],  
+    email: ['', [Validators.required]],  
+    
+    nascimento: ['', [Validators.required]],
+    estadoCard: ['', [Validators.required]],  
+    cidadeCard: ['', [Validators.required]],  
+    bairroCard: ['', [Validators.required]],  
+    cepCard: ['', [Validators.required]],  
+    ruaCard: ['', [Validators.required]],  
+    numeroCard: ['', [Validators.required]],  
+    titleProduct: ['', [Validators.required]],  
+    idProduct: ['', [Validators.required]],  
+    
   });
 
+
+  dataCredicard = this.fb.group({
+    
+  })
 
 
   ngOnInit() {
@@ -185,19 +194,19 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   gerarBoleto() {
 
     this.loadingPage = true;
-    this.dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
-    this.dadosCredicard.amount = this.produto.price;
-    this.dadosCredicard.nome = 'João da Silva de Sousa'
-    this.dadosCredicard.estado = 'MA';
-    this.dadosCredicard.cidade = 'Imperatriz';
-    this.dadosCredicard.bairro = 'Vila Lobão';
-    this.dadosCredicard.cep = '65910-180';
-    this.dadosCredicard.rua = 'Assembleia';
-    this.dadosCredicard.numero = '001';
-    this.dadosCredicard.titleProduct = this.produto.title;
-    this.dadosCredicard.idProduct = this.produto.slug + '-' + Date.now();
+    this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
+    this.clientForm.value.amount = this.produto.price;
+    this.clientForm.value.nome = 'João da Silva de Sousa'
+    this.clientForm.value.estado = 'MA';
+    this.clientForm.value.cidade = 'Imperatriz';
+    this.clientForm.value.bairro = 'Vila Lobão';
+    this.clientForm.value.cep = '65910-180';
+    this.clientForm.value.rua = 'Assembleia';
+    this.clientForm.value.numero = '001';
+    this.clientForm.value.titleProduct = this.produto.title;
+    this.clientForm.value.idProduct = this.produto.slug + '-' + Date.now();
 
-    this.paymentHttp.geraBoleto(this.dadosCredicard)
+    this.paymentHttp.geraBoleto(this.clientForm.value)
       .subscribe(
         response => {
           this.loadingPage = false;
@@ -239,11 +248,11 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   buscaBandeira() {
 
     PagSeguroDirectPayment.getBrand({
-      cardBin: this.dadosCredicard.numCard,
+      cardBin: this.clientForm.value.numCard,
       success: response => {
-        this.dadosCredicard.bandCard = response.brand.name;
+        this.clientForm.value.bandCard = response.brand.name;
         // console.log('Bandeira do cartao objeto', response )
-        console.log('Bandeira do cartão: ' + this.dadosCredicard.bandCard);
+        console.log('Bandeira do cartão: ' + this.clientForm.value.bandCard);
         this.buscaParcelas();
       },
       error: response => { console.log(response); }
@@ -254,29 +263,22 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   //BUSCA AS PARCELAS NA API DO PAGSEGURO PARA O CLIENTE ESCOLHER
   buscaParcelas() {
-
     // console.log(this.dadosCredicard.bandCard);
-
     PagSeguroDirectPayment.getInstallments({
-
       amount: this.produto.price,              //valor total da compra (deve ser informado)
-      brand: this.dadosCredicard.bandCard, //bandeira do cartão (capturado na função buscaBandeira)
+      brand: this.clientForm.value.bandCard,   //bandeira do cartão (capturado na função buscaBandeira)
+      
       maxInstallmentNoInterest: 1,
       success: response => {
-
-        this.dadosCredicard.parcelas = response.installments[this.dadosCredicard.bandCard];
-        console.log('parcelas result: ', this.dadosCredicard.parcelas);
-
+        this.escolherQntParcelas = response.installments[this.clientForm.value.bandCard];
+        console.log('Parcelas Result: ', this.escolherQntParcelas);
       },
       error: response => { console.log(response) }
     });
-
   }
 
   //AO CLICAR NO BOTÃO PAGAR
   onSubmit(dadosCredicard) {
-
-
     this.loadingPage = true;
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
     dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
