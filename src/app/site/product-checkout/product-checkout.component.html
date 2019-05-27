@@ -36,11 +36,11 @@
                   <label for="">Nome: </label>
                   <input type="text" class="form-control" placeholder="Digite seu nome" formControlName="firstName">
 
-                  <div class="text-danger"
+                  <div class="text-danger msg-erro"
                     *ngIf="clientForm.controls['firstName'].errors?.required && clientForm.controls['firstName'].touched">
                     O Nome é um campo obrigatório
                   </div>
-                  <div *ngIf="clientForm.controls.firstName.hasError('minlength')" class="text-danger">
+                  <div *ngIf="clientForm.controls.firstName.hasError('minlength')" class="text-danger msg-erro">
                     O nome deve conter {{clientForm.controls.firstName.errors.minlength.requiredLength}}
                     ou mais caracteres. Você digitou: {{ clientForm.controls.firstName.errors.minlength.actualLength}}
                     caracteres.
@@ -54,10 +54,10 @@
                   <input type="text" class="form-control" formControlName="lastName" placeholder="Digite seu Sobrenome">
                   <div
                     *ngIf="clientForm.controls.lastName.hasError('required') && clientForm.controls['lastName'].touched"
-                    class="text-danger">
+                    class="text-danger msg-erro">
                     O Sobrenome é um campo obrigatório
                   </div>
-                  <div *ngIf="clientForm.controls.lastName.hasError('minlength')" class="text-danger">
+                  <div *ngIf="clientForm.controls.lastName.hasError('minlength')" class="text-danger msg-erro">
                     O sobrenome deve conter {{clientForm.controls.lastName.errors.minlength.requiredLength}}
                     ou mais caracteres. Você digitou: {{ clientForm.controls.lastName.errors.minlength.actualLength}}
                     caracteres.
@@ -74,7 +74,7 @@
                   <label for="">CPF: </label>
                   <input type="text" class="form-control" formControlName="cpf" placeholder="EX: 12345678901">
                   <div *ngIf="clientForm.controls.cpf.hasError('required') && clientForm.controls['cpf'].touched"
-                    class="text-danger">
+                    class="text-danger msg-erro">
                     O CPF é um campo obrigatório
                   </div>
                 </div>
@@ -87,7 +87,7 @@
                     placeholder="Insira seu número para contato">
                   <div
                     *ngIf="clientForm.controls.telefone.hasError('required') && clientForm.controls['telefone'].touched"
-                    class="text-danger">
+                    class="text-danger msg-erro">
                     O telefone é um campo obrigatório
                   </div>
                 </div>
@@ -104,25 +104,37 @@
           <div class="card-header">
             <h4>DADOS DE ENDEREÇO</h4>
           </div>
-          <div class="card-body" formGroupName="dadosEndereco">
+          <div class="card-body">
 
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="">CEP: </label>
                   <input type="text" formControlName="cep" class="form-control" placeholder="EX: 00000-000">
+                  <div class="text-danger msg-erro"
+                    *ngIf="clientForm.controls['cep'].errors?.required && clientForm.controls['cep'].touched">
+                    O CEP é obrigatório
+                  </div>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="">Estado: </label>
                   <input type="text" formControlName="estado" class="form-control" placeholder="Sigla de seu Estado">
+                  <div *ngIf="clientForm.controls.estado.hasError('required') && clientForm.controls['estado'].touched"
+                    class="text-danger msg-erro">
+                    O Estado é obrigatório
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="">Cidade: </label>
                   <input type="text" formControlName="cidade" class="form-control" placeholder="Nome de sua cidade">
+                  <div *ngIf="clientForm.controls.cidade.hasError('required') && clientForm.controls['cidade'].touched"
+                    class="text-danger msg-erro">
+                    A Cidade é obrigatória
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,13 +146,21 @@
                 <div class="form-group">
                   <label for="">Bairro: </label>
                   <input type="text" formControlName="bairro" class="form-control" placeholder="Digite seu bairro">
+                  <div *ngIf="clientForm.controls.bairro.hasError('required') && clientForm.controls['bairro'].touched"
+                    class="text-danger msg-erro">
+                    O Bairro é obrigatório
+                  </div>
                 </div>
 
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="">Rua</label>
-                  <input type="text" class="form-control" placeholder="Digite sua rua">
+                  <input type="text" formControlName="rua" class="form-control" placeholder="Digite sua rua">
+                  <div *ngIf="clientForm.controls.rua.hasError('required') && clientForm.controls['rua'].touched"
+                    class="text-danger msg-erro">
+                    A Rua é obrigatória
+                  </div>
                 </div>
               </div>
             </div>
@@ -150,13 +170,24 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="">Número: </label>
-                  <input type="text" class="form-control" placeholder="Insira o número de sua residencia">
+                  <input type="text" formControlName="numero" class="form-control"
+                    placeholder="Insira o número de sua residencia">
+                  <div *ngIf="clientForm.controls.numero.hasError('required') && clientForm.controls['numero'].touched"
+                    class="text-danger msg-erro">
+                    O Número é obrigatório
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="">Complemento</label>
-                  <input type="text" class="form-control" placeholder="Caso queira, insira um complemento de endereço">
+                  <input type="text" formControlName="complemento" class="form-control"
+                    placeholder="Caso queira, insira um complemento de endereço">
+                  <div
+                    *ngIf="clientForm.controls.complemento.hasError('required') && clientForm.controls['complemento'].touched"
+                    class="text-danger msg-erro">
+                    O Complemento é obrigatório
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,16 +207,25 @@
 
                 <div class="form-group">
                   <label for="">E-mail</label>
-                  <input type="text" class="form-control" id="" aria-describedby="emailHelp"
+                  <input type="text" formControlName="emailAccess" class="form-control"
                     placeholder="Digite seu email para acesso ao sistema">
+                  <div
+                    *ngIf="clientForm.controls.emailAccess.hasError('required') && clientForm.controls['emailAccess'].touched"
+                    class="text-danger msg-erro">
+                    O E-mail é obrigatório
+                  </div>
                 </div>
 
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="">Senha</label>
-                  <input type="text" class="form-control" id="" aria-describedby="emailHelp"
-                    placeholder="Digite uma senha">
+                  <input type="password" formControlName="password" class="form-control" placeholder="Digite uma senha">
+                  <div
+                    *ngIf="clientForm.controls.password.hasError('required') && clientForm.controls['password'].touched"
+                    class="text-danger msg-erro">
+                    A Senha é obrigatória
+                  </div>
                 </div>
               </div>
             </div>
@@ -348,7 +388,10 @@
                                   Política de Privacidade.
                                 </a>
                               </p>
-                              <button type="submit" class="btn btn-success btn-block btn-lg">Realizar Pagamento</button>
+                              <button type="submit" class="btn btn-success btn-block btn-lg"
+                                [disabled]="!clientForm.valid">
+                                Realizar Pagamento
+                              </button>
                             </div>
                           </div>
 

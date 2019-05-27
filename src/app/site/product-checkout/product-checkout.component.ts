@@ -96,13 +96,17 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     telefone: ['', [Validators.required]],
 
 
+    cep: ['', [Validators.required]],
+    estado: ['', [Validators.required]],
+    cidade: ['', [Validators.required]],
+    bairro: ['', [Validators.required]],
+    rua: ['', [Validators.required]],
+    numero: ['', [Validators.required]],
+    complemento: ['', [Validators.required]],
 
-    dadosEndereco: this.fb.group({
-      cep: [''],
-      estado: [''],
-      cidade: [''],
-      bairro: [''],
-    }),
+
+    emailAccess: ['', [Validators.required]],
+    password: ['', [Validators.required]],
 
 
     numCard: '',                            // ex: '4111111111111111'
@@ -116,12 +120,12 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     amount: '',
     email: '',
 
-    estado: '',
-    cidade: '',
-    bairro: '',
-    cep: '',
-    rua: '',
-    numero: '',
+    estadoCard: '',
+    cidadeCard: '',
+    bairroCard: '',
+    cepCard: '',
+    ruaCard: '',
+    numeroCard: '',
     titleProduct: '',
     idProduct: '',
   });
@@ -278,38 +282,32 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     dadosCredicard.sendHash = PagSeguroDirectPayment.getSenderHash();
 
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
-    PagSeguroDirectPayment.createCardToken({
-
-      cardNumber: dadosCredicard.numCard,
-      cvv: dadosCredicard.codSegCard,
-      expirationMonth: dadosCredicard.mesValidadeCard,
-      expirationYear: dadosCredicard.anoValidadeCard,
-
-      success: response => {
-        this.zone.run(() => {
-          dadosCredicard.hashCard = response.card.token;
-          console.log(response);
-
-          this.buscaBandeira();
-
-          console.log('Dados retornados: ', dadosCredicard);
-          // console.log("Passou cartão");
-
-          //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
-          //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
-          this.enviaDadosParaServidor(dadosCredicard);
-
-        });
-
+    // PagSeguroDirectPayment.createCardToken({
+    //   cardNumber: dadosCredicard.numCard,
+    //   cvv: dadosCredicard.codSegCard,
+    //   expirationMonth: dadosCredicard.mesValidadeCard,
+    //   expirationYear: dadosCredicard.anoValidadeCard,
+    //   success: response => {
+    //     this.zone.run(() => {
+    //       dadosCredicard.hashCard = response.card.token;
+    //       console.log(response);
+    //       this.buscaBandeira();
+    //       console.log('Dados retornados: ', dadosCredicard);
+    //       // console.log("Passou cartão");
+    //       //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
+    //       //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
+    //       this.enviaDadosParaServidor(dadosCredicard);
+    //     });
+    //   },
+    //   error(res) {
+    //     console.log(res)
+    //   }
+    // });
 
 
+    console.log(this.clientForm.value);
 
-      },
-      error(res) {
-        console.log(res)
-      }
 
-    });
   }
 
 
