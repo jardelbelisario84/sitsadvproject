@@ -19,6 +19,8 @@ import {ToastModule} from 'primeng/toast';
 import { RodapeComponent } from './rodape/rodape.component';
 
 
+
+
 @NgModule({
   declarations: [
     HomePageComponent,
@@ -36,7 +38,8 @@ import { RodapeComponent } from './rodape/rodape.component';
     ProgressSpinnerModule,
     SidebarModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+   
   ]
 })
 export class SiteModule { }

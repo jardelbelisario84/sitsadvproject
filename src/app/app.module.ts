@@ -7,10 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CheckoutService } from './site/product-checkout/checkout.service';
-import { PaymentHttp } from './site/product-checkout/payment-http';
+import { PaymentHttp } from './service/payment-http';
 import { ProdutosService } from './site/service-local/produtos.service';
-
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -21,7 +24,12 @@ import { ProdutosService } from './site/service-local/produtos.service';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp( environment.firebaseConfig),
+    AngularFirestoreModule, 
+    AngularFireDatabaseModule
+    
   ],
   providers: [
     CheckoutService,

@@ -244,6 +244,11 @@
                     class="text-danger msg-erro">
                     O E-mail é obrigatório
                   </div>
+                  <div
+                    *ngIf="clientForm.controls.emailAccess.hasError('email')"
+                    class="text-danger msg-erro">
+                    Insira um e-mail válido.
+                  </div>
                 </div>
 
               </div>

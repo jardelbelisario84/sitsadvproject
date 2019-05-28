@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, AfterContentInit } from '@angular/core';
 
 import { CheckoutService } from './checkout.service';
-import { PaymentHttp } from './payment-http';
+import { PaymentHttp } from '../../service/payment-http';
 import scriptjs from 'scriptjs/src/script'
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProdutosService } from '../service-local/produtos.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GenericValidator } from 'src/app/shared/validacoes/generic-validator';
+import { AuthServiceService } from 'src/app/service/auth-service.service';
 
 
 
@@ -44,7 +45,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     private route: ActivatedRoute,
     private product: ProdutosService,
     private router: Router,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private authService: AuthServiceService) { }
 
 
 
@@ -58,7 +60,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                                //'66523165019',
-    telefone: ['999999999', [
+    telefone: ['99988351234', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
@@ -74,7 +76,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     complemento: ['002', [Validators.required]],
 
     //DADOS DE ACESSO
-    emailAccess: ['cpmput.jardel2@gmail.com', [Validators.required]],
+    emailAccess: ['cpmput.jardel2@gmail.com', [Validators.required, Validators.email]],
     password: ['123456', [Validators.required]],
 
 
@@ -92,7 +94,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     hashCard: [''],                                                 // preenchido dinamicamente
     sendHash: [''],                                                 // preenchido dinamicamente
     parcelas: [[''], [Validators.required]],                        // preenchido dinamicamente   
-    cpfCard: ['12345678901', [
+    cpfCard: ['66523165019', [
       Validators.required,
       GenericValidator.isValidCpf(),
       Validators.pattern("^[0-9]*$"),
@@ -105,7 +107,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.maxLength(11)]],                  // preenchido dinamicamente
     amount: [''],
 
-    nascimento: ['', [Validators.required]],
+    nascimento: ['1984-09-26', [Validators.required]],
     estadoCard: [''],
     cidadeCard: [''],
     bairroCard: [''],
@@ -114,22 +116,17 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     numeroCard: [''],
     titleProduct: [''],
     idProduct: [''],
+    codeTransaction: ['']
+
+
 
 
   });
 
 
-  dataCredicard = this.fb.group({
-
-  })
-
-
   ngOnInit() {
-
-
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     console.log('Produto list', this.produto);
-
     // this.checkoutService.startSession()
     if (!environment.production) {
       scriptjs('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
@@ -148,7 +145,6 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           })
       })
     }
-
   }
 
   ngAfterContentInit() {
@@ -160,7 +156,6 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   initSession(data) {
     PagSeguroDirectPayment.setSessionId(data['id']);
   }
-
   getPaymentMethods() {
     PagSeguroDirectPayment.getPaymentMethods({
       amount: 100,
@@ -174,6 +169,12 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     });
   }
 
+
+
+
+
+
+  // FUNÇÃO PARA GERAR BOLETO DO PLANO
   gerarBoleto() {
 
     this.loadingPage = true;
@@ -220,7 +221,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
 
+
   /** 
+   *  PAGAMENDO COM CARTÃO PLANO
    *  BIBLIOTECA ANGULAR PAGSEGURO
    * 
    * */
@@ -229,7 +232,6 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   //BUSCA A BANDEIRA DO CARTÃO (EX: VISA, MASTERCARD ETC...) E DEPOIS BUSCA AS PARCELAS;
   //ESTA FUNÇÃO É CHAMADA QUANDO O INPUT QUE RECEBE O NÚMERO DO CARTÃO PERDE O FOCO;
   buscaBandeira() {
-
     PagSeguroDirectPayment.getBrand({
       cardBin: this.clientForm.value.numCard,
       success: response => {
@@ -243,24 +245,20 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   }
 
-
   //BUSCA AS PARCELAS NA API DO PAGSEGURO PARA O CLIENTE ESCOLHER
   buscaParcelas() {
     // console.log(this.dadosCredicard.bandCard);
     PagSeguroDirectPayment.getInstallments({
       amount: this.produto.price,              //valor total da compra (deve ser informado)
       brand: this.clientForm.value.bandCard,   //bandeira do cartão (capturado na função buscaBandeira)
-
       maxInstallmentNoInterest: 1,
       success: response => {
         this.escolherQntParcelas = response.installments[this.clientForm.value.bandCard];
-
         if (this.escolherQntParcelas.length > 0) {
           this.escolheSelect = true
         } else {
           this.escolheSelect = false
         }
-
         console.log('Parcelas Result length: ', this.escolherQntParcelas.length);
         console.log('Parcelas Result: ', this.escolherQntParcelas);
       },
@@ -268,13 +266,27 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     });
   }
 
+  enviaDadosParaServidor(dados) {
+    //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
+    this.paymentHttp.transationCredCard(dados)
+      .subscribe(result => {
+        this.loadingPage = false;
+        this.hideBlock = true;
+        this.hideBlockBoleto = false;
+        this.hideBlockCreditCard = true;
+        dados.codeTransaction = result[0];
+        console.log('Codigo transação: ', result[0])
+      });
+  }
+
+
+
+
   //AO CLICAR NO BOTÃO PAGAR
   onSubmit() {
-
     this.loadingPage = true;
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
-
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
     PagSeguroDirectPayment.createCardToken({
       cardNumber: this.clientForm.value.numCard,
@@ -282,26 +294,39 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       expirationMonth: this.clientForm.value.mesValidadeCard,
       expirationYear: this.clientForm.value.anoValidadeCard,
       success: response => {
+        
         this.zone.run(() => {
+
           this.clientForm.value.hashCard = response.card.token;
           console.log(response);
           this.buscaBandeira();
           console.log('Dados retornados: ', this.clientForm.value);
           // console.log("Passou cartão");
-          //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
-          //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
-          this.enviaDadosParaServidor(this.clientForm.value);
+
+          this.authService.register(this.clientForm.value)
+            .subscribe(
+              () => {
+                //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
+                //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
+                //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
+                this.enviaDadosParaServidor(this.clientForm.value);
+                
+                this.loadingPage = false;
+              },
+              (error) => {
+                this.loadingPage = false;
+                console.log("Erro ao registrar usuário", error);
+              }
+            )
+
+
         });
       },
       error(res) {
         console.log(res)
       }
     });
-
-
     console.log(this.clientForm.value);
-
-
   }
 
 
@@ -309,22 +334,29 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   }
 
-
-  enviaDadosParaServidor(dados) {
-    //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
-    this.paymentHttp.transationCredCard(dados).subscribe(result => {
-      this.loadingPage = false;
-      this.hideBlock = true;
-      this.hideBlockBoleto = false;
-      this.hideBlockCreditCard = true;
-      console.log(result)
-    });
-  }
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 }

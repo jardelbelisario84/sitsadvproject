@@ -1,8 +1,9 @@
 import { Component, OnInit, NgZone, AfterContentInit } from '@angular/core';
 
 import { CheckoutService } from './checkout.service';
-import { PaymentHttp } from './payment-http';
+
 import scriptjs from 'scriptjs/src/script'
+import { PaymentHttp } from 'src/app/service/payment-http';
 
 
 declare var PagSeguroDirectPayment: any;
