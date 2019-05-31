@@ -17,18 +17,76 @@ export class AuthServiceService {
     private afAuth: AngularFireAuth
   ) { }
 
-
-  register(user): Observable<boolean> {
+  /*
+  db.collection("cities").doc("SF")
+      .onSnapshot(function(doc) {
+          console.log("Current data: ", doc.data());
+      });
+  */
+  register(user): Observable<any> {
     return from(this.afAuth.auth
       .createUserWithEmailAndPassword(user.emailAccess, user.password))
       .pipe(
         switchMap((u: firebase.auth.UserCredential) => {
-          return this.userCollection.doc(u.user.uid).set({ ...user, id: u.user.uid })
-            .then(() => true)
+
+          return this.userCollection.doc(u.user.uid).set(
+            {
+              // ...user,
+              id: u.user.uid,
+              codTransactionPagSeguro: user.codTransactionPagSeguro,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              cpf: user.cpf,
+              telefone: user.telefone,
+              cep: user.cep,
+              estado: user.estado,
+              cidade: user.cidade,
+              bairro: user.bairro,
+              rua: user.rua,
+              numero: user.numero,
+              complemento: user.complemento,
+              email: user.emailAccess,
+              nomePortadoCard: user.nomePortadorCard,
+              hashCard: user.hashCard,
+              created_at: user.created_at,
+              updated_at: user.updated_at
+            })
+            .then(() => {
+              console.log("Objeto user vindo do firebase: ", u.user.uid);
+              return u.user.uid
+            })
         }),
         catchError((error) => throwError(error))
       )
   }
+
+  updateUser(id, data) {
+    console.log("ID DE USER A SER ATUALIZADO", id)
+    this.userCollection.doc(id).set({
+      // ...data,
+      id: id,
+      codTransactionPagSeguro: data.codTransactionPagSeguro,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      cpf: data.cpf,
+      telefone: data.telefone,
+      cep: data.cep,
+      estado: data.estado,
+      cidade: data.cidade,
+      bairro: data.bairro,
+      rua: data.rua,
+      numero: data.numero,
+      complemento: data.complemento,
+      email: data.emailAccess,
+      nomePortadoCard: data.nomePortadorCard,
+      hashCard: data.hashCard,
+      created_at: data.created_at,
+      updated_at: data.updated_at
+      // codTransactionPagSeguro: data.codTransactionPagSeguro
+    }).then(() => console.log("Atualizado com codTransactionPagSeguro"));
+  }
+
+
 
   login(email: string, password: string) {
 
@@ -47,6 +105,34 @@ export class AuthServiceService {
   lougout() {
     this.afAuth.auth.signOut();
   }
+
+
+
+
+
+
+
+
+
+
+  //PEGA TODO O OBJETO USER -> clientForm
+  // register(user): Observable<boolean> {
+  //   return from(this.afAuth.auth
+  //     .createUserWithEmailAndPassword(user.emailAccess, user.password))
+  //     .pipe(
+  //       switchMap((u: firebase.auth.UserCredential) => {
+  //         return this.userCollection.doc(u.user.uid).set(
+  //           { 
+  //             ...user,
+  //             id: u.user.uid,
+  //             password: u.user.updatePassword
+  //           }
+  //           )
+  //           .then(() => true)
+  //       }),
+  //       catchError((error) => throwError(error))
+  //     )
+  // }
 
 
 }

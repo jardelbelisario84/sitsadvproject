@@ -10,11 +10,12 @@ import { ProdutosService } from '../service-local/produtos.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GenericValidator } from 'src/app/shared/validacoes/generic-validator';
 import { AuthServiceService } from 'src/app/service/auth-service.service';
+import * as  moment from 'moment';
 
 
 
 declare var PagSeguroDirectPayment: any;
-declare var $window: any;
+// declare var $window: any;
 
 @Component({
   selector: 'app-product-checkout',
@@ -37,6 +38,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   produto: any;
   escolheSelect: boolean = false;
+  msgError = '';
 
   constructor(
     public checkoutService: CheckoutService,
@@ -76,19 +78,19 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     complemento: ['002', [Validators.required]],
 
     //DADOS DE ACESSO
-    emailAccess: ['cpmput.jardel2@gmail.com', [Validators.required, Validators.email]],
+    emailAccess: ['email001@gmail.com', [Validators.required, Validators.email]],
     password: ['123456', [Validators.required]],
 
 
     //DADOS REFERENTE AO CARTÃO DE CRÉDITO
     nomePortadorCard: ['Jardel Henrique', [Validators.required]],
-    numCard: ['', [
+    numCard: ['4111111111111111', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(16),
       Validators.maxLength(16)]],                           // ex: '4111111111111111'
-    mesValidadeCard: ['', [Validators.required]],                   // ex: '12',
-    anoValidadeCard: ['', [Validators.required]],                   // ex: '2030',
+    mesValidadeCard: ['12', [Validators.required]],                   // ex: '12',
+    anoValidadeCard: ['2030', [Validators.required]],                   // ex: '2030',
     codSegCard: ['', [Validators.required]],                        // ex: '123',
     bandCard: [''],                                                 // preenchido dinamicamente
     hashCard: [''],                                                 // preenchido dinamicamente
@@ -105,24 +107,28 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                  // preenchido dinamicamente
-    amount: [''],
+    // amount: [''],
+    // id: [''],
+    created_at: [''],
+    updated_at: [''],
 
     nascimento: ['1984-09-26', [Validators.required]],
-    estadoCard: [''],
-    cidadeCard: [''],
-    bairroCard: [''],
-    cepCard: [''],
-    ruaCard: [''],
-    numeroCard: [''],
-    titleProduct: [''],
-    idProduct: [''],
-    codeTransaction: ['']
+    // estadoCard: [''],
+    // cidadeCard: [''],
+    // bairroCard: [''],
+    // cepCard: [''],
+    // ruaCard: [''],
+    // numeroCard: [''],
+    // titleProduct: [''],
+    // idProduct: [''],
 
+    codTransactionPagSeguro: [''],
 
 
 
   });
 
+  codTransactionReturn: any;
 
   ngOnInit() {
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
@@ -148,7 +154,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-
+    window.scrollTo(0, 0);
   }
 
 
@@ -268,16 +274,22 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   enviaDadosParaServidor(dados) {
     //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
+    //aqui ele retona o codigo geralfinal da transação
     this.paymentHttp.transationCredCard(dados)
-      .subscribe(result => {
-        this.loadingPage = false;
-        this.hideBlock = true;
-        this.hideBlockBoleto = false;
-        this.hideBlockCreditCard = true;
-        dados.codeTransaction = result[0];
-        console.log('Codigo transação: ', result[0])
-      });
+      .subscribe(
+        result => {
+          this.loadingPage = false;
+          this.hideBlock = true;
+          this.hideBlockBoleto = false;
+          this.hideBlockCreditCard = true;
+          console.log('Codigo transação: ', result[0])
+          console.log('Codigo transação  Cod: ', dados.codTransactionPagSeguro)
+          // this.codTransactionReturn = result[0];
+          return dados.codTransactionPagSeguro = result[0];
+        });
   }
+
+
 
 
 
@@ -289,52 +301,176 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
     PagSeguroDirectPayment.createCardToken({
+
       cardNumber: this.clientForm.value.numCard,
       cvv: this.clientForm.value.codSegCard,
       expirationMonth: this.clientForm.value.mesValidadeCard,
       expirationYear: this.clientForm.value.anoValidadeCard,
+
       success: response => {
-        
+
         this.zone.run(() => {
 
           this.clientForm.value.hashCard = response.card.token;
           console.log(response);
           this.buscaBandeira();
-          console.log('Dados retornados: ', this.clientForm.value);
-          // console.log("Passou cartão");
 
+          this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
+          // this.clientForm.value.created_at = moment().format('DD/MM/YYYY, H:mm:ss');
+
+          // console.log(moment().format('L'))
+          // console.log(moment().format('DD/MM/YYYY, H:mm:ss'))
+
+          this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
           this.authService.register(this.clientForm.value)
             .subscribe(
-              () => {
-                //NESTE MOMENTO JÁ TEMOS TUDO QUE PRECISAMOS!
-                //HORA DE ENVIAR OS DADOS PARA O SERVIDOR PARA CONCRETIZAR O PAGAMENTO
-                //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
-                this.enviaDadosParaServidor(this.clientForm.value);
-                
-                this.loadingPage = false;
+              (resultRegister) => {
+                // this.codTransactionReturn = result[0];
+                // this.authService.updateUser(resultRegister)
+                console.log('Result Register', resultRegister);
+                // console.log('Result Register cod', resultRegister.id);
+
+                this.paymentHttp.transationCredCard(this.clientForm.value)
+                  .subscribe(
+                    result => {
+                      this.loadingPage = false;
+                      this.hideBlock = true;
+                      this.hideBlockBoleto = false;
+                      this.hideBlockCreditCard = true;
+                      console.log('Codigo transação: ', result[0])
+                      this.clientForm.value.codTransactionPagSeguro = result[0];
+                      // console.log('Codigo transação  Cod: ', this.clientForm.value.codTransactionPagSeguro);
+
+                      this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
+                      this.authService.updateUser(resultRegister, this.clientForm.value);
+
+                    });
+
+
+
               },
               (error) => {
                 this.loadingPage = false;
+                if (error.code == "auth/email-already-in-use") {
+                  this.msgError = "O e-mail já é cadastrado. Por favor, insira outro e-mail para continuar."
+                }
                 console.log("Erro ao registrar usuário", error);
-              }
-            )
+              })
 
 
+          console.log('Dados retornados: ', this.clientForm.value);
+          // console.log("Passou cartão");
         });
+
+
       },
       error(res) {
         console.log(res)
       }
     });
-    console.log(this.clientForm.value);
+
+
+
+    console.log('Client Form value', this.clientForm.value);
   }
 
 
-  onSubmitCardCredit() {
 
-  }
+
+
+
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+  // //AO CLICAR NO BOTÃO PAGAR
+  // onSubmit() {
+  //   this.loadingPage = true;
+  //   //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
+  //   this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
+  //   //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
+  //   PagSeguroDirectPayment.createCardToken({
+
+  //     cardNumber: this.clientForm.value.numCard,
+  //     cvv: this.clientForm.value.codSegCard,
+  //     expirationMonth: this.clientForm.value.mesValidadeCard,
+  //     expirationYear: this.clientForm.value.anoValidadeCard,
+
+  //     success: response => {
+
+  //       this.zone.run(() => {
+
+  //         this.clientForm.value.hashCard = response.card.token;
+  //         console.log(response);
+  //         this.buscaBandeira();
+
+  //         this.paymentHttp.transationCredCard(this.clientForm.value)
+  //         .subscribe(
+  //           result => {
+  //             this.loadingPage = false;
+  //             this.hideBlock = true;
+  //             this.hideBlockBoleto = false;
+  //             this.hideBlockCreditCard = true;
+  //             console.log('Codigo transação: ', result[0])
+  //             this.clientForm.value.codTransactionPagSeguro = result[0];
+  //             console.log('Codigo transação  Cod: ', this.clientForm.value.codTransactionPagSeguro);
+
+
+  //             this.authService.register(this.clientForm.value)
+  //             .subscribe(
+  //               (resultRegister) => {
+  //                 // this.codTransactionReturn = result[0];
+  //                 // this.authService.updateUser(resultRegister)
+  //                 console.log('Result Register', resultRegister);
+  //                 console.log('Result Register cod', resultRegister['codTransactionPagSeguro']);
+  //               },
+  //               (error) => {
+  //                 this.loadingPage = false;
+  //                 if(error.code == "auth/email-already-in-use"){
+  //                   this.msgError = "O e-mail já é cadastrado. Por favor, insira outro e-mail para continuar."
+  //                 }
+  //                 console.log("Erro ao registrar usuário", error);
+  //               })
+
+
+
+  //           });
+
+
+
+
+
+
+  //         console.log('Dados retornados: ', this.clientForm.value);
+  //         // console.log("Passou cartão");
+
+
+  //       });
+  //     },
+  //     error(res) {
+  //       console.log(res)
+  //     }
+  //   });
+
+
+
+  //   console.log('Client Form value', this.clientForm.value);
+  // }
+
+
+
+// }
 
 
 

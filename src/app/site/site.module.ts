@@ -18,7 +18,7 @@ import {DialogModule} from 'primeng/dialog';
 import {ToastModule} from 'primeng/toast';
 import { RodapeComponent } from './rodape/rodape.component';
 
-
+import { MomentModule } from 'angular2-moment';
 
 
 @NgModule({
@@ -39,6 +39,7 @@ import { RodapeComponent } from './rodape/rodape.component';
     SidebarModule,
     DialogModule,
     ToastModule,
+    MomentModule
    
   ]
 })

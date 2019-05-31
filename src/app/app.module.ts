@@ -14,11 +14,13 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
