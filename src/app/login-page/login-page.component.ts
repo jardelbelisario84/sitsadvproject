@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AuthServiceService } from '../service/auth-service.service';
 
 @Component({
   selector: 'app-login-page',
@@ -8,9 +10,24 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  msgError: string;
+  loadingPage: boolean = false;
+
+  constructor(
+    public router: Router,
+    private fb: FormBuilder,
+    private authService: AuthServiceService) { }
+
+  loginFormBld = this.fb.group({
+
+    email: ['', [Validators.required, Validators.email ]],
+    password: ['', [Validators.required]],
+
+  });
 
   ngOnInit() {
+
+    
   
   }
 
@@ -18,7 +35,22 @@ export class LoginPageComponent implements OnInit {
 
 
   onSubmitLogin(){
-    this.router.navigate(['/admin/dashboard']);
+    this.loadingPage = true;
+    let email = this.loginFormBld.value.email;
+    let password = this.loginFormBld.value.password;
+    this.authService.login(email, password)
+    .subscribe(
+      (object) => {
+      this.loadingPage = false;
+      console.log("logado")
+      this.router.navigate(['/admin/dashboard']);
+    },
+    (err) => { 
+      this.loadingPage = false;
+      this.msgError = 'Credenciais Inválidas ou usuário não está registardo.';
+      console.log("Erro ao logar", err)
+    });
+    
   }
 
 }

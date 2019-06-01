@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { AuthServiceService } from 'src/app/service/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  usuario: any = {};
+
+  constructor(private authService: AuthServiceService, private router: Router, private zone: NgZone) { }
 
   ngOnInit() {
+
+    this.authService.getUser()
+      .subscribe(user => {
+
+        (user) ? this.usuario = user : this.usuario = {};
+
+      })
+
+  }
+
+
+  lougout() {
+    this.authService.lougout();
+    this.router.navigateByUrl('login')
   }
 
 }

@@ -15,6 +15,7 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -30,7 +31,10 @@ import { LoginPageComponent } from './login-page/login-page.component';
     AngularFireAuthModule,
     AngularFireModule.initializeApp( environment.firebaseConfig),
     AngularFirestoreModule, 
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ProgressSpinnerModule,
     
   ],
   providers: [

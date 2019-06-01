@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { from, Observable, throwError } from 'rxjs';
+import { from, Observable, throwError, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -14,7 +15,8 @@ export class AuthServiceService {
 
   constructor(
     private afs: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private router: Router
   ) { }
 
   /*
@@ -96,7 +98,7 @@ export class AuthServiceService {
           return this.userCollection.doc(u.user.uid).valueChanges();
         }),
         catchError(() => {
-          return throwError('Credenciais Inváçidas ou usuário não está registardo.')
+          return throwError('Credenciais Inválidas ou usuário não está registardo.')
         })
       )
   }
@@ -104,8 +106,22 @@ export class AuthServiceService {
 
   lougout() {
     this.afAuth.auth.signOut();
+    
   }
 
+
+  getUser(): Observable<any> {
+    return this.afAuth.authState
+    .pipe(
+      switchMap( (user) => {
+        if(user){
+          return this.userCollection.doc(user.uid).valueChanges()
+        }else{
+          of(null)
+        }
+      })
+    )
+  }
 
 
 

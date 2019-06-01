@@ -1,64 +1,227 @@
 <div class="container mt-4">
   <div class="row">
-    <div class="col-3">
+    <div class="col-2">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
           aria-controls="v-pills-home" aria-selected="true">Home</a>
         <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-          aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+          aria-controls="v-pills-profile" aria-selected="false">Perfil</a>
         <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-          aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+          aria-controls="v-pills-messages" aria-selected="false">Dados do site</a>
         <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-          aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-        <a class="nav-link" routerLink="/" role="tab"
-          aria-controls="v-pills-settings" aria-selected="false">Sair</a>
+          aria-controls="v-pills-settings" aria-selected="false">Entre em contato</a>
+        <a class="nav-link" href="javascript::void()" (click)="lougout()">Sair</a>
       </div>
+      <!-- <button class="btn btn-link" (click)="lougout()">Sair</button> -->
     </div>
-    <div class="col-9">
+    <div class="col-8">
       <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-          <h2>Dashboard</h2>
-          <p>
-              Cillum ad ut irure tempor velit nostrud occaecat ullamco aliqua anim Lorem sint. Veniam sint duis
-               incididunt do esse magna mollit excepteur laborum qui. Id id reprehenderit sit est eu aliqua 
-               occaecat quis et velit excepteur laborum mollit dolore eiusmod. Ipsum dolor in occaecat commodo 
-               et voluptate minim reprehenderit mollit pariatur. Deserunt non laborum enim et cillum eu deserunt 
-               excepteur ea incididunt minim occaecat.
-          </p>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Dashboard</h2>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
+              <p class="card-text">
+                Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
+              </p>
+              <p class="card-text">
+                Data da compra: <b> {{ usuario.created_at }} </b>
+              </p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+
+          <div class="card mt-2">
+            <div class="card-header">
+              <h2>Veja o que fazer agora para ter seu site.</h2>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
+              <p class="card-text">
+                Agora você deve acessa o menu <b>Dados do site </b> ao lado e seguir todos os passos preenchendo
+                os campos com todas as informações necessárias.
+              </p>
+              <p class="card-text">
+                Após nos enviar todos os dados, seu site estará no ar em até 10 dias úteis.
+              </p>
+
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+
         </div>
-       
+
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-            <h2>Profile</h2>
-            <p>
-                Cillum ad ut irure tempor velit nostrud occaecat ullamco aliqua anim Lorem sint. Veniam sint duis
-                 incididunt do esse magna mollit excepteur laborum qui. Id id reprehenderit sit est eu aliqua 
-                 occaecat quis et velit excepteur laborum mollit dolore eiusmod. Ipsum dolor in occaecat commodo 
-                 et voluptate minim reprehenderit mollit pariatur. Deserunt non laborum enim et cillum eu deserunt 
-                 excepteur ea incididunt minim occaecat.
-            </p>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Perfil</h2>
+            </div>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Nome: <b>{{ usuario.firstName }} {{ usuario.lastName }} </b>
+              </li>
+              <li class="list-group-item">
+                CPF: <b>{{ usuario.cpf }} </b>
+              </li>
+              <li class="list-group-item">
+                E-mail: <b>{{ usuario.email }} </b>
+              </li>
+              <li class="list-group-item">
+                Estado: <b>{{ usuario.estado }} </b>
+              </li>
+              <li class="list-group-item">
+                Cidade: <b>{{ usuario.cidade }} </b>
+              </li>
+              <li class="list-group-item">
+                Bairro: <b>{{ usuario.bairro }} </b>
+              </li>
+              <li class="list-group-item">
+                Rua: <b>{{ usuario.rua }} </b>
+              </li>
+              <li class="list-group-item">
+                Número: <b>{{ usuario.numero }} </b>
+              </li>
+              <li class="list-group-item">
+                Complemento: <b> {{ usuario.complemento }} </b>
+              </li>
+            </ul>
+          </div>
+
         </div>
-       
+
         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-            <h2>Messeges</h2>
-            <p>
-                Cillum ad ut irure tempor velit nostrud occaecat ullamco aliqua anim Lorem sint. Veniam sint duis
-                 incididunt do esse magna mollit excepteur laborum qui. Id id reprehenderit sit est eu aliqua 
-                 occaecat quis et velit excepteur laborum mollit dolore eiusmod. Ipsum dolor in occaecat commodo 
-                 et voluptate minim reprehenderit mollit pariatur. Deserunt non laborum enim et cillum eu deserunt 
-                 excepteur ea incididunt minim occaecat.
-            </p>
+          <div class="card">
+            <div class="card-header">
+              <h2>Dados do site</h2>
+            </div>
+            <div class="card-body">
+              <div class="col-md-12">
+                <iframe
+                  src="https://docs.google.com/forms/d/e/1FAIpQLSeYi0o9ERTVH4S48HhWZXGf1uU7nRETYpA6ZNIjsSU8czl_aQ/viewform?embedded=true"
+                  width="100%" height="1047" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
         </div>
         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-            <h2>Settings</h2>
-            <p>
-                Cillum ad ut irure tempor velit nostrud occaecat ullamco aliqua anim Lorem sint. Veniam sint duis
-                 incididunt do esse magna mollit excepteur laborum qui. Id id reprehenderit sit est eu aliqua 
-                 occaecat quis et velit excepteur laborum mollit dolore eiusmod. Ipsum dolor in occaecat commodo 
-                 et voluptate minim reprehenderit mollit pariatur. Deserunt non laborum enim et cillum eu deserunt 
-                 excepteur ea incididunt minim occaecat.
-            </p>
+          <div class="card">
+            <div class="card-header">
+              <h2>Nossos contatos: </h2>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
+              <p class="card-text">
+                Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
+              </p>
+              <p class="card-text">
+                Data da compra: <b> {{ usuario.created_at }} </b>
+              </p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+
+
+
+
+    <div class="col-2">
+
+      <div class="row">
+        <div class="card bg-dark text-white text-center">
+          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">
+              Modelo 01
+            </p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+              content.</p> -->
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
+              Ver Modelo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="card bg-success text-white text-center">
+          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">
+              Modelo 01
+            </p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p> -->
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
+              Ver Modelo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="card bg-warning text-white text-center">
+          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">
+              Modelo 01
+            </p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                  content.</p> -->
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
+              Ver Modelo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="card  bg-secondary text-white text-center">
+          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">
+              Modelo 01
+            </p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                    content.</p> -->
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
+              Ver Modelo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="card bg-danger  text-white text-center">
+          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <p class="card-title">
+              Modelo 01
+            </p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                      content.</p> -->
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
+              Ver Modelo
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
   </div>
 </div>
