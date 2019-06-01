@@ -96,7 +96,36 @@
                 </div>
 
               </div>
-              <div class="col-md-6">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="">DDD: <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" formControlName="ddd"
+                    placeholder="EX: 99">
+                  <div
+                    *ngIf="clientForm.controls.ddd.hasError('required') && clientForm.controls['ddd'].touched"
+                    class="text-danger msg-erro">
+                    O DDD é um campo obrigatório
+                  </div>
+                  <div *ngIf="clientForm.controls.ddd.hasError('pattern')" class="text-danger msg-erro">
+                    O Telefone só pode conter números
+                  </div>
+                  <div *ngIf="clientForm.controls.ddd.hasError('minlength')" class="text-danger msg-erro">
+                    O DDD deve conter {{clientForm.controls.ddd.errors.minlength.requiredLength}}
+                    digitos. Você digitou:
+                    {{ clientForm.controls.ddd.errors.minlength.actualLength}}
+                    digitos.
+                  </div>
+
+                  <div *ngIf="clientForm.controls.ddd.hasError('maxlength')" class="text-danger msg-erro">
+                    O DDD deve conter {{clientForm.controls.ddd.errors.maxlength.requiredLength}}
+                    digitos. Você digitou:
+                    {{ clientForm.controls.ddd.errors.maxlength.actualLength}}
+                    digitos.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="">Telefone: <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" formControlName="telefone"
@@ -124,6 +153,7 @@
                   </div>
                 </div>
               </div>
+
             </div>
             <!-- fecha row -->
 
@@ -397,11 +427,11 @@
                               </div>
 
                               <ng-template #selectOptions>
-                                <select formControlName="parcelas" class="form-control">
+                                <select formControlName="parcelas" class="form-control" (focusout)="testaSelect()" >
 
                                   <option>Parcelamento habilidato para escolha</option>
 
-                                  <option *ngFor='let parcela of escolherQntParcelas' [value]="parcela.ID">
+                                  <option *ngFor='let parcela of escolherQntParcelas' [ngValue]="parcela" >
 
                                     <div *ngIf="parcela.interestFree == true">
                                       {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
@@ -513,6 +543,8 @@
                           </div>
                         </div>
 
+
+                        <!-- PAGAMENTO CARTAO BOTAO -->
                         <div class="row">
                           <div class="col-md-6">
                             <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
@@ -520,6 +552,7 @@
                               src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
                               width="200" alt="">
                           </div>
+
                           <div class="col-md-6 float-right">
                             <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
                               apoiar a sua experiência em todo este site e para outros fins descritos na nossa
@@ -527,6 +560,8 @@
                                 Política de Privacidade.
                               </a>
                             </p>
+
+                            <!-- BOTAO -->
                             <button type="submit" class="btn btn-success btn-block btn-lg"
                               [disabled]="!clientForm.valid">
                               Realizar Pagamento
@@ -541,7 +576,7 @@
 
                   </div>
 
-
+                  <!-- BOLETO -->
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
                     <div class="row">
@@ -574,6 +609,7 @@
 
                       </div>
 
+                      <!-- BOTÃO -->
                       <div class="col-md-5 ml-auto">
                         <button class="btn btn-lg btn-success btn-block " (click)="gerarBoleto()"
                           [disabled]="!clientForm.valid">GERAR BOLETO</button>
@@ -583,6 +619,10 @@
 
                     </div>
                   </div>
+
+
+
+
                 </div>
               </div>
             </div>
@@ -653,7 +693,7 @@
       </div>
     </div>
     <div class="col-md-3">
-      <a routerLink="/admin/login" class="btn btn-info btn-block btn-lg">ACESSAR PAINEL</a>
+      <a routerLink="/login" class="btn btn-info btn-block btn-lg">ACESSAR PAINEL</a>
     </div>
   </div>
 </div>

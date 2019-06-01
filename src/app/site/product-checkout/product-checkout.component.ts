@@ -62,14 +62,19 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                                //'66523165019',
-    telefone: ['99988351234', [
+    telefone: ['988351234', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
-      Validators.minLength(11),
-      Validators.maxLength(11)]],
+      Validators.minLength(9),
+      Validators.maxLength(9)]],
+    ddd: ['99', [
+      Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(2),
+      Validators.maxLength(2)]],
 
     // DADOS DE ENDEREÇO
-    cep: ['659000000', [Validators.required]],
+    cep: ['65900000', [Validators.required]],
     estado: ['MA', [Validators.required]],
     cidade: ['Imperatriz', [Validators.required]],
     bairro: ['Vila Lobão', [Validators.required]],
@@ -107,20 +112,14 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                  // preenchido dinamicamente
-    // amount: [''],
-    // id: [''],
     created_at: [''],
     updated_at: [''],
 
     nascimento: ['1984-09-26', [Validators.required]],
-    // estadoCard: [''],
-    // cidadeCard: [''],
-    // bairroCard: [''],
-    // cepCard: [''],
-    // ruaCard: [''],
-    // numeroCard: [''],
-    // titleProduct: [''],
-    // idProduct: [''],
+
+    amount: [''],
+    titleProduct: [''],
+    idProduct: [''],
 
     codTransactionPagSeguro: [''],
 
@@ -177,7 +176,10 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
 
-
+  testaSelect() {
+    
+    console.log(this.clientForm.value.parcelas)
+  }
 
 
   // FUNÇÃO PARA GERAR BOLETO DO PLANO
@@ -294,6 +296,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
 
+
   //AO CLICAR NO BOTÃO PAGAR
   onSubmit() {
     this.loadingPage = true;
@@ -315,13 +318,16 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           console.log(response);
           this.buscaBandeira();
 
+
+
           this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
-          // this.clientForm.value.created_at = moment().format('DD/MM/YYYY, H:mm:ss');
-
-          // console.log(moment().format('L'))
-          // console.log(moment().format('DD/MM/YYYY, H:mm:ss'))
-
           this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
+          this.clientForm.value.titleProduct = this.produto.title;
+          this.clientForm.value.idProduct =  moment().format('YYYYMMDDHmmss');
+          this.clientForm.value.amount = this.produto.price;
+
+
+
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
@@ -344,9 +350,10 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                       this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
                       this.authService.updateUser(resultRegister, this.clientForm.value);
 
+                    }, err => {
+                      console.log(err)
+                      this.loadingPage = false;
                     });
-
-
 
               },
               (error) => {
