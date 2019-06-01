@@ -1,6 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthServiceService } from 'src/app/service/auth-service.service';
 import { Router } from '@angular/router';
+import * as  moment from 'moment';
+import { Observable } from 'rxjs';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,24 +13,29 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   usuario: any = {};
+  isAuthenticated: boolean;
 
-  constructor(private authService: AuthServiceService, private router: Router, private zone: NgZone) { }
+  constructor(
+    private authService: AuthServiceService,
+    private router: Router,
+    private zone: NgZone) {
+    
+    
+  }
 
   ngOnInit() {
-
     this.authService.getUser()
-      .subscribe(user => {
+    .subscribe(user => {
+      this.usuario = user;
+    });
 
-        (user) ? this.usuario = user : this.usuario = {};
-
-      })
-
+   
   }
 
 
   lougout() {
-    this.authService.lougout();
-    this.router.navigateByUrl('login')
+    this.authService.lougout()
+    this.router.navigateByUrl('/login')
   }
 
 }

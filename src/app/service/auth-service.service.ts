@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { from, Observable, throwError, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import * as firebase from 'firebase/app';
 
 
 @Injectable({
@@ -105,23 +106,63 @@ export class AuthServiceService {
 
 
   lougout() {
-    this.afAuth.auth.signOut();
-    
+    this.afAuth.auth.signOut()
   }
 
 
   getUser(): Observable<any> {
     return this.afAuth.authState
-    .pipe(
-      switchMap( (user) => {
-        if(user){
-          return this.userCollection.doc(user.uid).valueChanges()
-        }else{
-          of(null)
-        }
-      })
-    )
+      .pipe(
+        switchMap((user) => {
+          if (user) {
+            return this.userCollection.doc(user.uid).valueChanges()
+          } else {
+            of(null)
+          }
+        })
+      )
   }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.afAuth.authState
+      .pipe(
+        map((user) => {
+          if (user) {
+            return true
+          } else {
+            of(null)
+          }
+        })
+      )
+  }
+
+  // getUser() {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       return this.userCollection.doc(user.uid).valueChanges()
+  //     } else {
+  //       of(null)
+  //     }
+  //   })
+  // }
+
+
+  // isAuthenticated() {
+  //   return firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       console.log('Usuario conectado')
+  //     } else {
+  //       // No user is signed in.
+  //       console.log('Usuario não conectado')
+  //     }
+  //   });
+
+
+
+
+
+
+}
 
 
 
@@ -151,4 +192,4 @@ export class AuthServiceService {
   // }
 
 
-}
+// }

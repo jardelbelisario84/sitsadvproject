@@ -27,10 +27,9 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {
 
-    
+
   
   }
-
 
 
 
@@ -41,9 +40,9 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(email, password)
     .subscribe(
       (object) => {
-      this.loadingPage = false;
-      console.log("logado")
-      this.router.navigate(['/admin/dashboard']);
+        console.log("logado")
+        this.router.navigate(['/admin/dashboard']);
+        this.loadingPage = false;
     },
     (err) => { 
       this.loadingPage = false;

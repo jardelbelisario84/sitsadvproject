@@ -10,7 +10,7 @@
           aria-controls="v-pills-messages" aria-selected="false">Dados do site</a>
         <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
           aria-controls="v-pills-settings" aria-selected="false">Entre em contato</a>
-        <a class="nav-link" href="javascript::void()" (click)="lougout()">Sair</a>
+        <a class="nav-link" href="javascript:void(0)" (click)="lougout()">Sair</a>
       </div>
       <!-- <button class="btn btn-link" (click)="lougout()">Sair</button> -->
     </div>
@@ -28,11 +28,34 @@
                 Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
               </p>
               <p class="card-text">
-                Data da compra: <b> {{ usuario.created_at }} </b>
+                Data da compra: 
+                <span class="badge badge-success">
+                    <b> {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}} </b>
+                </span> 
               </p>
+              <p class="card-text">
+                Data de expiração: 
+                <span class="badge badge-danger text-white">
+                    <b> {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}} </b>
+                </span>
+              </p>
+              <!-- <p class="card-text">
+                Restam: <b> {{ usuario.created_at | amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDifference: today :'days' : true}} dias  </b>
+              </p> -->
               <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
           </div>
+
+
+
+          <!-- <span class="badge badge-primary">Primary</span>
+          <span class="badge badge-secondary">Secondary</span>
+          <span class="badge badge-success">Success</span>
+          <span class="badge badge-danger">Danger</span>
+          <span class="badge badge-warning">Warning</span>
+          <span class="badge badge-info">Info</span>
+          <span class="badge badge-light">Light</span>
+          <span class="badge badge-dark">Dark</span> -->
 
           <div class="card mt-2">
             <div class="card-header">
