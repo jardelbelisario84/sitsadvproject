@@ -14,10 +14,10 @@
     <div class="card-deck mb-3 text-center">
 
       <div class="card mb-4 box-shadow" *ngFor="let produto of produtos">
+        <img class="card-img-top" [src]="produto.image" alt="Card image cap">
         <div class="card-header">
           <h4 class="my-0 font-weight-normal">{{produto.title}}</h4>
         </div>
-        <img class="card-img-top" [src]="produto.image" alt="Card image cap">
         <div class="card-body">
           <h1 class="card-title pricing-card-title text-success">R$ {{produto.price}}<small
               class="text-success">/Ano</small></h1>
