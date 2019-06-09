@@ -9,24 +9,91 @@
 
 <div class="container mt-4 mb-5" *ngIf="!loadingPage">
 
-  <div class="row mt-2 mb-2">
+
+
+
+  <div class="mt-3" *ngIf="!hideBlock">
+
+
+    <div class="mt-5 mb-5">
+
+      <div class="row">
+        <div class="col-6">
+
+          <h5>TEM ALGUM CUPOM DE DESCONTO? </h5>
+          <p>Insire-o aqui abaixo!</p>
+
+          <form class="form-inline" (ngSubmit)="cupomDesconto()">
+            <div class="form-group">
+              <input type="text" [(ngModel)]="cupomText" name="cupomText" class="form-control"
+                placeholder="Digite um cupom válido">
+            </div>
+            <button type="submit" class="btn btn-primary">Aplicar Cupom</button>
+          </form>
+
+        </div>
+
+        <div class="col-6 d-flex align-content-center flex-wrap">
+          <div class="card text-center">
+            <div class="card-header">
+              VALOR
+            </div>
+            <div class="card-body">
+              <h1 class="card-title  text-success">
+                <b> R$ {{produto.price}}/Ano </b>
+              </h1>
+              <p class="card-text">
+                Caso tenha um Cupom de Desconto, insire-o no campo ao lado.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="progress mt-3 mb-1">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"
+        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Planos</a></li>
+        <li class="breadcrumb-item"><a routerLink="/produtos/{{produto.slug}}">Detalhe</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row mt-4 mb-2">
     <div class="col-md">
       <!-- <a routerLink="/produtos/plano-basic" class="btn btn-light float-right"> Voltar</a> -->
     </div>
   </div>
   <!-- fecha row mt-2 mb-2 -->
 
+
+
+
+
   <div class="row" *ngIf="!hideBlock">
 
     <div class="col-md-8">
 
+
+
       <h5 class="msg-erro text-danger">Atenção: Campos com asterísco (*) são obrigatórios.</h5>
-      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit($event)">
 
         <div class="card mt-3">
           <div class="card-header">
             <h4>DADOS PESSOAIS</h4>
           </div>
+
           <div class="card-body">
 
             <div class="row">
@@ -99,10 +166,8 @@
               <div class="col-md-2">
                 <div class="form-group">
                   <label for="">DDD: <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" formControlName="ddd"
-                    placeholder="EX: 99">
-                  <div
-                    *ngIf="clientForm.controls.ddd.hasError('required') && clientForm.controls['ddd'].touched"
+                  <input type="text" class="form-control" formControlName="ddd" placeholder="EX: 99">
+                  <div *ngIf="clientForm.controls.ddd.hasError('required') && clientForm.controls['ddd'].touched"
                     class="text-danger msg-erro">
                     O DDD é um campo obrigatório
                   </div>
@@ -274,9 +339,7 @@
                     class="text-danger msg-erro">
                     O E-mail é obrigatório
                   </div>
-                  <div
-                    *ngIf="clientForm.controls.emailAccess.hasError('email')"
-                    class="text-danger msg-erro">
+                  <div *ngIf="clientForm.controls.emailAccess.hasError('email')" class="text-danger msg-erro">
                     Insira um e-mail válido.
                   </div>
                 </div>
@@ -299,6 +362,11 @@
 
         </div>
 
+
+
+
+
+
         <div class="row" *ngIf="!hideBlock">
           <div class="col-md-12">
             <div class="card mt-3">
@@ -319,262 +387,289 @@
                   </li>
                 </ul>
 
+
+
+
+
+
                 <div class="tab-content  mt-4" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                     <div class="row">
-                      <div class="col-md-12">
+                      <div [formGroup]="credicardForm" (ngSubmit)="onSubmit($event)">
 
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="form-group">
-                              <label for="nome">Nome do portador (como gravado no cartão): <span
-                                  class="text-danger">*</span></label>
-                              <input type="text" formControlName="nomePortadorCard" name="nome" class="form-control"
-                                placeholder="Nome do portador do cartão">
-                              <div
-                                *ngIf="clientForm.controls.nomePortadorCard.hasError('required') && clientForm.controls['nomePortadorCard'].touched"
-                                class="text-danger msg-erro">
-                                O Nome do portador do cartão é obrigatório
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <div class="col-md-12">
 
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label for="inputCreditNum">Número do cartão: <span class="text-danger">*</span></label>
-                              <input type="number" class="form-control" placeholder="Insira o número do cartão"
-                                formControlName="numCard" name="numCard" (focusout)="buscaBandeira()">
-                              <div
-                                *ngIf="clientForm.controls.numCard.hasError('required') && clientForm.controls['numCard'].touched"
-                                class="text-danger msg-erro">
-                                O Número do cartão é obrigatório
-                              </div>
-                              <div *ngIf="clientForm.controls.numCard.hasError('pattern')" class="text-danger msg-erro">
-                                O Número do cartão só pode conter números
-                              </div>
-                              <div *ngIf="clientForm.controls.numCard.hasError('minlength')"
-                                class="text-danger msg-erro">
-                                O Número do cartão deve conter
-                                {{clientForm.controls.numCard.errors.minlength.requiredLength}}
-                                dígitos. Você digitou: {{ clientForm.controls.numCard.errors.minlength.actualLength}}
-                                dígitos.
-                              </div>
-
-                              <div *ngIf="clientForm.controls.numCard.hasError('maxlength')"
-                                class="text-danger msg-erro">
-                                O Número do cartão deve conter
-                                {{clientForm.controls.numCard.errors.maxlength.requiredLength}}
-                                dígitos. Você digitou: {{ clientForm.controls.numCard.errors.maxlength.actualLength}}
-                                dígitos.
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label for="nome">Nome do portador (como gravado no cartão): <span
+                                    class="text-danger">*</span></label>
+                                <input type="text" formControlName="nomePortadorCard" name="nome" class="form-control"
+                                  placeholder="Nome do portador do cartão">
+                                <div
+                                  *ngIf="credicardForm.controls.nomePortadorCard.hasError('required') && credicardForm.controls['nomePortadorCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Nome do portador do cartão é obrigatório
+                                </div>
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label for="inputCreditMonth">Mês: <span class="text-danger">*</span></label>
-                              <input type="number" class="form-control" placeholder="Mês de vencimento"
-                                formControlName="mesValidadeCard" name="mesValidadeCard" (focusout)="buscaBandeira()">
-                              <div
-                                *ngIf="clientForm.controls.mesValidadeCard.hasError('required') && clientForm.controls['mesValidadeCard'].touched"
-                                class="text-danger msg-erro">
-                                O Mês de vencimento do cartão é obrigatório
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="inputCreditNum">Número do cartão: <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" placeholder="Insira o número do cartão"
+                                  formControlName="numCard" name="numCard" (focusout)="buscaBandeira()">
+                                <div
+                                  *ngIf="credicardForm.controls.numCard.hasError('required') && credicardForm.controls['numCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Número do cartão é obrigatório
+                                </div>
+                                <div *ngIf="credicardForm.controls.numCard.hasError('pattern')"
+                                  class="text-danger msg-erro">
+                                  O Número do cartão só pode conter números
+                                </div>
+                                <div *ngIf="credicardForm.controls.numCard.hasError('minlength')"
+                                  class="text-danger msg-erro">
+                                  O Número do cartão deve conter
+                                  {{credicardForm.controls.numCard.errors.minlength.requiredLength}}
+                                  dígitos. Você digitou:
+                                  {{ credicardForm.controls.numCard.errors.minlength.actualLength}}
+                                  dígitos.
+                                </div>
+
+                                <div *ngIf="credicardForm.controls.numCard.hasError('maxlength')"
+                                  class="text-danger msg-erro">
+                                  O Número do cartão deve conter
+                                  {{credicardForm.controls.numCard.errors.maxlength.requiredLength}}
+                                  dígitos. Você digitou:
+                                  {{ credicardForm.controls.numCard.errors.maxlength.actualLength}}
+                                  dígitos.
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-2">
+                              <div class="form-group">
+                                <label for="inputCreditMonth">Mês: <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" placeholder="Mês de vencimento"
+                                  formControlName="mesValidadeCard" name="mesValidadeCard" (focusout)="buscaBandeira()">
+                                <div
+                                  *ngIf="credicardForm.controls.mesValidadeCard.hasError('required') && credicardForm.controls['mesValidadeCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Mês de vencimento do cartão é obrigatório
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-2">
+                              <div class="form-group">
+                                <label for="inputCreditYear">Ano: <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" placeholder="Ano de vencimento"
+                                  formControlName="anoValidadeCard" name="anoValidadeCard" (focusout)="buscaBandeira()">
+                                <div
+                                  *ngIf="credicardForm.controls.anoValidadeCard.hasError('required') && credicardForm.controls['anoValidadeCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Ano de vencimento do cartão é obrigatório
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="inputCreditCvv">Cód. de segurança (CVV): <span
+                                    class="text-danger">*</span></label>
+                                <input type="number" formControlName="codSegCard" class="form-control" placeholder="CVV"
+                                  name="codSegCard" (focusout)="buscaBandeira()">
+                                <div
+                                  *ngIf="credicardForm.controls.codSegCard.hasError('required') && credicardForm.controls['codSegCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Código de segurança do cartão é obrigatório
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-8">
+                              <div class="form-group">
+                                <label for="">Parcelas (Valor mínimo R$ 5,00): <span
+                                    class="text-danger">*</span></label>
+
+                                <div *ngIf="!escolheSelect; else selectOptions">
+                                  <select disabled="disabled" class="form-control">
+                                    <option>Escolha após preencher dados do Cartão.</option>
+                                  </select>
+                                </div>
+
+                                <ng-template #selectOptions>
+                                  <!-- <select formControlName="parcelas" class="form-control" (focusout)="testaSelect()"> -->
+                                  <select formControlName="parcelas" class="form-control">
+
+                                    <option>Parcelamento habilidato para escolha</option>
+
+                                    <option *ngFor='let parcela of escolherQntParcelas' [ngValue]="parcela">
+
+                                      <div *ngIf="parcela.interestFree == true">
+                                        {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
+                                        pagar:
+                                        {{ parcela.totalAmount}}
+                                      </div>
+                                      <div *ngIf=" parcela.interestFree == false">
+                                        {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
+                                        pagar:
+                                        {{ parcela.totalAmount}}
+                                      </div>
+
+                                    </option>
+                                  </select>
+                                </ng-template>
+
+
+                                <div *ngIf="escolheSelect" class="text-success msg-erro">
+                                  Parcelamento habilidato para escolha
+                                </div>
+                                <div
+                                  *ngIf="credicardForm.controls.parcelas.hasError('required') && credicardForm.controls['parcelas'].touched"
+                                  class="text-danger msg-erro">
+                                  Selecione uma das opções acima.
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="">CPF do portador: <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="EX: 12345678901"
+                                  formControlName="cpfCard" name="cpfCard">
+                                <div
+                                  *ngIf="credicardForm.controls.cpfCard.hasError('required') && credicardForm.controls['cpfCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O CPF é um campo obrigatório
+                                </div>
+                                <div *ngIf="credicardForm.controls.cpfCard.hasError('pattern')"
+                                  class="text-danger msg-erro">
+                                  O CPF só pode conter números
+                                </div>
+                                <div class="text-danger msg-erro"
+                                  *ngIf="credicardForm.controls.cpfCard.hasError('cpfNotValid')">
+                                  O CPF não é válido.
+                                </div>
+                                <div *ngIf="credicardForm.controls.cpfCard.hasError('minlength')"
+                                  class="text-danger msg-erro">
+                                  O CPF deve conter {{credicardForm.controls.cpfCard.errors.minlength.requiredLength}}
+                                  caracteres. Você digitou:
+                                  {{ credicardForm.controls.cpfCard.errors.minlength.actualLength}}
+                                  caracteres.
+                                </div>
+
+                                <div *ngIf="credicardForm.controls.cpfCard.hasError('maxlength')"
+                                  class="text-danger msg-erro">
+                                  O CPF deve conter {{credicardForm.controls.cpfCard.errors.maxlength.requiredLength}}
+                                  caracteres. Você digitou:
+                                  {{ credicardForm.controls.cpfCard.errors.maxlength.actualLength}}
+                                  caracteres.
+                                </div>
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-md-2">
-                            <div class="form-group">
-                              <label for="inputCreditYear">Ano: <span class="text-danger">*</span></label>
-                              <input type="number" class="form-control" placeholder="Ano de vencimento"
-                                formControlName="anoValidadeCard" name="anoValidadeCard" (focusout)="buscaBandeira()">
-                              <div
-                                *ngIf="clientForm.controls.anoValidadeCard.hasError('required') && clientForm.controls['anoValidadeCard'].touched"
-                                class="text-danger msg-erro">
-                                O Ano de vencimento do cartão é obrigatório
+                          <div class="row">
+                            <div class="col-md-8">
+                              <div class="form-group">
+                                <label for="">Data de nascimento do portador: <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" placeholder="Data Nacimento"
+                                  formControlName="nascimento" name="nascimento">
+                                <div
+                                  *ngIf="credicardForm.controls.nascimento.hasError('required') && credicardForm.controls['nascimento'].touched"
+                                  class="text-danger msg-erro">
+                                  Data de nascimento é obrigatória
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label for="">Telefone do portador: <span class="text-danger">*</span></label>
+                                <input type="text-success" class="form-control" placeholder="EX:99123451234"
+                                  formControlName="telefoneCard" name="telefoneCard">
+                                <div
+                                  *ngIf="credicardForm.controls.telefoneCard.hasError('required') && credicardForm.controls['telefoneCard'].touched"
+                                  class="text-danger msg-erro">
+                                  O Telefone é obrigatório
+                                </div>
+                                <div *ngIf="credicardForm.controls.telefoneCard.hasError('pattern')"
+                                  class="text-danger msg-erro">
+                                  O Telefone só pode conter números
+                                </div>
+                                <div *ngIf="credicardForm.controls.telefoneCard.hasError('minlength')"
+                                  class="text-danger msg-erro">
+                                  O Telefone deve conter
+                                  {{credicardForm.controls.telefoneCard.errors.minlength.requiredLength}}
+                                  digitos. Você digitou:
+                                  {{ credicardForm.controls.telefoneCard.errors.minlength.actualLength}}
+                                  digitos.
+                                </div>
+
+                                <div *ngIf="credicardForm.controls.telefoneCard.hasError('maxlength')"
+                                  class="text-danger msg-erro">
+                                  O Telefone deve conter
+                                  {{credicardForm.controls.telefoneCard.errors.maxlength.requiredLength}}
+                                  digitos. Você digitou:
+                                  {{ credicardForm.controls.telefoneCard.errors.maxlength.actualLength}}
+                                  digitos.
+                                </div>
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label for="inputCreditCvv">Cód. de segurança (CVV): <span
-                                  class="text-danger">*</span></label>
-                              <input type="number" formControlName="codSegCard" class="form-control" placeholder="CVV"
-                                name="codSegCard" (focusout)="buscaBandeira()">
-                              <div
-                                *ngIf="clientForm.controls.codSegCard.hasError('required') && clientForm.controls['codSegCard'].touched"
-                                class="text-danger msg-erro">
-                                O Código de segurança do cartão é obrigatório
-                              </div>
+
+                          <!-- PAGAMENTO CARTAO BOTAO -->
+                          <div class="row">
+                            <div class="col-md-6">
+                              <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
+                              <img
+                                src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
+                                width="200" alt="">
+                            </div>
+
+                            <div class="col-md-6 float-right">
+                              <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
+                                apoiar a sua experiência em todo este site e para outros fins descritos na nossa
+                                <a href="javascript::void()" (click)="display = true">
+                                  Política de Privacidade.
+                                </a>
+                              </p>
+
+                              <!-- BOTAO -->
+                              <button type="submit" class="btn peach-gradient btn-block btn-lg text-white"
+                                [disabled]="!credicardForm.valid" id="clickCreditCard">
+                                Realizar Pagamento
+                              </button>
+                              <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
+                                ativado para finalizar seu pedido.</p>
                             </div>
                           </div>
 
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-8">
-                            <div class="form-group">
-                              <label for="">Parcelas (Valor mínimo R$ 5,00): <span class="text-danger">*</span></label>
-
-                              <div *ngIf="!escolheSelect; else selectOptions">
-                                <select disabled="disabled" class="form-control">
-                                  <option>Escolha após preencher dados do Cartão.</option>
-                                </select>
-                              </div>
-
-                              <ng-template #selectOptions>
-                                <select formControlName="parcelas" class="form-control" (focusout)="testaSelect()" >
-
-                                  <option>Parcelamento habilidato para escolha</option>
-
-                                  <option *ngFor='let parcela of escolherQntParcelas' [ngValue]="parcela" >
-
-                                    <div *ngIf="parcela.interestFree == true">
-                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Sem Juros - Total a
-                                      pagar:
-                                      {{ parcela.totalAmount}}
-                                    </div>
-                                    <div *ngIf=" parcela.interestFree == false">
-                                      {{parcela.quantity}} x de {{ parcela.installmentAmount}} Com Juros - Total a
-                                      pagar:
-                                      {{ parcela.totalAmount}}
-                                    </div>
-
-                                  </option>
-                                </select>
-                              </ng-template>
-
-
-                              <div *ngIf="escolheSelect" class="text-success msg-erro">
-                                Parcelamento habilidato para escolha
-                              </div>
-                              <div
-                                *ngIf="clientForm.controls.parcelas.hasError('required') && clientForm.controls['parcelas'].touched"
-                                class="text-danger msg-erro">
-                                Selecione uma das opções acima.
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label for="">CPF do portador: <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control" placeholder="EX: 12345678901"
-                                formControlName="cpfCard" name="cpfCard">
-                              <div
-                                *ngIf="clientForm.controls.cpfCard.hasError('required') && clientForm.controls['cpfCard'].touched"
-                                class="text-danger msg-erro">
-                                O CPF é um campo obrigatório
-                              </div>
-                              <div *ngIf="clientForm.controls.cpfCard.hasError('pattern')" class="text-danger msg-erro">
-                                O CPF só pode conter números
-                              </div>
-                              <div class="text-danger msg-erro"
-                                *ngIf="clientForm.controls.cpfCard.hasError('cpfNotValid')">
-                                O CPF não é válido.
-                              </div>
-                              <div *ngIf="clientForm.controls.cpfCard.hasError('minlength')"
-                                class="text-danger msg-erro">
-                                O CPF deve conter {{clientForm.controls.cpfCard.errors.minlength.requiredLength}}
-                                caracteres. Você digitou: {{ clientForm.controls.cpfCard.errors.minlength.actualLength}}
-                                caracteres.
-                              </div>
-
-                              <div *ngIf="clientForm.controls.cpfCard.hasError('maxlength')"
-                                class="text-danger msg-erro">
-                                O CPF deve conter {{clientForm.controls.cpfCard.errors.maxlength.requiredLength}}
-                                caracteres. Você digitou: {{ clientForm.controls.cpfCard.errors.maxlength.actualLength}}
-                                caracteres.
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-md-8">
-                            <div class="form-group">
-                              <label for="">Data de nascimento do portador: <span class="text-danger">*</span></label>
-                              <input type="date" class="form-control" placeholder="Data Nacimento"
-                                formControlName="nascimento" name="nascimento">
-                              <div
-                                *ngIf="clientForm.controls.nascimento.hasError('required') && clientForm.controls['nascimento'].touched"
-                                class="text-danger msg-erro">
-                                Data de nascimento é obrigatória
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-4">
-                            <div class="form-group">
-                              <label for="">Telefone do portador: <span class="text-danger">*</span></label>
-                              <input type="text-success" class="form-control" placeholder="EX:99123451234"
-                                formControlName="telefoneCard" name="telefoneCard">
-                              <div
-                                *ngIf="clientForm.controls.telefoneCard.hasError('required') && clientForm.controls['telefoneCard'].touched"
-                                class="text-danger msg-erro">
-                                O Telefone é obrigatório
-                              </div>
-                              <div *ngIf="clientForm.controls.telefoneCard.hasError('pattern')"
-                                class="text-danger msg-erro">
-                                O Telefone só pode conter números
-                              </div>
-                              <div *ngIf="clientForm.controls.telefoneCard.hasError('minlength')"
-                                class="text-danger msg-erro">
-                                O Telefone deve conter
-                                {{clientForm.controls.telefoneCard.errors.minlength.requiredLength}}
-                                digitos. Você digitou:
-                                {{ clientForm.controls.telefoneCard.errors.minlength.actualLength}}
-                                digitos.
-                              </div>
-
-                              <div *ngIf="clientForm.controls.telefoneCard.hasError('maxlength')"
-                                class="text-danger msg-erro">
-                                O Telefone deve conter
-                                {{clientForm.controls.telefoneCard.errors.maxlength.requiredLength}}
-                                digitos. Você digitou:
-                                {{ clientForm.controls.telefoneCard.errors.maxlength.actualLength}}
-                                digitos.
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <!-- PAGAMENTO CARTAO BOTAO -->
-                        <div class="row">
-                          <div class="col-md-6">
-                            <!-- <img src="https://blog.shopim.com.br/wp-content/uploads/2017/03/pagseguro-1100x540.jpg" width="300" alt=""> -->
-                            <img
-                              src="https://i2.wp.com/lilianmendanha.com.br/wp-content/uploads/2018/07/comprar-com-pagseguro-uol.png?w=840"
-                              width="200" alt="">
-                          </div>
-
-                          <div class="col-md-6 float-right">
-                            <p class="info-dados">Os seus dados pessoais serão utilizados para processar a sua compra,
-                              apoiar a sua experiência em todo este site e para outros fins descritos na nossa
-                              <a href="javascript::void()" (click)="display = true">
-                                Política de Privacidade.
-                              </a>
-                            </p>
-
-                            <!-- BOTAO -->
-                            <button type="submit" class="btn btn-success btn-block btn-lg"
-                              [disabled]="!clientForm.valid">
-                              Realizar Pagamento
-                            </button>
-                            <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
-                              ativado para finalizar seu pedido.</p>
-                          </div>
                         </div>
 
                       </div>
+                      <!-- form -->
+
                     </div>
 
                   </div>
+
+
+
+
+
+
+
+
 
                   <!-- BOLETO -->
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -588,10 +683,10 @@
                       <div class="col-md-12">
                         <p>
                           <img src="https://stc.pagseguro.uol.com.br/pagseguro/i/checkout-presentation/ico_boleto.png"
-                            alt="">O
-                          pedido
-                          será confirmado apenas após a confirmação do pagamento. </p>
-                        <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).</p>
+                            alt="">
+                          O pedido será confirmado apenas após a confirmação do pagamento. </p>
+                        <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).
+                        </p>
                         <p>* Após clicar em "Gerar Boleto" você verá um botão com o link para o seu boleto bancário, é
                           possível
                           visualizá=lo, imprimi-lo e pagar pelo site do seu banco ou por uma casa lotérica.</p>
@@ -611,8 +706,8 @@
 
                       <!-- BOTÃO -->
                       <div class="col-md-5 ml-auto">
-                        <button class="btn btn-lg btn-success btn-block " (click)="gerarBoleto()"
-                          [disabled]="!clientForm.valid">GERAR BOLETO</button>
+                        <button type="submit" class="btn btn-lg peach-gradient btn-bloc " [disabled]="!clientForm.valid"
+                          id="clickBoleto">GERAR BOLETO</button>
                         <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
                           ativado para finalizar seu pedido.</p>
                       </div>
@@ -635,6 +730,12 @@
 
     </div>
     <!-- fecha class="col-md-8" -->
+
+
+
+
+
+
 
     <div class="col-md-4">
       <div class="card mb-3">
@@ -662,11 +763,30 @@
     </div>
     <!-- fecha col-md-4 -->
 
+
+
+
+
+
   </div>
   <!-- fecha row -->
 
 </div>
 <!-- fecha container  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div class="container" *ngIf="hideBlockBoleto">
   <div class="row d-flex justify-content-center align-content-center">
@@ -677,14 +797,24 @@
       </div>
     </div>
     <div class="col-md-3">
-      <button (click)="openLinkBoleto()" class="btn btn-info btn-block btn-lg">ABRIR LINK</button>
+      <button (click)="openLinkBoleto()" class="btn peach-gradient btn-block btn-lg">ABRIR LINK</button>
     </div>
   </div>
 </div>
 
 <div class="container" *ngIf="hideBlockCreditCard">
   <div class="row d-flex justify-content-center align-content-center">
+
+
+
     <div class="col-md-12">
+
+      <div class="progress mt-4 mb-4">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"
+          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+      </div>
+
+
       <div class="alert alert-success text-center" role="alert">
         <h1>Parabéns!</h1>
         <p>Compra realizada com sucesso!</p>
@@ -693,10 +823,25 @@
       </div>
     </div>
     <div class="col-md-3">
-      <a routerLink="/login" class="btn btn-info btn-block btn-lg">ACESSAR PAINEL</a>
+      <a routerLink="/login" class="btn peach-gradient btn-block btn-lg text-white">ACESSAR PAINEL</a>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div class="container" *ngIf="!loadingPage">
   <app-rodape></app-rodape>

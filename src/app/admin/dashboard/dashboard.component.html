@@ -27,14 +27,18 @@
               <p class="card-text">
                 Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
               </p>
+              <p class="card-text" *ngIf="usuario.urlBoleto != ''">
+                Imprima seu boleto:  <br>
+                <button class="btn btn-info" (click)="openLinkBoleto()"> Gerar Boleto </button>
+              </p>
               <p class="card-text">
-                Data da compra: 
+                Data da compra:  <br>
                 <span class="badge badge-success">
                     <b> {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}} </b>
                 </span> 
               </p>
               <p class="card-text">
-                Data de expiração: 
+                Data de expiração: <br>
                 <span class="badge badge-danger text-white">
                     <b> {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}} </b>
                 </span>

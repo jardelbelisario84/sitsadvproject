@@ -49,7 +49,7 @@ export class ProdutosService {
                     { title_item:'1 Ano de suporte', check: 'pi-check' },
                     { title_item:'Pacote de artes para redes sociais', check: 'pi-check' },
                     { title_item:'Blog', check: 'pi-check' },
-                    { title_item: 'Logotipo', check: 'pi-times' },
+                    { title_item:'Logotipo', check: 'pi-times' },
                 ],
                 image: '../../../assets/imagens/products/2.png'
             },

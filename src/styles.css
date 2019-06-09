@@ -7,3 +7,79 @@ body{
 .bg-blue-grey {
     background-color: #263238;
 }
+
+.bg-menu-gradient{
+    background: -webkit-linear-gradient(50deg,#45cafc,#303f9f)!important;
+    background: -o-linear-gradient(50deg,#45cafc,#303f9f)!important;
+    background: linear-gradient(40deg,#45cafc,#303f9f)!important;
+}
+
+.aqua-gradient {
+    background: -webkit-linear-gradient(50deg,#2096ff,#05ffa3)!important;
+    background: -o-linear-gradient(50deg,#2096ff,#05ffa3)!important;
+    background: linear-gradient(40deg,#2096ff,#05ffa3)!important;
+}
+
+.aqua-gradient:hover {
+    background: -webkit-linear-gradient(50deg,#1477ce,#07c57f)!important;
+    background: -o-linear-gradient(50deg,#1477ce,#07c57f)!important;
+    background: linear-gradient(40deg,#1477ce,#07c57f)!important;
+}
+
+
+
+.peach-gradient {
+    background: -webkit-linear-gradient(50deg,#f3be2d,#f03d3d)!important;
+    background: -o-linear-gradient(50deg,#f3be2d,#f03d3d)!important;
+    background: linear-gradient(40deg,#f3be2d,#f03d3d)!important;
+}
+
+.peach-gradient:hover {
+    background: -webkit-linear-gradient(50deg,#eeb823,#fa2b2b)!important;
+    background: -o-linear-gradient(50deg,#eeb823,#fa2b2b)!important;
+    background: linear-gradient(40deg,#eeb823,#fa2b2b)!important;
+
+}
+
+/* .peach-gradient {
+    background: -webkit-linear-gradient(50deg,#f8cc51,#fc6262)!important;
+    background: -o-linear-gradient(50deg,#ffd86f,#fc6262)!important;
+    background: linear-gradient(40deg,#ffd86f,#fc6262)!important;
+}
+
+.peach-gradient:hover {
+    background: -webkit-linear-gradient(50deg,#eeb823,#fa2b2b)!important;
+    background: -o-linear-gradient(50deg,#eeb823,#fa2b2b)!important;
+    background: linear-gradient(40deg,#eeb823,#fa2b2b)!important;
+
+} */
+
+
+.blue-gradient {
+    background: -webkit-linear-gradient(50deg,#45cafc,#303f9f)!important;
+    background: -o-linear-gradient(50deg,#45cafc,#303f9f)!important;
+    background: linear-gradient(40deg,#45cafc,#303f9f)!important;
+}
+.blue-gradient:hover {
+    background: -webkit-linear-gradient(50deg,#329ac0,#232e74)!important;
+    background: -o-linear-gradient(50deg,#329ac0,#232e74)!important;
+    background: linear-gradient(40deg,#329ac0,#232e74)!important;
+}
+
+.purple-gradient {
+    background: -webkit-linear-gradient(50deg,#ff6ec4,#7873f5)!important;
+    background: -o-linear-gradient(50deg,#ff6ec4,#7873f5)!important;
+    background: linear-gradient(40deg,#ff6ec4,#7873f5)!important;
+}
+
+.green-gradient {
+    background-color: #00b712;
+    background-image: linear-gradient(315deg, #00b712 0%, #5aff15 74%);
+}
+
+.orange-gradient {
+    background: #ff9966;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ff5e62, #ff9966); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}   

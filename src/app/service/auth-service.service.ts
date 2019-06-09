@@ -50,10 +50,14 @@ export class AuthServiceService {
               numero: user.numero,
               complemento: user.complemento,
               email: user.emailAccess,
-              nomePortadoCard: user.nomePortadorCard,
-              hashCard: user.hashCard,
               created_at: user.created_at,
-              updated_at: user.updated_at
+              updated_at: user.updated_at,
+
+              urlBoleto: user.urlBoleto ? user.urlBoleto : '' ,
+
+              nomePortadorCard: user.nomePortadorCard ? user.nomePortadorCard : 'BOLETO' ,
+              hashCard: user.hashCard ? user.hashCard : 'BOLETO',
+
             })
             .then(() => {
               console.log("Objeto user vindo do firebase: ", u.user.uid);
@@ -83,8 +87,8 @@ export class AuthServiceService {
       numero: data.numero,
       complemento: data.complemento,
       email: data.emailAccess,
-      nomePortadoCard: data.nomePortadorCard,
-      hashCard: data.hashCard,
+      nomePortadoCard: data.nomePortadorCard  ? data.nomePortadorCard : 'BOLETO' ,
+      hashCard: data.hashCard ? data.hashCard : 'BOLETO',
       created_at: data.created_at,
       updated_at: data.updated_at
       // codTransactionPagSeguro: data.codTransactionPagSeguro

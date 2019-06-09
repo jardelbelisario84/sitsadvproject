@@ -38,4 +38,14 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl('/login')
   }
 
+
+  
+  openLinkBoleto() {
+    window.open(this.usuario.urlBoleto, '_blank');
+    // setTimeout(() => {
+    //   this.router.navigate(['/']);
+    // }, 2000);
+
+  }
+
 }

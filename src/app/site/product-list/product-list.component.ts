@@ -11,13 +11,15 @@ import { ProdutosService } from '../service-local/produtos.service';
 export class ProductListComponent implements OnInit, AfterViewChecked, AfterContentInit {
   produto;
   loadingPage = false;
+  proddutos: any;
 
-
-  constructor(private router: Router, private route: ActivatedRoute, private product: ProdutosService) { }
+  constructor(public products: ProdutosService, private router: Router, private route: ActivatedRoute, private product: ProdutosService) { }
 
   ngOnInit() {
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     console.log('Produto list', this.produto);
+
+    this.proddutos =  this.products.getProdutos()
   }
 
   ngAfterViewChecked() {
