@@ -6,6 +6,8 @@ import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 
+import * as toastr from 'toastr';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,27 @@ export class AuthServiceService {
       .onSnapshot(function(doc) {
           console.log("Current data: ", doc.data());
       });
+
+      
   */
+
+  toatrSuccess(titulo: string, mensagem: string) {
+    return toastr.success(mensagem, titulo, {
+      positionClass: "toast-top-center",
+      progressBar: true,
+      closeButton: true,
+    })
+  }
+
+  toatrError(titulo: string, mensagem: string) {
+    return toastr.error(mensagem, titulo, {
+      positionClass: "toast-top-center",
+      progressBar: true,
+      closeButton: true,
+    })
+  }
+
+
   register(user): Observable<any> {
     return from(this.afAuth.auth
       .createUserWithEmailAndPassword(user.emailAccess, user.password))
@@ -53,9 +75,9 @@ export class AuthServiceService {
               created_at: user.created_at,
               updated_at: user.updated_at,
 
-              urlBoleto: user.urlBoleto ? user.urlBoleto : '' ,
+              urlBoleto: user.urlBoleto ? user.urlBoleto : '',
 
-              nomePortadorCard: user.nomePortadorCard ? user.nomePortadorCard : 'BOLETO' ,
+              nomePortadorCard: user.nomePortadorCard ? user.nomePortadorCard : 'BOLETO',
               hashCard: user.hashCard ? user.hashCard : 'BOLETO',
 
             })
@@ -87,7 +109,7 @@ export class AuthServiceService {
       numero: data.numero,
       complemento: data.complemento,
       email: data.emailAccess,
-      nomePortadoCard: data.nomePortadorCard  ? data.nomePortadorCard : 'BOLETO' ,
+      nomePortadoCard: data.nomePortadorCard ? data.nomePortadorCard : 'BOLETO',
       hashCard: data.hashCard ? data.hashCard : 'BOLETO',
       created_at: data.created_at,
       updated_at: data.updated_at
@@ -102,9 +124,11 @@ export class AuthServiceService {
     return from(this.afAuth.auth.signInWithEmailAndPassword(email, password))
       .pipe(
         switchMap((u: firebase.auth.UserCredential) => {
+          this.toatrSuccess('Bem vindo(a)!', 'login realizado com sucesso.')
           return this.userCollection.doc(u.user.uid).valueChanges();
         }),
         catchError(() => {
+          this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.');
           return throwError('Credenciais Inválidas ou usuário não está registardo.')
         })
       )

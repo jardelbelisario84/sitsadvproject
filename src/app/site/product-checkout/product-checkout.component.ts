@@ -335,8 +335,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   compraComBoleto() {
 
     this.loadingPage = true;
-    this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
 
+    this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
     this.clientForm.value.amount = this.produto.price;
     this.clientForm.value.titleProduct = this.produto.title;
     this.clientForm.value.idProduct = this.produto.slug + '-' + Date.now();
@@ -347,9 +347,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     this.paymentHttp.geraBoleto(this.clientForm.value)
       .subscribe(
         response => {
-          this.loadingPage = false;
 
-          console.log('response boleto', response);
+          // console.log('response boleto', response);
 
           this.linkBoleto = response[0];
 
@@ -357,22 +356,26 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
           this.clientForm.value.titleProduct = this.produto.title;
           this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
-          this.clientForm.value.amount = this.produto.price.toFixed(2);
-
+          // this.clientForm.value.amount = this.produto.price.toFixed(2);
+          this.clientForm.value.amount = this.produto.price;
           this.clientForm.value.urlBoleto = this.linkBoleto;
-
-
+          
+          console.log("amount", this.clientForm.value.amount)
+          
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
-                console.log('Result Register', resultRegister);
+
+                // console.log('Result Register', resultRegister);
+
                 this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
                 // this.authService.updateUser(resultRegister, this.clientForm.value);
                 //realiza login no sistema
-                this.toatrSuccess('PARABÉNS!', 'Seu boleto foi gerado com sucesso e agora você será redirecionado(a) ao painel administrativo!')
+                // this.toatrSuccess('PARABÉNS!', 'Seu boleto foi gerado com sucesso e agora você será redirecionado(a) ao painel administrativo!')
                 this.authService.login(this.clientForm.value.emailAccess, this.clientForm.value.password)
                   .subscribe(
                     () => {
+                      this.loadingPage = false;
                       console.log("logado")
                       this.router.navigate(['/admin/dashboard']);
                     })
@@ -394,15 +397,16 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                 console.log("Erro ao registrar usuário no firebase: ", error);
               });
           // window.open(response[0], '_blank')
-          
+
           window.scrollTo(0, 0);
         },
         error => {
           this.loadingPage = false;
           this.toatrError('OPSSS, ERRO!', `Um erro aconteceu no momento de gerar seu boleto. Por favor, tente mais tarde!`)
           // this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente} já é cadastrado em nossa base de dados.`)
-          console.log(error); // body
+          console.log("geraBoleto", error); // body
 
+          window.scrollTo(0, 0);
           // console.log(error.error.text); // body
         });
   }

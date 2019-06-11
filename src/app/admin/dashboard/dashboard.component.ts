@@ -19,27 +19,27 @@ export class DashboardComponent implements OnInit {
     private authService: AuthServiceService,
     private router: Router,
     private zone: NgZone) {
-    
-    
+
+
   }
 
   ngOnInit() {
     this.authService.getUser()
-    .subscribe(user => {
-      this.usuario = user;
-    });
+      .subscribe(user => {
+        this.usuario = user;
+      });
 
-   
+
   }
 
 
-  lougout() {
+  lougoutUser() {
     this.authService.lougout()
     this.router.navigateByUrl('/login')
   }
 
 
-  
+
   openLinkBoleto() {
     window.open(this.usuario.urlBoleto, '_blank');
     // setTimeout(() => {

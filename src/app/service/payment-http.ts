@@ -44,11 +44,25 @@ export class PaymentHttp {
     //         .map(response => response.json());
     // }
 
+    // geraBoleto(data): Observable<any> {
+
+    //     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    //     return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-boleto', data,{ headers});
+    // }
+
     geraBoleto(data): Observable<any> {
 
-        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+         let headers = new HttpHeaders({ 
+             'Content-Type': 'application/json',
+             'Access-Control-Allow-Origin': '*',
+             'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+             'Access-Control-Allow-Headers': 'X-Requested-With,content-type' });
 
-        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-boleto', data,{ headers});
+        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-boleto', data, {headers})
+        .pipe(
+            map( res => res) 
+        ); 
     }
 
     transationCredCard(data): Observable<any> {

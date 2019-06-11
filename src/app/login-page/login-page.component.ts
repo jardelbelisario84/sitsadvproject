@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthServiceService } from '../service/auth-service.service';
+import * as toastr from 'toastr';
 
 @Component({
   selector: 'app-login-page',
@@ -31,6 +32,22 @@ export class LoginPageComponent implements OnInit {
   
   }
 
+  toatrSuccess(titulo: string, mensagem: string) {
+    return toastr.success(mensagem, titulo, {
+      positionClass: "toast-top-center",
+      progressBar: true,
+      closeButton: true,
+    })
+  }
+
+  toatrError(titulo: string, mensagem: string) {
+    return toastr.error(mensagem, titulo, {
+      positionClass: "toast-top-center",
+      progressBar: true,
+      closeButton: true,
+    })
+  }
+
 
 
   onSubmitLogin(){
@@ -43,9 +60,11 @@ export class LoginPageComponent implements OnInit {
         console.log("logado")
         this.router.navigate(['/admin/dashboard']);
         this.loadingPage = false;
+        // this.toatrError('Bem vindo(a)!', 'login realizado com sucesso.')
     },
     (err) => { 
       this.loadingPage = false;
+      // this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.')
       this.msgError = 'Credenciais Inválidas ou usuário não está registardo.';
       console.log("Erro ao logar", err)
     });
