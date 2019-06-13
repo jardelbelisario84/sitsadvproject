@@ -66,7 +66,12 @@ export class PaymentHttp {
     }
 
     transationCredCard(data): Observable<any> {
-        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-card', data)
+        let headers = new HttpHeaders({ 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+            'Access-Control-Allow-Headers': 'X-Requested-With,content-type' });
+        return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-card', data, {headers})
         .pipe(
             map( res => res) 
         ); 
@@ -109,6 +114,15 @@ export class PaymentHttp {
     //     .pipe(
     //         map(response => response)
     //     );
+    // }
+
+
+
+    // transationCredCard(data): Observable<any> {
+    //     return this.http.post('https://apisitesadv.desksistemas.com.br/public/api/pagseguro-transaction-card', data)
+    //     .pipe(
+    //         map( res => res) 
+    //     ); 
     // }
 
 }

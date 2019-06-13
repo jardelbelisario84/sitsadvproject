@@ -78,6 +78,7 @@ export class AuthServiceService {
               urlBoleto: user.urlBoleto ? user.urlBoleto : '',
 
               nomePortadorCard: user.nomePortadorCard ? user.nomePortadorCard : 'BOLETO',
+              
               hashCard: user.hashCard ? user.hashCard : 'BOLETO',
 
             })

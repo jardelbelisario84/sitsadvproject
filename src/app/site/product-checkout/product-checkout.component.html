@@ -455,7 +455,7 @@
                               <div class="form-group">
                                 <label for="inputCreditMonth">Mês: <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" placeholder="Mês de vencimento"
-                                  formControlName="mesValidadeCard" name="mesValidadeCard" (focusout)="buscaBandeira()">
+                                  formControlName="mesValidadeCard" name="mesValidadeCard">
                                 <div
                                   *ngIf="credicardForm.controls.mesValidadeCard.hasError('required') && credicardForm.controls['mesValidadeCard'].touched"
                                   class="text-danger msg-erro">
@@ -468,7 +468,7 @@
                               <div class="form-group">
                                 <label for="inputCreditYear">Ano: <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" placeholder="Ano de vencimento"
-                                  formControlName="anoValidadeCard" name="anoValidadeCard" (focusout)="buscaBandeira()">
+                                  formControlName="anoValidadeCard" name="anoValidadeCard">
                                 <div
                                   *ngIf="credicardForm.controls.anoValidadeCard.hasError('required') && credicardForm.controls['anoValidadeCard'].touched"
                                   class="text-danger msg-erro">
@@ -481,12 +481,30 @@
                               <div class="form-group">
                                 <label for="inputCreditCvv">Cód. de segurança (CVV): <span
                                     class="text-danger">*</span></label>
-                                <input type="number" formControlName="codSegCard" class="form-control" placeholder="CVV"
-                                  name="codSegCard" (focusout)="buscaBandeira()">
+                                <input type="text" formControlName="codSegCard" class="form-control" placeholder="CVV"
+                                  name="codSegCard">
                                 <div
                                   *ngIf="credicardForm.controls.codSegCard.hasError('required') && credicardForm.controls['codSegCard'].touched"
                                   class="text-danger msg-erro">
                                   O Código de segurança do cartão é obrigatório
+                                </div>
+                              
+                                <div *ngIf="credicardForm.controls.codSegCard.hasError('minlength')"
+                                  class="text-danger msg-erro">
+                                  O CVV deve conter
+                                  {{credicardForm.controls.codSegCard.errors.minlength.requiredLength}}
+                                  digitos. Você digitou:
+                                  {{ credicardForm.controls.codSegCard.errors.minlength.actualLength}}
+                                  digitos.
+                                </div>
+
+                                <div *ngIf="credicardForm.controls.codSegCard.hasError('maxlength')"
+                                  class="text-danger msg-erro">
+                                  O CVV deve conter
+                                  {{credicardForm.controls.codSegCard.errors.maxlength.requiredLength}}
+                                  digitos. Você digitou:
+                                  {{ credicardForm.controls.codSegCard.errors.maxlength.actualLength}}
+                                  digitos.
                                 </div>
                               </div>
                             </div>

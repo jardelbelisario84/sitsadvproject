@@ -35,8 +35,13 @@
           </h4>
         </div>
         <div class="card-body">
-          <h1 class="card-title pricing-card-title text-success">R$ {{produto.price}},00<small
-              class="text-success">/Ano</small></h1>
+          <h1 class="card-title pricing-card-title text-success">
+           <b> R$ {{produto.priceMes}}/</b>
+             <small class="text-success" > <b>Mês</b></small>
+          </h1>
+          <span>OU</span>
+          <h4 class="card-title pricing-card-title text-price-ano">R$ {{produto.price}},00<small class="text-price-ano">/Ano</small>
+          </h4>
 
 
           <ul *ngIf="produto.slug == 'plano-basic'" class="list-unstyled mt-3 mb-4 text-left">

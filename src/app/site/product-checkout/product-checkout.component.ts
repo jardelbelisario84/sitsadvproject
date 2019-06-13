@@ -85,7 +85,10 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.maxLength(16)]],                           // ex: '4111111111111111'
     mesValidadeCard: ['12', [Validators.required]],                   // ex: '12',
     anoValidadeCard: ['2030', [Validators.required]],                   // ex: '2030',
-    codSegCard: ['123', [Validators.required]],                        // ex: '123',
+    codSegCard: ['', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(3)]],                        // ex: '123',
     bandCard: [''],                                                 // preenchido dinamicamente
     hashCard: [''],                                                 // preenchido dinamicamente
     sendHash: [''],                                                 // preenchido dinamicamente
@@ -105,6 +108,17 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
     nascimento: ['1984-09-26', [Validators.required]],
 
+
+    // amount: [''],
+    // titleProduct: [''],
+    // idProduct: [''],
+    // codTransactionPagSeguro: [''],
+
+    // created_at: [''],
+    // updated_at: [''],
+
+    // telefone: [''],
+    // ddd: [''],
 
 
 
@@ -154,10 +168,13 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     // this.checkoutService.startSession()
     if (!environment.production) {
       scriptjs('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
+
         this.paymentHttp.getSession()
           .subscribe(data => {
+            console.log(data);
+            console.log(PagSeguroDirectPayment.setSessionId(data['id']));
+            // return this.initSession(data);
             // console.log(data);
-            // console.log(this.initSession(data));
           })
       })
     } else {
@@ -181,6 +198,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
   initSession(data) {
+    console.log(data['id'])
     PagSeguroDirectPayment.setSessionId(data['id']);
   }
 
@@ -213,6 +231,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       positionClass: "toast-top-center",
       progressBar: true,
       closeButton: true,
+      timeOut: 10000
     })
   }
 
@@ -290,22 +309,29 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
         // console.log('Parcelas Result length: ', this.escolherQntParcelas.length);
         // console.log('Parcelas Result: ', this.escolherQntParcelas);
       },
-      error: response => { console.log(response) }
+      error: response => {
+        console.log("ERro buscar parcelas: ", response)
+      }
     });
   }
 
   //BUSCA A BANDEIRA DO CARTÃO (EX: VISA, MASTERCARD ETC...) E DEPOIS BUSCA AS PARCELAS;
   //ESTA FUNÇÃO É CHAMADA QUANDO O INPUT QUE RECEBE O NÚMERO DO CARTÃO PERDE O FOCO;
   buscaBandeira() {
+    console.log("busca Bandeira: ");
     PagSeguroDirectPayment.getBrand({
+
       cardBin: this.credicardForm.value.numCard,
+
       success: response => {
         this.credicardForm.value.bandCard = response.brand.name;
         // console.log('Bandeira do cartao objeto', response )
         // console.log('Bandeira do cartão: ' + this.credicardForm.value.bandCard);
         this.buscaParcelas();
       },
-      error: response => { console.log(response); }
+      error: response => {
+        console.log("Erro buscar Bandeira: ", response);
+      }
     });
 
   }
@@ -359,9 +385,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           // this.clientForm.value.amount = this.produto.price.toFixed(2);
           this.clientForm.value.amount = this.produto.price;
           this.clientForm.value.urlBoleto = this.linkBoleto;
-          
+
           console.log("amount", this.clientForm.value.amount)
-          
+
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
@@ -394,7 +420,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                 }
                 // this.toatrError('O e-mail  já é cadastrado. Por favor, insira outro e-mail para continuar.', 'Erro!')
                 // this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente}  já é cadastrado.`)
-                console.log("Erro ao registrar usuário no firebase: ", error);
+                // console.log("Erro ao registrar usuário no firebase: ", error);
               });
           // window.open(response[0], '_blank')
 
@@ -425,56 +451,110 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
   compraComCredidCard() {
+
+    let emailCliente = this.clientForm.value.emailAccess;
+
+
     this.loadingPage = true;
     //BUSCA O HASH DO COMPRADOR JUNTO A API DO PAGSEGURO
     this.credicardForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
     //CRIA O HASK DO CARTÃO DE CRÉDITO JUNTO A API DO PAGSEGURO
     PagSeguroDirectPayment.createCardToken({
+
       cardNumber: this.credicardForm.value.numCard,
       cvv: this.credicardForm.value.codSegCard,
       expirationMonth: this.credicardForm.value.mesValidadeCard,
       expirationYear: this.credicardForm.value.anoValidadeCard,
+
       success: response => {
         this.zone.run(() => {
 
-          this.credicardForm.value.hashCard = response.card.token;
-          this.credicardForm.value.created_at = moment().format('YYYY-MM-DD');
-          this.credicardForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
-          this.credicardForm.value.titleProduct = this.produto.title;
-          this.credicardForm.value.idProduct = moment().format('YYYYMMDDHmmss');
-          this.credicardForm.value.amount = this.produto.price.toFixed(2);
-          console.log('price submit', this.credicardForm.value.amount)
+          this.loadingPage = true;
 
-          this.authService.register(this.credicardForm.value)
+          this.credicardForm.value.hashCard = response.card.token;
+
+          this.clientForm.value.amount = this.produto.price.toFixed(2);
+
+          console.log('price submit', this.clientForm.value.amount)
+
+        
+
+          this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
                 this.loadingPage = false;
+
                 console.log('Result Register', resultRegister);
                 // console.log('Result Register cod', resultRegister.id);
-                this.paymentHttp.transationCredCard(this.credicardForm.value)
+
+                let data = [this.clientForm.value, this.credicardForm.value]
+
+                console.log('Array de forms', data);
+
+
+
+                this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
+                this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
+
+                this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
+                this.clientForm.value.titleProduct = this.produto.title;
+
+                // this.credicardForm.value.ddd =  this.clientForm.value.ddd;
+                // this.credicardForm.value.telefone =  this.clientForm.value.telefone;
+
+                
+                let dadosConcatenados = {...this.credicardForm.value, ...this.clientForm.value }
+
+                // console.log('-----------------------------------------------------')
+                // console.log(this.clientForm.value) 
+                // console.log(this.credicardForm.value) 
+                // console.log('Dados Concatenados', dadosConcatenados);
+
+
+
+                this.paymentHttp.transationCredCard(dadosConcatenados)
                   .subscribe(
                     result => {
                       this.loadingPage = false;
                       this.hideBlock = true;
                       this.hideBlockBoleto = false;
                       this.hideBlockCreditCard = true;
-                      // console.log('Codigo transação: ', result[0])
-                      this.credicardForm.value.codTransactionPagSeguro = result[0];
+                      console.log('Codigo transação: ', result[0])
+
+                      this.clientForm.value.codTransactionPagSeguro = result[0];
                       // console.log('Codigo transação  Cod: ', this.credicardForm.value.codTransactionPagSeguro);
-                      this.credicardForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
-                      this.authService.updateUser(resultRegister, this.credicardForm.value);
+                      this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
+
+                      this.authService.updateUser(resultRegister, this.clientForm.value);
+
+                      // faz login no sistema
+                      this.authService.login(this.clientForm.value.emailAccess, this.clientForm.value.password)
+                        .subscribe(
+                          () => {
+                            this.loadingPage = false;
+                            console.log("logado")
+                            this.router.navigate(['/admin/dashboard']);
+                          })
+
+
                     }, err => {
+                      this.toatrError('ACONTECEU UM ERRO!', `Aconteceu algo de errado no pagamento. Acesse o painel com sua conta criada para tentar novamente. `)
                       console.log(err)
                       this.loadingPage = false;
                     });
+
+
+
               },
               (error) => {
                 this.loadingPage = false;
-                if (error.code == "auth/email-already-in-use") {
-                  this.msgError = "O e-mail já é cadastrado. Por favor, insira outro e-mail para continuar."
+                if (error.code == 'auth/email-already-in-use') {
+                  this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente}  já é cadastrado.`)
+                } else {
+                  this.toatrError('OPSSS!', `Aconteceu um erro ao registrar novo usuário. Tente novamente mais tarde.`)
                 }
                 // this.toatrError('O e-mail  já é cadastrado. Por favor, insira outro e-mail para continuar.', 'Erro!')
-                console.log("Erro ao registrar usuário", error);
+                // console.log("Erro ao registrar usuário no firebase: ", error);
               })
           console.log('Dados retornados: ', this.credicardForm.value);
           // console.log("Passou cartão");
@@ -482,7 +562,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       },
       error(res) {
         this.loadingPage = false;
-        console.log("createCardToken: ", res)
+        this.toatrError('OPSSS, ERRO!', `Um erro aconteceu no momento do pagamento. Por favor, tente mais tarde!`)
+        window.scrollTo(0, 0);
+        // console.log("createCardToken: ", res)
       }
     });
   }

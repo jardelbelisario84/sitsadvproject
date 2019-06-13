@@ -13,6 +13,7 @@ export class ProdutosService {
                 id: 1,
                 title: 'Plano Basic',
                 slug: 'plano-basic',
+                priceMes: 49.21,
                 price: 497.00,
                 description: '',
                 items:[
@@ -36,6 +37,7 @@ export class ProdutosService {
                 id: 2,
                 title: 'Plano Express',
                 slug: 'plano-express',
+                priceMes: 59.11,
                 price: 597.00,
                 description: '',
                 items:[
@@ -59,6 +61,7 @@ export class ProdutosService {
                 id: 3,
                 title: 'Plano Ultra',
                 slug: 'plano-ultra',
+                priceMes: 98.72,
                 price: 997.00,
                 description: '',
                 items:[
