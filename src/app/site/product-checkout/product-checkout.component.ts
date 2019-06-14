@@ -218,30 +218,45 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   }
 
 
-  toatrSuccess(titulo: string, mensagem: string) {
+
+
+
+
+  //TOASTRS 
+
+  toatrSuccess(titulo: string, mensagem: string, timeToatr: number = 5000) {
     return toastr.success(mensagem, titulo, {
       positionClass: "toast-top-center",
       progressBar: true,
       closeButton: true,
+      timeOut: timeToatr
     })
   }
 
-  toatrError(titulo: string, mensagem: string) {
+  toatrError(titulo: string, mensagem: string, timeToatr: number = 5000) {
     return toastr.error(mensagem, titulo, {
       positionClass: "toast-top-center",
       progressBar: true,
       closeButton: true,
-      timeOut: 10000
+      timeOut: timeToatr
     })
   }
 
-  toatrWarning(titulo: string, mensagem: string) {
+  toatrWarning(titulo: string, mensagem: string, timeToatr: number) {
     return toastr.warning(mensagem, titulo, {
       positionClass: "toast-top-center",
       progressBar: true,
       closeButton: true,
+      timeOut: timeToatr
     })
   }
+
+
+
+
+
+
+
 
 
   // testaSelect() {
@@ -363,7 +378,12 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     this.loadingPage = true;
 
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
-    this.clientForm.value.amount = this.produto.price;
+
+    this.clientForm.value.amount = this.produto.price.toFixed(2);
+    console.log("amount", this.clientForm.value.amount)
+
+
+
     this.clientForm.value.titleProduct = this.produto.title;
     this.clientForm.value.idProduct = this.produto.slug + '-' + Date.now();
 
@@ -383,10 +403,14 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           this.clientForm.value.titleProduct = this.produto.title;
           this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
           // this.clientForm.value.amount = this.produto.price.toFixed(2);
-          this.clientForm.value.amount = this.produto.price;
+          // this.clientForm.value.amount = this.produto.price;
+
           this.clientForm.value.urlBoleto = this.linkBoleto;
 
           console.log("amount", this.clientForm.value.amount)
+
+
+          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO'; 
 
           this.authService.register(this.clientForm.value)
             .subscribe(
@@ -473,27 +497,28 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
           this.credicardForm.value.hashCard = response.card.token;
 
-          this.clientForm.value.amount = this.produto.price.toFixed(2);
+          this.clientForm.value.amount = this.produto.price;
 
-          console.log('price submit', this.clientForm.value.amount)
+          // console.log('price submit', this.clientForm.value.amount)
 
-        
+          this.clientForm.value.urlBoleto = this.clientForm.value.urlBoleto ? this.clientForm.value.urlBoleto : '';
+          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO'; 
+                
+
+
+
 
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
                 this.loadingPage = false;
 
-                console.log('Result Register', resultRegister);
+                // console.log('Result Register', resultRegister);
                 // console.log('Result Register cod', resultRegister.id);
-
-                let data = [this.clientForm.value, this.credicardForm.value]
-
-                console.log('Array de forms', data);
-
 
 
                 this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
+
                 this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
 
                 this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
@@ -502,8 +527,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                 // this.credicardForm.value.ddd =  this.clientForm.value.ddd;
                 // this.credicardForm.value.telefone =  this.clientForm.value.telefone;
 
-                
-                let dadosConcatenados = {...this.credicardForm.value, ...this.clientForm.value }
+
+                let dadosConcatenados = { ...this.clientForm.value, ...this.credicardForm.value }
 
                 // console.log('-----------------------------------------------------')
                 // console.log(this.clientForm.value) 
@@ -525,7 +550,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                       // console.log('Codigo transação  Cod: ', this.credicardForm.value.codTransactionPagSeguro);
                       this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
 
-                      this.authService.updateUser(resultRegister, this.clientForm.value);
+                      let dadosConcatenadosUpdate = { ...this.credicardForm.value, ...this.clientForm.value }
+
+                      this.authService.updateUser(resultRegister, dadosConcatenadosUpdate);
 
                       // faz login no sistema
                       this.authService.login(this.clientForm.value.emailAccess, this.clientForm.value.password)
@@ -538,9 +565,12 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
                     }, err => {
-                      this.toatrError('ACONTECEU UM ERRO!', `Aconteceu algo de errado no pagamento. Acesse o painel com sua conta criada para tentar novamente. `)
-                      console.log(err)
+
+                      this.toatrError('OPSSSS!',
+                        `Sua conta de acesso foi criada com sucesso. Porém, aconteceu algo de errado no pagamento.
+                      Acesse o painel com sua conta criada para tentar novamente reaalizar o pagamento. `, 15000)
                       this.loadingPage = false;
+                      console.log(err)
                     });
 
 
@@ -549,7 +579,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
               (error) => {
                 this.loadingPage = false;
                 if (error.code == 'auth/email-already-in-use') {
-                  this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente}  já é cadastrado.`)
+                  this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente}  já é cadastrado. Acesse a área de login para entrar no seu painel administrativo`, 7000)
                 } else {
                   this.toatrError('OPSSS!', `Aconteceu um erro ao registrar novo usuário. Tente novamente mais tarde.`)
                 }

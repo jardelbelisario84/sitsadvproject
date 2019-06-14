@@ -27,29 +27,51 @@
               <p class="card-text">
                 Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
               </p>
-              <div *ngIf="usuario.urlBoleto != '' || !usuario.urlBoleto">
+              <div *ngIf="usuario.urlBoleto != ''" class="col-12 mt-4 mb-4">
                 <p class="card-text">
                   Imprima seu boleto: <br>
-                  <button class="btn btn-info" (click)="openLinkBoleto()"> Gerar Boleto </button>
+                  <button class="btn btn-info btn-block btn-lg" (click)="openLinkBoleto()"> Gerar Boleto </button>
                 </p>
               </div>
-
-              <p class="card-text">
-                Data da compra: <br>
-                <span class="badge badge-success">
-                  <b> {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}} </b>
-                </span>
-              </p>
-              <p class="card-text">
-                Data de expiração: <br>
-                <span class="badge badge-danger text-white">
-                  <b> {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}} </b>
-                </span>
-              </p>
               <!-- <p class="card-text">
                 Restam: <b> {{ usuario.created_at | amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDifference: today :'days' : true}} dias  </b>
               </p> -->
               <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Data da Compra</th>
+                    <th scope="col">Data de expiração</th>
+                    <!-- <th scope="col">Last</th>
+                    <th scope="col">Handle</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <span class="badge badge-success">
+                        <b> {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}} </b>
+                      </span>
+
+                    </th>
+                    <td>
+                      <span class="badge badge-warning text-white">
+                        <b>
+                          {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}}
+                        </b>
+                      </span>
+                    </td>
+                    <!-- <td>Otto</td>
+                    <td>@mdo</td> -->
+                  </tr>
+                  <!-- <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                  </tr> -->
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -69,16 +91,50 @@
               <h2>Veja o que fazer agora para ter seu site.</h2>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
-              <p class="card-text">
-                Agora você deve acessa o menu <b>Dados do site </b> ao lado e seguir todos os passos preenchendo
-                os campos com todas as informações necessárias.
-              </p>
-              <p class="card-text">
-                Após nos enviar todos os dados, seu site estará no ar em até 10 dias úteis.
-              </p>
 
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">PASSOS</th>
+                    <th scope="col">DESCRIÇÃO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">#1</th>
+                    <td>
+                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                      condimentum.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#2</th>
+                    <td>
+                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                      condimentum.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#3</th>
+                    <td>
+                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                      condimentum.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">#4</th>
+                    <td>
+                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                      condimentum.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
             </div>
           </div>
 

@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
         this.usuario = user;
       });
 
+      window.scrollTo(0, 0);
 
   }
 

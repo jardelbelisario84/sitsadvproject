@@ -75,11 +75,9 @@ export class AuthServiceService {
               created_at: user.created_at,
               updated_at: user.updated_at,
 
-              urlBoleto: user.urlBoleto ? user.urlBoleto : '',
+              urlBoleto: user.urlBoleto,
+              nomePortadorCard: user.nomePortadorCard,
 
-              nomePortadorCard: user.nomePortadorCard ? user.nomePortadorCard : 'BOLETO',
-              
-              hashCard: user.hashCard ? user.hashCard : 'BOLETO',
 
             })
             .then(() => {
@@ -91,32 +89,19 @@ export class AuthServiceService {
       )
   }
 
+
+
   updateUser(id, data) {
-    console.log("ID DE USER A SER ATUALIZADO", id)
-    this.userCollection.doc(id).set({
-      // ...data,
-      id: id,
+    // console.log("ID DE USER A SER ATUALIZADO", id)
+    this.userCollection.doc(id).update({
       codTransactionPagSeguro: data.codTransactionPagSeguro,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      cpf: data.cpf,
-      ddd: data.ddd,
-      telefone: data.telefone,
-      cep: data.cep,
-      estado: data.estado,
-      cidade: data.cidade,
-      bairro: data.bairro,
-      rua: data.rua,
-      numero: data.numero,
-      complemento: data.complemento,
-      email: data.emailAccess,
-      nomePortadoCard: data.nomePortadorCard ? data.nomePortadorCard : 'BOLETO',
-      hashCard: data.hashCard ? data.hashCard : 'BOLETO',
-      created_at: data.created_at,
+      hashCard: data.hashCard,
       updated_at: data.updated_at
-      // codTransactionPagSeguro: data.codTransactionPagSeguro
     }).then(() => console.log("Atualizado com codTransactionPagSeguro"));
   }
+
+
+
 
 
 
@@ -166,6 +151,35 @@ export class AuthServiceService {
         })
       )
   }
+
+
+
+  // updateUser(id, data) {
+  //   console.log("ID DE USER A SER ATUALIZADO", id)
+  //   this.userCollection.doc(id).update({
+  //     // ...data,
+  //     // id: id,
+  //     codTransactionPagSeguro: data.codTransactionPagSeguro,
+  //     // firstName: data.firstName,
+  //     // lastName: data.lastName,
+  //     // cpf: data.cpf,
+  //     // ddd: data.ddd,
+  //     // telefone: data.telefone,
+  //     // cep: data.cep,
+  //     // estado: data.estado,
+  //     // cidade: data.cidade,
+  //     // bairro: data.bairro,
+  //     // rua: data.rua,
+  //     // numero: data.numero,
+  //     // complemento: data.complemento,
+  //     // email: data.emailAccess,
+  //     // nomePortadorCard: data.nomePortadorCard ? data.nomePortadorCard : 'BOLETO',
+  //     // hashCard: data.hashCard ? data.hashCard : 'BOLETO',
+  //     // created_at: data.created_at,
+  //     updated_at: data.updated_at
+  //     // codTransactionPagSeguro: data.codTransactionPagSeguro
+  //   }).then(() => console.log("Atualizado com codTransactionPagSeguro"));
+  // }
 
   // getUser() {
   //   firebase.auth().onAuthStateChanged((user) => {
