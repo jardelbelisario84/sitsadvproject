@@ -1,313 +1,342 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-2">
-      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-          aria-controls="v-pills-home" aria-selected="true">Home</a>
-        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-          aria-controls="v-pills-profile" aria-selected="false">Perfil</a>
-        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-          aria-controls="v-pills-messages" aria-selected="false">Dados do site</a>
-        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-          aria-controls="v-pills-settings" aria-selected="false">Entre em contato</a>
-        <a class="nav-link" href="javascript:void(0)" (click)="lougoutUser()">Sair</a>
-      </div>
-      <!-- <button class="btn btn-link" (click)="lougout()">Sair</button> -->
-    </div>
-    <div class="col-8">
-      <div class="tab-content" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-          <div class="card">
-            <div class="card-header">
-              <h2>Dashboard</h2>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
-              <p class="card-text">
-                Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
-              </p>
-              <div *ngIf="usuario.urlBoleto != ''" class="col-12 mt-4 mb-4">
-                <p class="card-text">
-                  Imprima seu boleto: <br>
-                  <button class="btn btn-info btn-block btn-lg" (click)="openLinkBoleto()"> Gerar Boleto </button>
-                </p>
-              </div>
-              <!-- <p class="card-text">
-                Restam: <b> {{ usuario.created_at | amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDifference: today :'days' : true}} dias  </b>
-              </p> -->
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Data da Compra</th>
-                    <th scope="col">Data de expiração</th>
-                    <!-- <th scope="col">Last</th>
-                    <th scope="col">Handle</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">
-                      <span class="badge badge-success">
-                        <b> {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}} </b>
-                      </span>
-
-                    </th>
-                    <td>
-                      <span class="badge badge-warning text-white">
-                        <b>
-                          {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}}
-                        </b>
-                      </span>
-                    </td>
-                    <!-- <td>Otto</td>
-                    <td>@mdo</td> -->
-                  </tr>
-                  <!-- <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr> -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-
-
-          <!-- <span class="badge badge-primary">Primary</span>
-          <span class="badge badge-secondary">Secondary</span>
-          <span class="badge badge-success">Success</span>
-          <span class="badge badge-danger">Danger</span>
-          <span class="badge badge-warning">Warning</span>
-          <span class="badge badge-info">Info</span>
-          <span class="badge badge-light">Light</span>
-          <span class="badge badge-dark">Dark</span> -->
-
-          <div class="card mt-2">
-            <div class="card-header">
-              <h2>Veja o que fazer agora para ter seu site.</h2>
-            </div>
-            <div class="card-body">
-
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">PASSOS</th>
-                    <th scope="col">DESCRIÇÃO</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">#1</th>
-                    <td>
-                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
-                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
-                      condimentum.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">#2</th>
-                    <td>
-                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
-                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
-                      condimentum.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">#3</th>
-                    <td>
-                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
-                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
-                      condimentum.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">#4</th>
-                    <td>
-                      Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
-                      condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
-                      condimentum.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-
-        </div>
-
-        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-
-          <div class="card">
-            <div class="card-header">
-              <h2>Perfil</h2>
-            </div>
-
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                Nome: <b>{{ usuario.firstName }} {{ usuario.lastName }} </b>
-              </li>
-              <li class="list-group-item">
-                CPF: <b>{{ usuario.cpf }} </b>
-              </li>
-              <li class="list-group-item">
-                E-mail: <b>{{ usuario.email }} </b>
-              </li>
-              <li class="list-group-item">
-                Estado: <b>{{ usuario.estado }} </b>
-              </li>
-              <li class="list-group-item">
-                Cidade: <b>{{ usuario.cidade }} </b>
-              </li>
-              <li class="list-group-item">
-                Bairro: <b>{{ usuario.bairro }} </b>
-              </li>
-              <li class="list-group-item">
-                Rua: <b>{{ usuario.rua }} </b>
-              </li>
-              <li class="list-group-item">
-                Número: <b>{{ usuario.numero }} </b>
-              </li>
-              <li class="list-group-item">
-                Complemento: <b> {{ usuario.complemento }} </b>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-
-        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-          <div class="card">
-            <div class="card-header">
-              <h2>Dados do site</h2>
-            </div>
-            <div class="card-body">
-              <div class="col-md-12">
-                <iframe
-                  src="https://docs.google.com/forms/d/e/1FAIpQLSeYi0o9ERTVH4S48HhWZXGf1uU7nRETYpA6ZNIjsSU8czl_aQ/viewform?embedded=true"
-                  width="100%" height="1047" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
-              </div>
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-          <div class="card">
-            <div class="card-header">
-              <h2>Nossos contatos: </h2>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Bem vindo(a) {{ usuario.firstName }} {{ usuario.lastName }}</h5>
-              <p class="card-text">
-                Código de compra: <b> {{ usuario.codTransactionPagSeguro }} </b>
-              </p>
-              <p class="card-text">
-                Data da compra: <b> {{ usuario.created_at }} </b>
-              </p>
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-    <div class="col-2">
-
-      <div class="row">
-        <div class="card bg-dark text-white text-center">
-          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
-            alt="Card image cap">
-          <div class="card-body">
-            <p class="card-title">
-              Modelo 01
-            </p>
-            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p> -->
-            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
-              Ver Modelo
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="card bg-success text-white text-center">
-          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
-            alt="Card image cap">
-          <div class="card-body">
-            <p class="card-title">
-              Modelo 01
-            </p>
-            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p> -->
-            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
-              Ver Modelo
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="card bg-warning text-white text-center">
-          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
-            alt="Card image cap">
-          <div class="card-body">
-            <p class="card-title">
-              Modelo 01
-            </p>
-            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                  content.</p> -->
-            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
-              Ver Modelo
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="card  bg-secondary text-white text-center">
-          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
-            alt="Card image cap">
-          <div class="card-body">
-            <p class="card-title">
-              Modelo 01
-            </p>
-            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                    content.</p> -->
-            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
-              Ver Modelo
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="card bg-danger  text-white text-center">
-          <img class="card-img-top" src="https://www.comersite.com.br/wp-content/uploads/2013/02/artigo-responsivo.jpg"
-            alt="Card image cap">
-          <div class="card-body">
-            <p class="card-title">
-              Modelo 01
-            </p>
-            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                      content.</p> -->
-            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" class="btn btn-primary btn-sm btn-block">
-              Ver Modelo
-            </a>
-          </div>
-        </div>
-      </div>
-
-
+    <div *ngIf="usuario.urlBoleto != ''">
+      <button  (click)="openLinkBoleto()" class=" d-sm-inline-block btn  btn-primary shadow">
+        <i class="fas fa-download fa-sm text-white-50"></i> IMPRIMIR BOLETO</button>
     </div>
 
   </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                Data de Compra
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ usuario.created_at | amLocal | amDateFormat: 'DD/MM/YYYY'}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Data de Expiração</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{ usuario.created_at| amAdd: 10 : 'days'  | amAdd: 1 : 'year' | amDateFormat: 'DD/MM/YYYY'}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Código de Compra</div>
+              <div class="row no-gutters align-items-center">
+                <div class="col-auto">
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800 text-xs">
+                    <b> {{ usuario.codTransactionPagSeguro }} </b>
+                  </div>
+                </div>
+                <!-- <div class="col">
+                  <div class="progress progress-sm mr-2">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-comments fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Content Row -->
+
+  <div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-6 col-lg-7">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Infomações Pessoais</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- <div class="chart-area"> </div> -->
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Nome: <span class="float-right"> <b>{{ usuario.firstName }} {{ usuario.lastName }} </b></span>
+            </li>
+            <li class="list-group-item">
+              CPF: <span class="float-right"> <b>{{ usuario.cpf }} </b></span>
+            </li>
+            <li class="list-group-item">
+              E-mail: <span class="float-right"> <b>{{ usuario.email }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Estado: <span class="float-right"> <b>{{ usuario.estado }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Cidade: <span class="float-right"> <b>{{ usuario.cidade }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Bairro: <span class="float-right"> <b>{{ usuario.bairro }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Rua: <span class="float-right"> <b>{{ usuario.rua }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Número: <span class="float-right"> <b>{{ usuario.numero }} </b></span>
+            </li>
+            <li class="list-group-item">
+              Complemento: <span class="float-right"> <b> {{ usuario.complemento }} </b></span>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="col-xl-6 col-lg-5">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Modelos de Sites</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- <div class="chart-pie pt-4 pb-2">
+            <canvas id="myPieChart"></canvas>
+          </div> -->
+
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+              <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                  Modelo 1
+                  <div class="text-white-50 small">#4e73df</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                  Modelo 2
+                  <div class="text-white-50 small">#1cc88a</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                  Modelo 3
+                  <div class="text-white-50 small">#36b9cc</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <div class="card bg-warning text-white shadow">
+                <div class="card-body">
+                  Modelo 4
+                  <div class="text-white-50 small">#f6c23e</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <div class="card bg-danger text-white shadow">
+                <div class="card-body">
+                  Modelo 5
+                  <div class="text-white-50 small">#e74a3b</div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-lg-6 mb-4">
+              <div class="card bg-secondary text-white shadow">
+                <div class="card-body">
+                  Secondary
+                  <div class="text-white-50 small">#858796</div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div class="mt-4 text-center small">
+            <span class="mr-2">
+              <i class="fas fa-circle text-primary"></i> Direct
+            </span>
+            <span class="mr-2">
+              <i class="fas fa-circle text-success"></i> Social
+            </span>
+            <span class="mr-2">
+              <i class="fas fa-circle text-info"></i> Referral
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Row -->
+
+
+  <div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-7">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Infomações Iniciais</h6>
+          <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Dropdown Header:</div>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- <div class="chart-area"> </div> -->
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">PASSOS</th>
+                <th scope="col">DESCRIÇÃO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">#1</th>
+                <td>
+                  Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                  condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                  condimentum.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">#2</th>
+                <td>
+                  Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                  condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                  condimentum.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">#3</th>
+                <td>
+                  Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                  condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                  condimentum.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">#4</th>
+                <td>
+                  Lorem ipsum consectetur vitae quam cras felis tellus accumsan tempus, risus consequat neque mauris
+                  condimentum ut morbi sollicitudin, congue mollis tortor vivamus diam ullamcorper platea
+                  condimentum.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  
+  </div>
+
+
+
+
 </div>
+<!-- /.container-fluid -->

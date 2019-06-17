@@ -21,7 +21,7 @@ export class LoginPageComponent implements OnInit {
 
   loginFormBld = this.fb.group({
 
-    email: ['', [Validators.required, Validators.email ]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
 
   });
@@ -29,7 +29,7 @@ export class LoginPageComponent implements OnInit {
   ngOnInit() {
 
 
-  
+
   }
 
   toatrSuccess(titulo: string, mensagem: string) {
@@ -42,7 +42,7 @@ export class LoginPageComponent implements OnInit {
 
   toatrError(titulo: string, mensagem: string) {
     return toastr.error(mensagem, titulo, {
-      positionClass: "toast-top-center",
+      positionClass: "toast-bottom-center",
       progressBar: true,
       closeButton: true,
     })
@@ -50,25 +50,26 @@ export class LoginPageComponent implements OnInit {
 
 
 
-  onSubmitLogin(){
+  onSubmitLogin() {
     this.loadingPage = true;
     let email = this.loginFormBld.value.email;
     let password = this.loginFormBld.value.password;
     this.authService.login(email, password)
-    .subscribe(
-      (object) => {
-        console.log("logado")
-        this.router.navigate(['/admin/dashboard']);
-        this.loadingPage = false;
-        // this.toatrError('Bem vindo(a)!', 'login realizado com sucesso.')
-    },
-    (err) => { 
-      this.loadingPage = false;
-      // this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.')
-      this.msgError = 'Credenciais Inválidas ou usuário não está registardo.';
-      console.log("Erro ao logar", err)
-    });
-    
+      .subscribe(
+        (object) => {
+          console.log("logado")
+          console.log(object)
+          this.router.navigate(['/admin']);
+          this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
+        },
+        (err) => {
+          this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.');
+          this.loadingPage = false;
+          // this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.')
+          this.msgError = 'Credenciais Inválidas ou usuário não está registardo.';
+          console.log("Erro ao logar", err)
+        });
+
   }
 
 

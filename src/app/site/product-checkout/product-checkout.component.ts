@@ -26,39 +26,137 @@ declare var PagSeguroDirectPayment: any;
 })
 export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
+  // clientForm = this.fb.group({
+
+  //   firstName: ['Jardel', [Validators.required, Validators.minLength(3)]],
+  //   lastName: ['Henrique', [Validators.required, Validators.minLength(3)]],
+  //   cpf: ['66523165019', [
+  //     Validators.required,
+  //     GenericValidator.isValidCpf(),
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(11),
+  //     Validators.maxLength(11)]],                                //'66523165019',
+  //   telefone: ['988351234', [
+  //     Validators.required,
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(9),
+  //     Validators.maxLength(9)]],
+  //   ddd: ['99', [
+  //     Validators.required,
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(2),
+  //     Validators.maxLength(2)]],
+
+  //   // DADOS DE ENDEREÇO
+  //   cep: ['65900000', [Validators.required]],
+  //   estado: ['MA', [Validators.required]],
+  //   cidade: ['Imperatriz', [Validators.required]],
+  //   bairro: ['Vila Lobão', [Validators.required]],
+  //   rua: ['Assembleia', [Validators.required]],
+  //   numero: ['001', [Validators.required]],
+  //   complemento: ['002', [Validators.required]],
+
+  //   //DADOS DE ACESSO
+  //   emailAccess: ['email001@gmail.com', [Validators.required, Validators.email]],
+  //   password: ['123456', [Validators.required]],
+
+
+  //   amount: [''],
+  //   titleProduct: [''],
+  //   idProduct: [''],
+  //   codTransactionPagSeguro: [''],
+
+  //   created_at: [''],
+  //   updated_at: [''],
+
+  //   urlBoleto: ['']
+
+
+  // });
+
+
+  // credicardForm = this.fb.group({
+  //   //DADOS REFERENTE AO CARTÃO DE CRÉDITO
+  //   nomePortadorCard: ['Jardel Henrique', [Validators.required]],
+  //   numCard: ['4111111111111111', [
+  //     Validators.required,
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(16),
+  //     Validators.maxLength(16)]],                           // ex: '4111111111111111'
+  //   mesValidadeCard: ['12', [Validators.required]],                   // ex: '12',
+  //   anoValidadeCard: ['2030', [Validators.required]],                   // ex: '2030',
+  //   codSegCard: ['', [
+  //     Validators.required,
+  //     Validators.minLength(3),
+  //     Validators.maxLength(3)]],                        // ex: '123',
+  //   bandCard: [''],                                                 // preenchido dinamicamente
+  //   hashCard: [''],                                                 // preenchido dinamicamente
+  //   sendHash: [''],                                                 // preenchido dinamicamente
+  //   parcelas: [[''], [Validators.required]],                        // preenchido dinamicamente   
+  //   cpfCard: ['66523165019', [
+  //     Validators.required,
+  //     GenericValidator.isValidCpf(),
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(11),
+  //     Validators.maxLength(11)]],
+  //   telefoneCard: ['88888888888', [
+  //     Validators.required,
+  //     Validators.pattern("^[0-9]*$"),
+  //     Validators.minLength(11),
+  //     Validators.maxLength(11)]],                  // preenchido dinamicamente
+
+
+  //   nascimento: ['1984-09-26', [Validators.required]],
+
+
+  //   // amount: [''],
+  //   // titleProduct: [''],
+  //   // idProduct: [''],
+  //   // codTransactionPagSeguro: [''],
+
+  //   // created_at: [''],
+  //   // updated_at: [''],
+
+  //   // telefone: [''],
+  //   // ddd: [''],
+
+
+
+  // })
+
   clientForm = this.fb.group({
 
-    firstName: ['Jardel', [Validators.required, Validators.minLength(3)]],
-    lastName: ['Henrique', [Validators.required, Validators.minLength(3)]],
-    cpf: ['66523165019', [
+    firstName: ['', [Validators.required, Validators.minLength(3)]],
+    lastName: ['', [Validators.required, Validators.minLength(3)]],
+    cpf: ['', [
       Validators.required,
       GenericValidator.isValidCpf(),
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                                //'66523165019',
-    telefone: ['988351234', [
+    telefone: ['', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(9),
       Validators.maxLength(9)]],
-    ddd: ['99', [
+    ddd: ['', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(2),
       Validators.maxLength(2)]],
 
     // DADOS DE ENDEREÇO
-    cep: ['65900000', [Validators.required]],
-    estado: ['MA', [Validators.required]],
-    cidade: ['Imperatriz', [Validators.required]],
-    bairro: ['Vila Lobão', [Validators.required]],
-    rua: ['Assembleia', [Validators.required]],
-    numero: ['001', [Validators.required]],
-    complemento: ['002', [Validators.required]],
+    cep: ['', [Validators.required]],
+    estado: ['', [Validators.required]],
+    cidade: ['', [Validators.required]],
+    bairro: ['', [Validators.required]],
+    rua: ['', [Validators.required]],
+    numero: ['', [Validators.required]],
+    complemento: ['', [Validators.required]],
 
     //DADOS DE ACESSO
-    emailAccess: ['email001@gmail.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required]],
+    emailAccess: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
 
 
     amount: [''],
@@ -77,14 +175,14 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
   credicardForm = this.fb.group({
     //DADOS REFERENTE AO CARTÃO DE CRÉDITO
-    nomePortadorCard: ['Jardel Henrique', [Validators.required]],
-    numCard: ['4111111111111111', [
+    nomePortadorCard: ['', [Validators.required]],
+    numCard: ['', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(16),
       Validators.maxLength(16)]],                           // ex: '4111111111111111'
-    mesValidadeCard: ['12', [Validators.required]],                   // ex: '12',
-    anoValidadeCard: ['2030', [Validators.required]],                   // ex: '2030',
+    mesValidadeCard: ['', [Validators.required]],                   // ex: '12',
+    anoValidadeCard: ['', [Validators.required]],                   // ex: '2030',
     codSegCard: ['', [
       Validators.required,
       Validators.minLength(3),
@@ -93,32 +191,20 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     hashCard: [''],                                                 // preenchido dinamicamente
     sendHash: [''],                                                 // preenchido dinamicamente
     parcelas: [[''], [Validators.required]],                        // preenchido dinamicamente   
-    cpfCard: ['66523165019', [
+    cpfCard: ['', [
       Validators.required,
       GenericValidator.isValidCpf(),
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],
-    telefoneCard: ['88888888888', [
+    telefoneCard: ['', [
       Validators.required,
       Validators.pattern("^[0-9]*$"),
       Validators.minLength(11),
       Validators.maxLength(11)]],                  // preenchido dinamicamente
 
 
-    nascimento: ['1984-09-26', [Validators.required]],
-
-
-    // amount: [''],
-    // titleProduct: [''],
-    // idProduct: [''],
-    // codTransactionPagSeguro: [''],
-
-    // created_at: [''],
-    // updated_at: [''],
-
-    // telefone: [''],
-    // ddd: [''],
+    nascimento: ['', [Validators.required]],
 
 
 
@@ -380,6 +466,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
 
     this.clientForm.value.amount = this.produto.price.toFixed(2);
+    
     console.log("amount", this.clientForm.value.amount)
 
 

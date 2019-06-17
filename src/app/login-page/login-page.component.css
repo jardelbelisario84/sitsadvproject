@@ -27,3 +27,15 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+
+  .msg-login{
+    font-size: 0.9em
+  }
+
+  .height-login{
+    height: 100vh;
+  }
+
+  .height-container{
+    min-height: 300px;
+}

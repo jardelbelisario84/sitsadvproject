@@ -110,11 +110,13 @@ export class AuthServiceService {
     return from(this.afAuth.auth.signInWithEmailAndPassword(email, password))
       .pipe(
         switchMap((u: firebase.auth.UserCredential) => {
-          this.toatrSuccess('Bem vindo(a)!', 'login realizado com sucesso.')
+          
+          // this.toatrSuccess('Bem vindo(a)!', 'login realizado com sucesso.')
+          
           return this.userCollection.doc(u.user.uid).valueChanges();
         }),
         catchError(() => {
-          this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.');
+          // this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.');
           return throwError('Credenciais Inválidas ou usuário não está registardo.')
         })
       )

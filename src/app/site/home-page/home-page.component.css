@@ -1,3 +1,41 @@
 .text-price-ano{
     color: #999
 }
+
+.topo-site{
+    width: 100%;
+    height: 600px;
+    background-image: url("../../../assets/imagens/ballpen_blur_close_u_JVRJy.jpg");
+    background-size: cover;
+    z-index: 1;
+    opacity: 1;
+}
+
+.opacityBg{
+    background-color: rgba(0, 64, 98, 1);
+    z-index: 9999;
+    opacity: 0.8;
+    height: 100%;
+}
+
+.opacityBgNo{
+    opacity: 1;
+}
+
+.exemplo .fundo {
+    background: rgba(38, 45, 100, 0.75);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.exemplo {
+    width: 100%;
+    height: 600px;
+    background-image: url("../../../assets/imagens/ballpen_blur_close_u_JVRJy.jpg");
+    background-size: cover;
+
+
+  position: relative;
+}
