@@ -6,8 +6,18 @@
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 
     <div *ngIf="usuario.urlBoleto != ''">
-      <button  (click)="openLinkBoleto()" class=" d-sm-inline-block btn  btn-primary shadow">
-        <i class="fas fa-download fa-sm text-white-50"></i> IMPRIMIR BOLETO</button>
+
+      <!-- <div class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div> -->
+
+      <button (click)="openLinkBoleto()" class=" d-sm-inline-block btn  btn-primary shadow">
+        <!-- <div class="spinner-grow text-light" role="status"> -->
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          IMPRIMIR BOLETO
+          <i class="fas fa-download fa-sm text-white-50"></i>
+        <!-- </div> -->
+      </button>
     </div>
 
   </div>
@@ -332,7 +342,7 @@
       </div>
     </div>
 
-  
+
   </div>
 
 

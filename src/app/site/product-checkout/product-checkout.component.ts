@@ -225,7 +225,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   escolheSelect: boolean = false;
   msgError = '';
   cupomText: string = '';
-  precoCupom;
+  precoCupomDeskCode;
+  precoCupomBONUSADVX;
 
 
 
@@ -248,7 +249,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   ngOnInit() {
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     // console.log('Produto list', this.produto);
-    this.precoCupom = this.produto.price - (this.produto.price * 0.97);
+
+    this.precoCupomDeskCode = this.produto.price - (this.produto.price * 0.99);
+    this.precoCupomBONUSADVX = this.produto.price - (this.produto.price * 0.10);
 
 
     // this.checkoutService.startSession()
@@ -358,23 +361,40 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   // GERA CUPOM DE DESCONTO
 
   cupomDesconto() {
+
+    // CUPOM 99%
     if (this.cupomText == 'DESK') {
       // 20%
       // let precoCupom = this.produto.price - (this.produto.price * 0.2)
-
       // 97%
-
-
-      if (this.produto.price <= this.precoCupom.toFixed(2)) {
-        this.produto.price = this.precoCupom.toFixed(2);
+      if (this.produto.price <= this.precoCupomDeskCode.toFixed(2)) {
+        this.produto.price = this.precoCupomDeskCode.toFixed(2);
         this.toatrError('Cupom já inserido!', 'Esse cupom já foi utilizado e com isso o desconto já foi ativado!')
         // this.toatrError('Cupom já inserido!','Esse cupom já foi utilizado e com isso o desconto já foi ativado!')
       } else {
-        this.produto.price = this.precoCupom.toFixed(2);
+        this.produto.price = this.precoCupomDeskCode.toFixed(2);
         this.toatrSuccess('Cupom Válido!', 'Cupom inserido com sucesso!');
       }
-      console.log("##########", this.produto.price)
+      // console.log("##########", this.produto.price)
     }
+
+
+    // CUPOM 10%
+    if (this.cupomText == 'BONUSADVX') {
+      if (this.produto.price <= this.precoCupomBONUSADVX.toFixed(2)) {
+        this.produto.price = this.precoCupomBONUSADVX.toFixed(2);
+        this.toatrError('Cupom já inserido!', 'Esse cupom já foi utilizado e com isso o desconto já foi ativado!')
+        // this.toatrError('Cupom já inserido!','Esse cupom já foi utilizado e com isso o desconto já foi ativado!')
+      } else {
+        this.produto.price = this.precoCupomBONUSADVX.toFixed(2);
+        this.toatrSuccess('Cupom Válido!', 'Cupom inserido com sucesso!');
+      }
+      // console.log("##########", this.produto.price)
+    }
+
+
+
+    
   }
 
 
@@ -465,7 +485,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
 
-    this.clientForm.value.amount = this.produto.price.toFixed(2);
+    this.clientForm.value.amount = this.produto.price;
     
     console.log("amount", this.clientForm.value.amount)
 
@@ -482,39 +502,35 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
         response => {
 
           // console.log('response boleto', response);
-
           this.linkBoleto = response[0];
-
           this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
           this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
           this.clientForm.value.titleProduct = this.produto.title;
           this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
           // this.clientForm.value.amount = this.produto.price.toFixed(2);
           // this.clientForm.value.amount = this.produto.price;
-
           this.clientForm.value.urlBoleto = this.linkBoleto;
-
-          console.log("amount", this.clientForm.value.amount)
-
-
+          // console.log("amount", this.clientForm.value.amount)
           this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO'; 
-
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
-
                 // console.log('Result Register', resultRegister);
-
                 this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
                 // this.authService.updateUser(resultRegister, this.clientForm.value);
                 //realiza login no sistema
                 // this.toatrSuccess('PARABÉNS!', 'Seu boleto foi gerado com sucesso e agora você será redirecionado(a) ao painel administrativo!')
                 this.authService.login(this.clientForm.value.emailAccess, this.clientForm.value.password)
                   .subscribe(
-                    () => {
-                      this.loadingPage = false;
+                    (object) => {
                       console.log("logado")
                       this.router.navigate(['/admin/dashboard']);
+
+                      setTimeout(() => {
+                        this.loadingPage = false;
+                        this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
+                      },2000)
+
                     })
                 // ,(err) => {
                 //   this.msgError = 'Credenciais Inválidas ou usuário não está registardo.';
@@ -542,15 +558,10 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           this.toatrError('OPSSS, ERRO!', `Um erro aconteceu no momento de gerar seu boleto. Por favor, tente mais tarde!`)
           // this.toatrError('ACONTECEU UM ERRO!', `O e-mail ${emailCliente} já é cadastrado em nossa base de dados.`)
           console.log("geraBoleto", error); // body
-
           window.scrollTo(0, 0);
           // console.log(error.error.text); // body
         });
   }
-
-
-
-
 
   openLinkBoleto() {
     window.open(this.linkBoleto, '_blank');
@@ -644,10 +655,13 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                       // faz login no sistema
                       this.authService.login(this.clientForm.value.emailAccess, this.clientForm.value.password)
                         .subscribe(
-                          () => {
-                            this.loadingPage = false;
+                          (object) => {
                             console.log("logado")
                             this.router.navigate(['/admin/dashboard']);
+                            setTimeout(() => {
+                              this.loadingPage = false;
+                              this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
+                            },2000)
                           })
 
 

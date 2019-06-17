@@ -1,8 +1,11 @@
 <div class="container">
 
   <div *ngIf="loadingPage" class="container">
-    <div *ngIf="!hideBlock" class="d-flex justify-content-center align-items-center" style="height: 500px">
-      <p-progressSpinner></p-progressSpinner>
+    <div *ngIf="!hideBlock" class="d-flex justify-content-center align-items-center text-center" style="height: 500px">
+      <!-- <p-progressSpinner></p-progressSpinner> -->
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
   </div>
 
@@ -20,15 +23,15 @@
         <div class="text-center">
           <a routerLink="/">
 
-            <!-- <img class="mb-4" src="../../assets/imagens/logo_footer.svg" alt="" width="200"> -->
-            <img class="mb-4" src="assets/imagens/logo_footer.svg" alt="" width="200">
-            
+            <img class="mb-4" src="../../assets/imagens/logo_footer.svg" alt="" width="200">
+            <!-- <img class="mb-4" src="assets/imagens/logo_footer.svg" alt="" width="200"> -->
+
           </a>
           <h6 class="mb-3 msg-login">Por favor, faça seu login para acessar o painel</h6>
         </div>
 
 
-        <form [formGroup]="loginFormBld" (ngSubmit)="onSubmitLogin()" class="form-signin" >
+        <form [formGroup]="loginFormBld" (ngSubmit)="onSubmitLogin()" class="form-signin">
 
           <!-- <div class="text-danger msg-erro" *ngIf="msgError">
           {{ msgError }}

@@ -2,7 +2,12 @@
 
 <div *ngIf="loadingPage" class="container">
   <div *ngIf="!hideBlock" class="d-flex justify-content-center align-items-center" style="height: 500px">
-    <p-progressSpinner></p-progressSpinner>
+    <!-- <p-progressSpinner></p-progressSpinner>-->
+
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="sr-only">Loading...</span>
+    </div>
+
   </div>
 </div>
 
@@ -14,17 +19,17 @@
     <div class="row py-3">
 
       <div class="col-xl-8 col-md-6 py-2 text-center">
-     
-          <h5>TEM ALGUM CUPOM DE DESCONTO? </h5>
-          <p>Insire-o aqui abaixo!</p>
 
-          <form class="form" (ngSubmit)="cupomDesconto()">
-            <div class="form-group col-xl-12 col-md-12">
-              <input type="text" [(ngModel)]="cupomText" name="cupomText" class="form-control"
-                placeholder="Digite um cupom válido">
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Aplicar Cupom</button>
-          </form>
+        <h5>TEM ALGUM CUPOM DE DESCONTO? </h5>
+        <p>Insire-o aqui abaixo!</p>
+
+        <form class="form" (ngSubmit)="cupomDesconto()">
+          <div class="form-group col-xl-12 col-md-12">
+            <input type="text" [(ngModel)]="cupomText" name="cupomText" class="form-control"
+              placeholder="Digite um cupom válido">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Aplicar Cupom</button>
+        </form>
 
       </div>
 
@@ -374,15 +379,15 @@
                   <ul class="nav nav-pills" id="myTab" role="tablist">
                     <li class="nav-item">
                       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                      aria-controls="home" aria-selected="true">Cartão de Crédito</a>
+                        aria-controls="home" aria-selected="true">Cartão de Crédito</a>
                     </li>
-                  
+
                     <li class="nav-item">
                       <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                      aria-controls="profile" aria-selected="false">Boleto</a>
+                        aria-controls="profile" aria-selected="false">Boleto</a>
                     </li>
                   </ul>
-                  
+
                 </div>
 
 
@@ -718,7 +723,7 @@
                       <!-- BOTÃO -->
                       <div class="col-md-5 ml-auto">
                         <button type="submit" class="btn btn-lg peach-gradient btn-block text-white"
-                          [disabled]="!clientForm.valid" id="clickBoleto">GERAR BOLETO</button>
+                          [disabled]="!clientForm.valid" id="clickBoleto">Comprar com Boleto</button>
                         <p class="info-dados">Após preencher todos os campos obrigatórios, o botão será
                           ativado para finalizar seu pedido.</p>
                       </div>
@@ -766,8 +771,9 @@
           <h3 class="card-title text-success text-center mt-4">
             R$ {{produto.price}}/Ano
           </h3>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+          <p class="card-text">
+            Tenha um Site moderno com Blog para ter mais presença na internet.
+          </p>
         </div>
       </div>
       <!-- fecha card bg-blue-grey -->

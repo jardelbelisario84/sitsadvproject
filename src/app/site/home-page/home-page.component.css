@@ -4,7 +4,7 @@
 
 .topo-site{
     width: 100%;
-    height: 600px;
+    min-height: 700px;
     background-image: url("../../../assets/imagens/ballpen_blur_close_u_JVRJy.jpg");
     background-size: cover;
     z-index: 1;
