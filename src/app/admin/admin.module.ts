@@ -8,6 +8,7 @@ import { BlankComponent } from './blank/blank.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin.component';
 import { ErrorComponent } from './error/error.component';
+import { CheckoutPlanComponent } from './checkout-plan/checkout-plan.component';
 
 
 
@@ -17,7 +18,8 @@ import { ErrorComponent } from './error/error.component';
     BlankComponent,
     HomeComponent,
     AdminComponent,
-    ErrorComponent
+    ErrorComponent,
+    CheckoutPlanComponent
   ],
   imports: [
     CommonModule,

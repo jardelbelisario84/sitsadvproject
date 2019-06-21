@@ -15,14 +15,29 @@ import * as toastr from 'toastr';
 export class AuthServiceService {
 
   private userCollection: AngularFirestoreCollection = this.afs.collection('users');
+  private userAutentication;
 
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private router: Router
+    // private af: AngularFire,
   ) { }
 
+
+
+
+
   /*
+
+
+  var user = firebase.auth().currentUser;
+
+  user.delete().then(function() {
+    // User deleted.
+  }).catch(function(error) {
+    // An error happened.
+  });
+  
   db.collection("cities").doc("SF")
       .onSnapshot(function(doc) {
           console.log("Current data: ", doc.data());
@@ -102,17 +117,75 @@ export class AuthServiceService {
 
 
 
+  deleteUser(id) {
+    // console.log("ID DE USER A SER ATUALIZADO", id)
+    this.userCollection.doc(id).delete().then(() => {
+      console.log("Documento do usuario deletado no firebase")
+    });
+  }
+
+  // deleteUserLogaded(email: string, password: string) {
+
+  //   console.log("userAutentication 2", this.userAutentication)
+
+  //   let credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+  //   this.userAutentication.reauthenticateWithCredential(credential)
+  //     .then((user) => {
+  //       console.log("user reauthenticateAndRetrieveDataWithCredential", user)
+  //       this.userAutentication.delete().then(() => { }).catch(() => { })
+  //     }).catch(function (error) {
+  //       console.log("reauthenticateAndRetrieveDataWithCredential", error)
+  //     });
 
 
+  // }
+
+  removerUser(email: string, password: string) {
+
+    
+    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+    
+    this.afAuth.auth.signInWithEmailAndPassword(email, password)
+    .then(value => {
+      console.log('Success!', value);
+      this.userAutentication = this.afAuth.auth.currentUser;
+      this.userAutentication.delete().then(() => { }).catch(() => { })
+    })
+    .catch(err => {
+      console.log('Something went wrong:',err.message);
+    });    
+
+  }
+
+
+
+  // removerUser(email: string, password: string) {
+
+  //   const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+  //   firebase.auth().currentUser.reauthenticateWithCredential(credential).then(() => {
+  //     this.userAutentication.delete().then(() => { }).catch(() => { })
+  //   });
+
+  // }
+
+  // removeUser(password: string) {
+  //   this.af.auth.take(1).subscribe(user => {
+  //     const credential = firebase.auth.EmailAuthProvider.credential(user.auth.email, password);
+  //     user.auth.reauthenticate(credential).then(() => {
+  //       user.auth.delete();
+  //     });
+  //   });
+  // }
 
   login(email: string, password: string) {
 
     return from(this.afAuth.auth.signInWithEmailAndPassword(email, password))
       .pipe(
         switchMap((u: firebase.auth.UserCredential) => {
-          
+
           // this.toatrSuccess('Bem vindo(a)!', 'login realizado com sucesso.')
-          
+
           return this.userCollection.doc(u.user.uid).valueChanges();
         }),
         catchError(() => {

@@ -146,13 +146,13 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       Validators.maxLength(2)]],
 
     // DADOS DE ENDEREÇO
-    cep: ['', [Validators.required]],
+    cep: [''],
     estado: ['', [Validators.required]],
     cidade: ['', [Validators.required]],
     bairro: ['', [Validators.required]],
     rua: ['', [Validators.required]],
     numero: ['', [Validators.required]],
-    complemento: ['', [Validators.required]],
+    complemento: [''],
 
     //DADOS DE ACESSO
     emailAccess: ['', [Validators.required, Validators.email]],
@@ -229,6 +229,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   precoCupomBONUSADVX;
 
 
+  urlBaseImg: string;
+
 
   constructor(
     public checkoutService: CheckoutService,
@@ -247,6 +249,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
   codTransactionReturn: any;
 
   ngOnInit() {
+
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     // console.log('Produto list', this.produto);
 
@@ -256,8 +259,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
     // this.checkoutService.startSession()
     if (!environment.production) {
+      this.urlBaseImg = '../../../assets/imagens/';
       scriptjs('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
-
         this.paymentHttp.getSession()
           .subscribe(data => {
             console.log(data);
@@ -267,12 +270,17 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           })
       })
     } else {
+      this.urlBaseImg = 'assets/imagens/';
+
       scriptjs('https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js', () => {
+
         this.paymentHttp.getSession()
           .subscribe(data => {
             // console.log(data);
             // console.log(this.initSession(data));
+            return this.initSession(data)
           })
+
       })
     }
   }
@@ -343,18 +351,9 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
 
-
-
-
-
-
   // testaSelect() {
   //   console.log(this.clientForm.value.parcelas)
   // }
-
-
-
-
 
 
 
@@ -394,86 +393,19 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
 
 
-    
+
   }
-
-
-
-
-
 
 
 
 
 
   /** 
-   *  PAGAMENDO COM CARTÃO PLANO
+   *  PAGAMENDO COM CARTÃO PLANO E BOLETO
    *  BIBLIOTECA ANGULAR PAGSEGURO
    * 
    * */
 
-
-  //BUSCA AS PARCELAS NA API DO PAGSEGURO PARA O CLIENTE ESCOLHER
-  buscaParcelas() {
-    // console.log(this.dadosCredicard.bandCard);
-    PagSeguroDirectPayment.getInstallments({
-      amount: this.produto.price,              //valor total da compra (deve ser informado)
-      brand: this.credicardForm.value.bandCard,   //bandeira do cartão (capturado na função buscaBandeira)
-      maxInstallmentNoInterest: 1,
-      success: response => {
-        this.escolherQntParcelas = response.installments[this.credicardForm.value.bandCard];
-        if (this.escolherQntParcelas.length > 0) {
-          this.escolheSelect = true
-        } else {
-          this.escolheSelect = false
-        }
-        // console.log('Parcelas Result length: ', this.escolherQntParcelas.length);
-        // console.log('Parcelas Result: ', this.escolherQntParcelas);
-      },
-      error: response => {
-        console.log("ERro buscar parcelas: ", response)
-      }
-    });
-  }
-
-  //BUSCA A BANDEIRA DO CARTÃO (EX: VISA, MASTERCARD ETC...) E DEPOIS BUSCA AS PARCELAS;
-  //ESTA FUNÇÃO É CHAMADA QUANDO O INPUT QUE RECEBE O NÚMERO DO CARTÃO PERDE O FOCO;
-  buscaBandeira() {
-    console.log("busca Bandeira: ");
-    PagSeguroDirectPayment.getBrand({
-
-      cardBin: this.credicardForm.value.numCard,
-
-      success: response => {
-        this.credicardForm.value.bandCard = response.brand.name;
-        // console.log('Bandeira do cartao objeto', response )
-        // console.log('Bandeira do cartão: ' + this.credicardForm.value.bandCard);
-        this.buscaParcelas();
-      },
-      error: response => {
-        console.log("Erro buscar Bandeira: ", response);
-      }
-    });
-
-  }
-
-
-  enviaDadosParaServidor(dados) {
-    //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
-    //aqui ele retona o codigo geralfinal da transação
-    this.paymentHttp.transationCredCard(dados)
-      .subscribe(
-        result => {
-          this.loadingPage = false;
-          this.hideBlock = true;
-          this.hideBlockBoleto = false;
-          this.hideBlockCreditCard = true;
-          // console.log('Codigo transação: ', result[0])
-          // console.log('Codigo transação  Cod: ', dados.codTransactionPagSeguro)
-          // this.codTransactionReturn = result[0];
-          return dados.codTransactionPagSeguro = result[0];
-        });
-  }
 
 
 
@@ -486,7 +418,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
     this.clientForm.value.sendHash = PagSeguroDirectPayment.getSenderHash();
 
     this.clientForm.value.amount = this.produto.price;
-    
+
     console.log("amount", this.clientForm.value.amount)
 
 
@@ -502,7 +434,15 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
         response => {
 
           // console.log('response boleto', response);
-          this.linkBoleto = response[0];
+          // this.linkBoleto = response[0];
+          this.linkBoleto = response[0][0];
+
+          //  console.log("dados vindos do boleto: ",response);
+          //  console.log("dados vindos do boleto urlBoleto: ",response[0][0]);
+          // //  console.log("dados vindos do boleto codigoBarras: ",response[1][0]);
+          //  console.log("dados vindos do boleto codeTransacao: ",response[1][0]);
+          //  console.log("dados vindos do boleto DuwData: ",response[3][0]);
+
           this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
           this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
           this.clientForm.value.titleProduct = this.produto.title;
@@ -511,7 +451,11 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           // this.clientForm.value.amount = this.produto.price;
           this.clientForm.value.urlBoleto = this.linkBoleto;
           // console.log("amount", this.clientForm.value.amount)
-          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO'; 
+          this.clientForm.value.codTransactionPagSeguro = response[1][0];
+
+
+          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO';
+
           this.authService.register(this.clientForm.value)
             .subscribe(
               (resultRegister) => {
@@ -528,8 +472,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
                       setTimeout(() => {
                         this.loadingPage = false;
-                        this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
-                      },2000)
+                        this.toatrSuccess('Bem vindo(a) ' + object['firstName'], 'Login realizado com sucesso.')
+                      }, 2000)
 
                     })
                 // ,(err) => {
@@ -561,6 +505,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
           window.scrollTo(0, 0);
           // console.log(error.error.text); // body
         });
+
+
   }
 
   openLinkBoleto() {
@@ -569,6 +515,83 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
       this.router.navigate(['/']);
     }, 2000);
 
+  }
+
+
+
+  //BUSCA AS PARCELAS NA API DO PAGSEGURO PARA O CLIENTE ESCOLHER
+  buscaParcelas() {
+    // console.log(this.dadosCredicard.bandCard);
+    PagSeguroDirectPayment.getInstallments({
+      amount: this.produto.price,              //valor total da compra (deve ser informado)
+      brand: this.credicardForm.value.bandCard,   //bandeira do cartão (capturado na função buscaBandeira)
+      maxInstallmentNoInterest: 1,
+
+      success: response => {
+
+        console.log("BuscaParcelasCreditBandCard", this.credicardForm.value.bandCard);
+
+        this.escolherQntParcelas = response.installments[this.credicardForm.value.bandCard];
+        // console.log('this.escolherQntParcelas: ', this.escolherQntParcelas);
+
+        if (this.escolherQntParcelas.length > 0) {
+          this.escolheSelect = true
+        } else {
+          this.escolheSelect = false
+        }
+        console.log('Parcelas Result length: ', this.escolherQntParcelas.length);
+        console.log('Parcelas Result: ', this.escolherQntParcelas);
+
+        return this.escolherQntParcelas;
+      },
+      error: response => {
+        console.log("BuscaParcelasCreditBandCard", this.credicardForm.value.bandCard);
+        console.log("Erro buscar parcelas: ", response)
+      }
+    });
+  }
+
+  //BUSCA A BANDEIRA DO CARTÃO (EX: VISA, MASTERCARD ETC...) E DEPOIS BUSCA AS PARCELAS;
+  //ESTA FUNÇÃO É CHAMADA QUANDO O INPUT QUE RECEBE O NÚMERO DO CARTÃO PERDE O FOCO;
+  buscaBandeira() {
+    console.log("busca Bandeira: ");
+
+
+    this.paymentHttp.getSession();
+
+    PagSeguroDirectPayment.getBrand({
+      cardBin: parseInt(this.credicardForm.value.numCard),
+      success: response => {
+        this.credicardForm.value.bandCard = response.brand.name;
+
+        console.log('Bandeira do cartao objeto', response)
+        console.log('Bandeira do cartão: ' + this.credicardForm.value.bandCard);
+        this.buscaParcelas();
+      },
+      error: response => {
+        console.log("Erro buscar Bandeira: ", response);
+        console.log("this.credicardForm.value.numCard: ", this.credicardForm.value.numCard);
+      }
+    });
+
+  }
+
+
+  enviaDadosParaServidor(dados) {
+    //COLOQUE AQUI O CÓDIGO PARA ENVIAR OS DADOS PARA O SERVIDOR (PHP, JAVA ETC..) PARA QUE ELE CONSUMA A API DO PAGSEGURO E CONCRETIZE A TRANSAÇÃO
+    //aqui ele retona o codigo geralfinal da transação
+    this.paymentHttp.transationCredCard(dados)
+      .subscribe(
+        result => {
+          this.loadingPage = false;
+          this.hideBlock = true;
+          this.hideBlockBoleto = false;
+          this.hideBlockCreditCard = true;
+          // console.log('Codigo transação: ', result[0])
+          // console.log('Codigo transação  Cod: ', dados.codTransactionPagSeguro)
+          // this.codTransactionReturn = result[0];
+          return dados.codTransactionPagSeguro = result[0];
+        });
   }
 
 
@@ -595,13 +618,12 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
 
           this.credicardForm.value.hashCard = response.card.token;
 
-          this.clientForm.value.amount = this.produto.price;
-
+         
           // console.log('price submit', this.clientForm.value.amount)
 
           this.clientForm.value.urlBoleto = this.clientForm.value.urlBoleto ? this.clientForm.value.urlBoleto : '';
-          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO'; 
-                
+          this.clientForm.value.nomePortadorCard = this.clientForm.value.nomePortadorCard ? this.clientForm.value.nomePortadorCard : 'BOLETO';
+
 
 
 
@@ -614,18 +636,25 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                 // console.log('Result Register', resultRegister);
                 // console.log('Result Register cod', resultRegister.id);
 
+                this.clientForm.value.amount = this.produto.price;
+
+                console.log("  this.clientForm.value.amount ",   this.clientForm.value.amount ) 
 
                 this.clientForm.value.created_at = moment().format('YYYY-MM-DD');
 
                 this.clientForm.value.updated_at = moment().format('YYYY-MM-DD  H:mm:ss');
 
                 this.clientForm.value.idProduct = moment().format('YYYYMMDDHmmss');
+
                 this.clientForm.value.titleProduct = this.produto.title;
 
                 // this.credicardForm.value.ddd =  this.clientForm.value.ddd;
                 // this.credicardForm.value.telefone =  this.clientForm.value.telefone;
 
-
+                this.buscaBandeira();
+                this.credicardForm.value.parcelas = this.escolherQntParcelas;
+                
+                console.log("  this.credicardForm.value.parcelas ####",   this.credicardForm.value.parcelas ) 
                 let dadosConcatenados = { ...this.clientForm.value, ...this.credicardForm.value }
 
                 // console.log('-----------------------------------------------------')
@@ -660,22 +689,24 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                             this.router.navigate(['/admin/dashboard']);
                             setTimeout(() => {
                               this.loadingPage = false;
-                              this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
-                            },2000)
+                              this.toatrSuccess('Bem vindo(a) ' + object['firstName'], 'Login realizado com sucesso.')
+                            }, 2000)
                           })
-
+                      //  fecha login
 
                     }, err => {
 
-                      this.toatrError('OPSSSS!',
-                        `Sua conta de acesso foi criada com sucesso. Porém, aconteceu algo de errado no pagamento.
-                      Acesse o painel com sua conta criada para tentar novamente reaalizar o pagamento. `, 15000)
+                      let emaillogin = this.clientForm.value.emailAccess;
+                      let passwordLogin = this.clientForm.value.password;
+
+                      this.authService.deleteUser(resultRegister);
+                      // this.authService.deleteUserLogaded(emaillogin, passwordLogin );
+                      this.authService.removerUser(emaillogin, passwordLogin);
+
+                      this.toatrError('OPSSSS!', `Aconteceu algo de errado no pagamento.`, 10000)
                       this.loadingPage = false;
                       console.log(err)
                     });
-
-
-
               },
               (error) => {
                 this.loadingPage = false;
@@ -687,6 +718,7 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
                 // this.toatrError('O e-mail  já é cadastrado. Por favor, insira outro e-mail para continuar.', 'Erro!')
                 // console.log("Erro ao registrar usuário no firebase: ", error);
               })
+
           console.log('Dados retornados: ', this.credicardForm.value);
           // console.log("Passou cartão");
         });
@@ -698,6 +730,8 @@ export class ProductCheckoutComponent implements OnInit, AfterContentInit {
         // console.log("createCardToken: ", res)
       }
     });
+
+    // this.loadingPage = false;
   }
 
 

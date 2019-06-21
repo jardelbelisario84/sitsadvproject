@@ -1,26 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { environment } from 'src/environments/environment';
 
-
-@Component({
-  selector: 'app-site-menu',
-  templateUrl: './site-menu.component.html',
-  styleUrls: ['./site-menu.component.css']
+@Injectable({
+  providedIn: 'root'
 })
-export class SiteMenuComponent implements OnInit {
+export class EnviromentDevProdService {
 
   urlBaseImg: string;
 
   constructor() { }
 
-  ngOnInit() {
-
+  verificaEnviroments(){
     if(!environment.production){
       this.urlBaseImg = '../../../assets/imagens/';
     }else{
       this.urlBaseImg = 'assets/imagens/';
     }
-
   }
 
 }

@@ -39,9 +39,9 @@
             VALOR
           </div>
           <div class="card-body">
-            <h1 class="card-title  text-success">
+            <h3 class="card-title  text-success">
               <b> R$ {{produto.price}}/Ano </b>
-            </h1>
+            </h3>
             <p class="card-text">
               Caso tenha um Cupom de Desconto, insire-o no campo ao lado.
             </p>
@@ -676,7 +676,8 @@
 
                         </div>
 
-                      </div>
+                      </di
+                      v>
                       <!-- form -->
 
                     </div>
@@ -703,9 +704,8 @@
                           O pedido será confirmado apenas após a confirmação do pagamento. </p>
                         <p>Taxa: R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).
                         </p>
-                        <p>* Após clicar em "Gerar Boleto" você verá um botão com o link para o seu boleto bancário, é
-                          possível
-                          visualizá=lo, imprimi-lo e pagar pelo site do seu banco ou por uma casa lotérica.</p>
+                        <p>* Após clicar em "Comprar com Boleto" você será direcionado para o painel administrativo e logo em seguida verá um 
+                          botão onde pode acessar seu boleto para que possa imprimir e pagar no seu banco ou por uma casa lotérica.</p>
 
                         <p>Esta compra está sendo feita no Brasil <img
                             src="https://escoladeadvogados.com/sitesparaadvogados/wp-content/plugins/woocommerce-pagseguro/assets/images/brazilian-flag.png"
@@ -761,7 +761,7 @@
           </b>
           <a routerLink="/">Escolher outro plano</a>
         </div>
-        <img class="card-img-top" [src]="produto.image" alt="Card image cap">
+        <img class="card-img-top" [src]="urlBaseImg + produto.image" alt="Card image cap">
         <div class="card-body">
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let item of produto.items">
@@ -864,11 +864,11 @@
   <app-rodape></app-rodape>
 </div>
 
-<p-dialog header="POLÍTICA DE PRIVACIDADE" [(visible)]="display" [style]="{width: '90%'}">
+<!-- <p-dialog header="POLÍTICA DE PRIVACIDADE" [(visible)]="display" [style]="{width: '90%'}">
   <div class="container politica">
 
 
-    <!--           
+    <!           
         <h4 class="card-title">
         
           </h4>
@@ -884,7 +884,7 @@
               visitantes e clientes dos Sites Para Advogados.
             </li>
 
-          </ul> -->
+          </ul> ->
 
 
     <p>
@@ -1130,4 +1130,4 @@
     </button>
   </p-footer>
 
-</p-dialog>
+</p-dialog> -->

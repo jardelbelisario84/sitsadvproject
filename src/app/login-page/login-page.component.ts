@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthServiceService } from '../service/auth-service.service';
 import * as toastr from 'toastr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login-page',
@@ -13,6 +14,7 @@ export class LoginPageComponent implements OnInit {
 
   msgError: string;
   loadingPage: boolean = false;
+  urlBaseImg: string;
 
   constructor(
     public router: Router,
@@ -26,9 +28,15 @@ export class LoginPageComponent implements OnInit {
 
   });
 
+
+
+
   ngOnInit() {
-
-
+    if (!environment.production) {
+      this.urlBaseImg = '../../../assets/imagens/';
+    } else {
+      this.urlBaseImg = 'assets/imagens/';
+    }
 
   }
 
@@ -60,7 +68,7 @@ export class LoginPageComponent implements OnInit {
           console.log("logado")
           console.log(object)
           this.router.navigate(['/admin']);
-          this.toatrSuccess('Bem vindo(a) '+ object['firstName'], 'Login realizado com sucesso.')
+          this.toatrSuccess('Bem vindo(a) ' + object['firstName'], 'Login realizado com sucesso.')
         },
         (err) => {
           this.toatrError('OPSS!', 'Credenciais Inválidas ou usuário não está registardo.');

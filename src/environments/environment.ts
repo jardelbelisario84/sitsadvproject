@@ -12,7 +12,8 @@ export const environment = {
     storageBucket: "sites-para-advogados-sandbox.appspot.com",
     messagingSenderId: "42463867665",
     appId: "1:42463867665:web:33e4f451cbe5d332"
-  }
+  },
+  urlBaseAssets: "../../../assets/imagens"
 };
 
 /*

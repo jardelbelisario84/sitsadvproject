@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewChecked, AfterContentInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProdutosService } from '../service-local/produtos.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -12,6 +13,7 @@ export class ProductListComponent implements OnInit, AfterViewChecked, AfterCont
   produto;
   loadingPage = false;
   proddutos: any;
+  urlBaseImg: string;
 
   constructor(public products: ProdutosService, private router: Router, private route: ActivatedRoute, private product: ProdutosService) { }
 
@@ -19,7 +21,14 @@ export class ProductListComponent implements OnInit, AfterViewChecked, AfterCont
     this.produto = this.product.getProduto(this.route.snapshot.params['slug']);
     console.log('Produto list', this.produto);
 
-    this.proddutos =  this.products.getProdutos()
+    this.proddutos = this.products.getProdutos();
+
+    if (!environment.production) {
+      this.urlBaseImg = '../../../assets/imagens/';
+    } else {
+      this.urlBaseImg = 'assets/imagens/';
+    }
+
   }
 
   ngAfterViewChecked() {
@@ -37,7 +46,7 @@ export class ProductListComponent implements OnInit, AfterViewChecked, AfterCont
 
   }
   productCheckout(produto) {
-    this.router.navigate(['/produtos/'+produto.slug+'/checkout']);
+    this.router.navigate(['/produtos/' + produto.slug + '/checkout']);
   }
 
 

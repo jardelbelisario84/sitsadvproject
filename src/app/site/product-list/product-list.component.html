@@ -11,8 +11,8 @@
   <div class="mt-3">
 
     <div class="progress mt-3 mb-1">
-      <div class="progress-bar" role="progressbar" style="width: 50%"
-        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+        aria-valuemax="100">50%</div>
     </div>
 
     <nav aria-label="breadcrumb">
@@ -26,7 +26,7 @@
   <div class="row mt-4 mb-4 d-flex justify-content-between">
 
     <div class="col-md-4">
-      <img class="card-img-top" [src]="produto.image" alt="Card image cap">
+      <img class="card-img-top" [src]="urlBaseImg + produto.image" alt="Card image cap">
     </div>
 
     <div class="col-md-4">
@@ -62,81 +62,103 @@
     </div>
 
 
-    <div class="mt-5 jumbotron">
+    <div class="jumbotron mt-5">
 
-      <div class="row">
-        <h5 class="mb-3">Nossos Modelos</h5>
+    <div class="row">
+      <h5 class="mb-3">Nossos Modelos</h5>
+    </div>
+
+    <div class="row mb-4 text-center">
+
+      <div class="col-md-3">
+        <div class="card">
+          <!-- <img class="card-img-top" src="../../../assets/imagens/modelos/mod1.jpg" alt="Modelo 1"> -->
+          <img class="card-img-top" src="assets/imagens/modelos/mod1.jpg" alt="Modelo 1">
+          <div class="card-body">
+            <h5 class="card-title">Modelo 1</h5>
+            <p class="card-text">
+
+            </p>
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" target="_blank"
+              class="btn blue-gradient  btn-sm btn-block text-white">Visualizar Modelo</a>
+          </div>
+        </div>
       </div>
 
-      <div class="row mb-4 text-center">
 
-        <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top"
-              src="http://www.astronometricas.com.br/images/o-que-sao-sites-responsivos-astronometricas.png"
-              alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo1" target="_blank"
-                class="btn blue-gradient  btn-sm btn-block text-white">Go somewhere</a>
-            </div>
+      <div class="col-md-3">
+        <div class="card">
+          <!-- <img class="card-img-top" src="../../../assets/imagens/modelos/mod2.jpg" alt="Modelo 1"> -->
+          <img class="card-img-top" src="assets/imagens/modelos/mod2.jpg" alt="Modelo 1">
+          <div class="card-body">
+            <h5 class="card-title">Modelo 2</h5>
+            <p class="card-text">
+
+            </p>
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo2" target="_blank"
+              class="btn blue-gradient  btn-sm btn-block text-white">Visualizar Modelo</a>
           </div>
         </div>
+      </div>
 
 
-        <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top"
-              src="http://www.astronometricas.com.br/images/o-que-sao-sites-responsivos-astronometricas.png"
-              alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo2" target="_blank"
-                class="btn blue-gradient btn-sm btn-block text-white">Go somewhere</a>
-            </div>
+      <div class="col-md-3">
+        <div class="card">
+          <!-- <img class="card-img-top" src="../../../assets/imagens/modelos/mod3.jpg" alt="Modelo 1"> -->
+          <img class="card-img-top" src="assets/imagens/modelos/mod3.jpg" alt="Modelo 1">
+          <div class="card-body">
+            <h5 class="card-title">Modelo 3</h5>
+            <p class="card-text">
+
+            </p>
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo3" target="_blank"
+              class="btn blue-gradient  btn-sm btn-block text-white">Visualizar Modelo</a>
           </div>
         </div>
+      </div>
 
 
-        <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top"
-              src="http://www.astronometricas.com.br/images/o-que-sao-sites-responsivos-astronometricas.png"
-              alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo3" target="_blank"
-                class="btn blue-gradient btn-sm btn-block text-white">Go somewhere</a>
-            </div>
+      <div class="col-md-3">
+        <div class="card">
+          <!-- <img class="card-img-top" src="../../../assets/imagens/modelos/mod4.jpg" alt="Modelo 1"> -->
+          <img class="card-img-top" src="assets/imagens/modelos/mod4.jpg" alt="Modelo 1">
+          <div class="card-body">
+            <h5 class="card-title">Modelo 4</h5>
+            <p class="card-text">
+
+            </p>
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo4" target="_blank"
+              class="btn blue-gradient  btn-sm btn-block text-white">Visualizar Modelo</a>
           </div>
         </div>
+      </div>
+    </div>
 
 
-        <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top"
-              src="http://www.astronometricas.com.br/images/o-que-sao-sites-responsivos-astronometricas.png"
-              alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo4" target="_blank"
-                class="btn blue-gradient btn-sm btn-block text-white">Go somewhere</a>
-            </div>
+
+
+    <div class="row mb-4 text-center">
+
+      <div class="col-md-3">
+        <div class="card">
+          <!-- <img class="card-img-top" src="../../../assets/imagens/modelos/mod5.jpg" alt="Modelo 1"> -->
+          <img class="card-img-top" src="assets/imagens/modelos/mod5.jpg" alt="Modelo 1">
+          <div class="card-body">
+            <h5 class="card-title">Modelo 5</h5>
+            <p class="card-text">
+
+            </p>
+            <a href="https://escoladeadvogados.com/sitesparaadvogados/modelo5" target="_blank"
+              class="btn blue-gradient  btn-sm btn-block text-white">Visualizar Modelo</a>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- <div class="row mt-4">
+  </div>
+
+  <!-- <div class="row mt-4">
 
       <div class="col-12">
         <h5>Outras Opções de Planos</h5>
@@ -162,8 +184,8 @@
 
     </div> -->
 
-  </div>
+</div>
 
-  <!-- footer -->
+<!-- footer -->
 </div>
 <app-rodape></app-rodape>

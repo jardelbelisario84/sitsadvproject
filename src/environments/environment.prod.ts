@@ -1,12 +1,13 @@
 export const environment = {
   production: true,
   firebaseConfig :  {
-    apiKey: "AIzaSyB1j3Dvk3YaAXVyuug1Jj5VSZBISynwHk0",
-    authDomain: "sites-para-advogados-sandbox.firebaseapp.com",
-    databaseURL: "https://sites-para-advogados-sandbox.firebaseio.com",
-    projectId: "sites-para-advogados-sandbox",
-    storageBucket: "sites-para-advogados-sandbox.appspot.com",
-    messagingSenderId: "42463867665",
-    appId: "1:42463867665:web:33e4f451cbe5d332"
-  }
+    apiKey: "AIzaSyA3Ncm0JGi22j6hGeKLdHkUGiAnZobsXaI",
+    authDomain: "sitesescoladeadvogados.firebaseapp.com",
+    databaseURL: "https://sitesescoladeadvogados.firebaseio.com",
+    projectId: "sitesescoladeadvogados",
+    storageBucket: "sitesescoladeadvogados.appspot.com",
+    messagingSenderId: "1031986575078",
+    appId: "1:1031986575078:web:a838c1955c95bd8d"
+  },
+  urlBaseAssets: "assets/imagens"
 };
